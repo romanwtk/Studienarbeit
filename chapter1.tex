@@ -1,2 +1,33 @@
 % !TEX root =  master.tex
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=6em, text centered, minimum height=3em]
 \chapter{Codierungstheorie}
+Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das auf Elementen der Codierungstheorie basiert, wird diese nun zunächst in Definitionen und Hintergründen motiviert.
+\section{Grundbegriffe}
+Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Subjekte der Anschauung.
+\begin{definition}
+Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a_i \in \Sigma$, wobei $\Sigma$ eine endliche Menge von Zeichen (genannt \textbf{Alphabet}) bezeichnet.
+\[m = (a_1, a_2, ..., a_{n-1}, a_n) \quad \forall i = 1, ..., n: a_i \in \Sigma\]
+\end{definition}
+Ein typisches Alphabet sind die Zeichen der ASCII-Kodierung, mit denen nahezu alle Worte und Sätze der natürlichen englischen Sprache gebildet werden können \parencite[vgl. ][]{rfc20}. Dieses Alphabet besteht nun nicht aus Zeichen der natürlichen Sprache, sondern aus 7-Bit-langen Zahlenwerten, was die Anwendung von Codes oder kryptographischen Verfahren ermöglicht. Im Rahmen dieser Arbeit wird implizit angenommen, dass Zeichen stets in einem Zahlenformat repräsentiert werden. \\\\
+Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (ein natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
+Wird diese Nachricht nun über einen Kanal an eine andere Partei übertragen, so nennen wir diese den \textbf{Empfänger}. Entgegen der in der Kryptographie üblichen \textit{Alice-Bob}-Notation wird diese Terminologie beibehalten, um an den codierungstheoretischen Hintergrund anzuknüpfen. \\\\
+Ein \textbf{Kanal} bezeichne ein Medium zur Datenübertragung wie beispielsweise einen elektrischen Leiter, einen Lichtwellenleiter oder die Luft für eine drahtlose Verbindung.
+\begin{definition}
+Ein \textbf{Kanal} sei definiert als ein Tupel $\langle e, d, g, s \rangle$, wobei $e$ das Medium, $d$ den Durchsatz, $g$ die Übertragungsgüte und $s$ den Vertraulichkeitsgrad des Kanals bezeichne. \\\\
+Des Weiteren sei die Übertragungsfunktion $f: K \times M \mapsto M$ definiert als:
+\[f(k, m) \to m'\] mit $m, m' \in M$ wobei $M$ die Menge aller Nachrichten ist und $k\in K$ wobei $K$ die Menge aller Kanäle ist. 
+\end{definition}
+Diese Definition impliziert, dass die Datenübertragung nicht zwingend fehlerfrei erfolgt und die Beziehung $m = m'$ daher nur im Idealfall gilt. Diese Feststellung liefert die Begründung für die Codierungstheorie.
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[node distance = 2cm]
+\node[block] (Sender) {Sender};
+\node[draw, circle, right = of Sender] (Kanal) {Kanal};
+\node[block, right = of Kanal] (Empf) {Empfänger};
+\draw[-] (Sender) -- node[midway, above] {$m$} (Kanal);
+\draw[->] (Kanal) -- node[midway, above] {$m'$} (Empf);
+\end{tikzpicture}
+\caption{Gegenstand der Codierungstheorie (nach \parencite[][S. 1]{Willems2008})}
+\end{figure}
+\section{Problemstellung und Zielsetzung}
+
