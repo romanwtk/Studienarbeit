@@ -12,12 +12,8 @@ Ein typisches Alphabet sind die Zeichen der ASCII-Kodierung, mit denen nahezu al
 Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (ein natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
 Wird diese Nachricht nun über einen Kanal an eine andere Partei übertragen, so nennen wir diese den \textbf{Empfänger}. Entgegen der in der Kryptographie üblichen \textit{Alice-Bob}-Notation wird diese Terminologie beibehalten, um an den codierungstheoretischen Hintergrund anzuknüpfen. \\\\
 Ein \textbf{Kanal} bezeichne ein Medium zur Datenübertragung wie beispielsweise einen elektrischen Leiter, einen Lichtwellenleiter oder die Luft für eine drahtlose Verbindung.
-\begin{definition}
-Ein \textbf{Kanal} sei definiert als ein Tupel $\langle e, d, g, s \rangle$, wobei $e$ das Medium, $d$ den Durchsatz, $g$ die Übertragungsgüte und $s$ den Vertraulichkeitsgrad des Kanals bezeichne. \\\\
-Des Weiteren sei die Übertragungsfunktion $f: K \times M \mapsto M$ definiert als:
-\[f(k, m) \to m'\] mit $m, m' \in M$ wobei $M$ die Menge aller Nachrichten ist und $k\in K$ wobei $K$ die Menge aller Kanäle ist. 
-\end{definition}
-Diese Definition impliziert, dass die Datenübertragung nicht zwingend fehlerfrei erfolgt und die Beziehung $m = m'$ daher nur im Idealfall gilt. Diese Feststellung liefert die Begründung für die Codierungstheorie.
+\textbf{Rauschen} bezeichne nicht-deterministische Daten, die Nachrichten bei einer Übertragung über einen Kanal unbeabsichtigt hinzugefügt werden und so die Nachricht verändern, ihr folglich \textbf{Fehler} hinzufügen \parencite[vgl. ][S. 1]{vanLint1973}. \\\\
+Dass ein Kanal eine Nachricht ohne Rauschen überträgt, ist zwar ein erstrebenswerter Zustand, praktisch jedoch aufgrund der Physik nicht zu erreichen. Jede physische Datenübertragung verläuft nicht fehlerfrei, weshalb die Beziehung $m = m'$ daher nur in einem theoretischen Idealfall gilt. Diese Feststellung liefert die Begründung für die Beschäftigung mit der Codierungstheorie.
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}[node distance = 2cm]
@@ -29,5 +25,7 @@ Diese Definition impliziert, dass die Datenübertragung nicht zwingend fehlerfre
 \end{tikzpicture}
 \caption{Gegenstand der Codierungstheorie (nach \parencite[][S. 1]{Willems2008})}
 \end{figure}
-\section{Problemstellung und Zielsetzung}
 
+\section{Problemstellung und Zielsetzung}
+Da die Datenübertragung über eine Vielzahl von Kanälen eben nicht fehlerfrei verläuft, liegt es nahe, die Daten so zu übertragen, dass fehlende Bits aus dem Rest der Nachricht erschlossen werden können, wie es zum Beispiel bei natürlicher Sprache der Fall ist. Unsere Worte enthalten häufig Buchstaben, die nicht zwingend erforderlich sind, um das gemeinte Wort zu erkennen \parencite[vgl. ][S. 3]{vanLint1973}. \\\\
+Übertragt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich auch nach der Übermittlung nicht verringert hat. Diese Verfahren werden als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, die die Kompression der zu versendenden Daten zum Ziel hat \parencite[vgl. ][S. 1]{Manz2017}.
