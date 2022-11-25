@@ -1,8 +1,9 @@
 % !TEX root =  master.tex
 \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=6em, text centered, minimum height=3em]
+\tikzstyle{greenblock} = [ellipse, draw, fill=green!20, text width=4em, text centered, minimum height=3em]
 \chapter{Codierungstheorie}
 Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das auf Elementen der Codierungstheorie basiert, wird diese nun zunächst in Definitionen und Hintergründen motiviert.
-\section{Grundbegriffe}
+\section{Übermittlung von Informationen}
 Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Subjekte der Anschauung.
 \begin{definition}
 Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a_i \in \Sigma$, wobei $\Sigma$ eine endliche Menge von Zeichen (genannt \textbf{Alphabet}) bezeichnet.
@@ -11,21 +12,56 @@ Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a
 Ein typisches Alphabet sind die Zeichen der ASCII-Kodierung, mit denen nahezu alle Worte und Sätze der natürlichen englischen Sprache gebildet werden können \parencite[vgl. ][]{rfc20}. Dieses Alphabet besteht nun nicht aus Zeichen der natürlichen Sprache, sondern aus 7-Bit-langen Zahlenwerten, was die Anwendung von Codes oder kryptographischen Verfahren ermöglicht. Im Rahmen dieser Arbeit wird implizit angenommen, dass Zeichen stets in einem Zahlenformat repräsentiert werden. \\\\
 Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (ein natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
 Wird diese Nachricht nun über einen Kanal an eine andere Partei übertragen, so nennen wir diese den \textbf{Empfänger}. Entgegen der in der Kryptographie üblichen \textit{Alice-Bob}-Notation wird diese Terminologie beibehalten, um an den codierungstheoretischen Hintergrund anzuknüpfen. \\\\
-Ein \textbf{Kanal} bezeichne ein Medium zur Datenübertragung wie beispielsweise einen elektrischen Leiter, einen Lichtwellenleiter oder die Luft für eine drahtlose Verbindung.
+Ein \textbf{Kanal} bezeichne ein Medium zur Datenübertragung wie beispielsweise einen elektrischen Leiter, einen Lichtwellenleiter oder die Luft für eine drahtlose Verbindung. Es gibt Kanäle, die Informationen \textbf{digital} übertragen, also als diskrete Binärwerte, und im Gegensatz dazu Kanäle, die fortlaufend und stetig Signale übertragen \parencite[vgl. ][S. 1]{Borda2011}.
 \textbf{Rauschen} bezeichne nicht-deterministische Daten, die Nachrichten bei einer Übertragung über einen Kanal unbeabsichtigt hinzugefügt werden und so die Nachricht verändern, ihr folglich \textbf{Fehler} hinzufügen \parencite[vgl. ][S. 1]{vanLint1973}. \\\\
 Dass ein Kanal eine Nachricht ohne Rauschen überträgt, ist zwar ein erstrebenswerter Zustand, praktisch jedoch aufgrund der Physik nicht zu erreichen. Jede physische Datenübertragung verläuft nicht fehlerfrei, weshalb die Beziehung $m = m'$ daher nur in einem theoretischen Idealfall gilt. Diese Feststellung liefert die Begründung für die Beschäftigung mit der Codierungstheorie.
 \begin{figure}[h!]
 \centering
-\begin{tikzpicture}[node distance = 2cm]
-\node[block] (Sender) {Sender};
+\begin{tikzpicture}[node distance = 1cm and 2cm]
+\node[greenblock] (Sender) {Sender};
 \node[draw, circle, right = of Sender] (Kanal) {Kanal};
-\node[block, right = of Kanal] (Empf) {Empfänger};
+\node[above= of Kanal] (N) {Rauschen};
+\node[greenblock, right = of Kanal] (Empf) {Empfänger};
 \draw[-] (Sender) -- node[midway, above] {$m$} (Kanal);
 \draw[->] (Kanal) -- node[midway, above] {$m'$} (Empf);
+\draw[->] (N) -- (Kanal);
 \end{tikzpicture}
 \caption{Gegenstand der Codierungstheorie (nach \parencite[][S. 1]{Willems2008})}
+\label{Gegenstand}
 \end{figure}
 
 \section{Problemstellung und Zielsetzung}
 Da die Datenübertragung über eine Vielzahl von Kanälen eben nicht fehlerfrei verläuft, liegt es nahe, die Daten so zu übertragen, dass fehlende Bits aus dem Rest der Nachricht erschlossen werden können, wie es zum Beispiel bei natürlicher Sprache der Fall ist. Unsere Worte enthalten häufig Buchstaben, die nicht zwingend erforderlich sind, um das gemeinte Wort zu erkennen \parencite[vgl. ][S. 3]{vanLint1973}. \\\\
-Übertragt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich auch nach der Übermittlung nicht verringert hat. Diese Verfahren werden als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, die die Kompression der zu versendenden Daten zum Ziel hat \parencite[vgl. ][S. 1]{Manz2017}.
+Übertragt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich auch nach der Übermittlung nicht verringert hat. Diese Verfahren werden als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, die die Transformation der zu versendenden Daten, beispielsweise für Kompression,  zum Ziel hat \parencite[vgl. ][S. 1]{Manz2017}. Der Fokus dieser Arbeit liegt dabei auf der Kanalcodierung, da kryptographische Verfahren auf ihr aufgebaut werden können.
+\section{Kanalcodierung}
+Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \ac{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}. 
+\subsection{Grundbegriffe}
+Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung und Präzisierung der Abbildung \ref{Gegenstand} erforderlich:
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+[node distance = 1cm, label={ITS}]
+\node[greenblock] (S) {Sender};
+\node[block, right = of S] (C) {Codierung};
+\node[draw, circle, right= of C] (K) {Kanal};
+\node[block, right = of K] (D) {Decodierung};
+\node[greenblock, right= of D] (E) {Empfänger};
+\node[above= of K] (N) {Rauschen};
+\draw[->] (S) -- node[midway, above] {$m$} (C);
+\draw[->] (C) -- node[midway, above] {$c$} (K);
+\draw[->] (K) -- node[midway, above] {$c'$} (D);
+\draw[->] (D) -- node[midway, above] {$m'$} (E);
+\draw[->] (N) -- (K);
+\end{tikzpicture}
+\caption{Vereinfachte Darstellung eines \ac{ITS} nach \parencite[vgl. ][S. 3]{Borda2011}}
+\label{ITS}
+\end{figure}
+\subsection{Noisy Channels Coding Theorem}
+\textsc{Shannon} konnte 1948 zeigen, dass es für einen binären, symmetrischen und rauschenden Kanal (\acs{BSC}) Codes gibt, bei der die auftretende Fehlerwahrscheinlichkeit beliebig klein wird, solange sich die Datenrate der Übertragung unterhalb der Kapazität eines Kanals befindet.
+\begin{theorem}
+Sei $C$ die \textbf{Kapazität} eines binären, rauschenden Kanals, $n$ die Länge uniformer Codewörter, $P(E)$ die Fehlerwahrscheinlichkeit und $D$ die Datenübertragungsrate, wobei  $D < C$. Dann gilt
+\[P(E) \leq 2^{-n \cdot e(D)}\]
+wobei $e(D)$ eine vollständig von Kanalparametern abhängige positive Funktion, genannt \textbf{Fehlerexponent}, ist.
+\end{theorem}
+Folglich ist es möglich, Datenübertragungsvorgänge unter der Wahl einer geeigneten Datenübertragungsrate und einer Codierung nahezu fehlerfrei umzusetzen, völlig unabhängig von der Länge der zu übertragenden Nachricht. Es folgt auch, dass sich die Fehleranzahl nicht linear zur Fehleranfälligkeit (angegeben durch die Kapazität) des Kanals verhält \parencite[vgl. ][S. 209ff.]{Borda2011}.
+\section{Finitfeldarithmetik}
