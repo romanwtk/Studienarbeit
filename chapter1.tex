@@ -5,7 +5,7 @@
 Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das auf Elementen der Codierungstheorie basiert, wird diese nun zunächst in Definitionen und Hintergründen motiviert.
 \section{Übermittlung von Informationen}
 Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Subjekte der Anschauung.
-\begin{definition}
+\begin{definition}\label{Alphabet}
 Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a_i \in \Sigma$, wobei $\Sigma$ eine endliche Menge von Zeichen (genannt \textbf{Alphabet}) bezeichnet.
 \[m = (a_1, a_2, ..., a_{n-1}, a_n) \quad \forall i = 1, ..., n: a_i \in \Sigma\]
 \end{definition}
@@ -36,7 +36,7 @@ Da die Datenübertragung über eine Vielzahl von Kanälen eben nicht fehlerfrei 
 \section{Kanalcodierung}
 Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \ac{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}. 
 \subsection{Grundbegriffe}
-Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung und Präzisierung der Abbildung \ref{Gegenstand} erforderlich:
+Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung und Präzisierung der Abbildung \ref{Gegenstand} erforderlich.
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}
@@ -56,6 +56,30 @@ Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung un
 \caption{Vereinfachte Darstellung eines \ac{ITS} nach \parencite[vgl. ][S. 3]{Borda2011}}
 \label{ITS}
 \end{figure}
+Die Zuordnung einer Nachricht $m$ zu einem Codewort $c$ ist die \textbf{Codierung}.
+\begin{definition}
+Sei $A$ ein Alphabet ($\rightarrow$ Definition \ref{Alphabet}) und $n \in \mathbb{N}$. \\ 
+Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace (a_1, a_2, ..., a_n) \mid a_i \in A \rbrace$.  \\\\
+Ein \textbf{Blockcode} $C$ der Länge $n$ über dem Alphabet $A$ ist definiert als $C \subseteq A^{n} \text{, wobei } \lvert C \rvert > 0$ gelten muss.\\\\
+Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f: B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
+\end{definition}
+Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise codiert, sondern über Schieberegister in Abhängigkeit zueinander, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergebe \parencite[vgl. ][S. 752]{Viterbi1971}. Der Ansatz, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weist Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Bedeutung auf Blockcodes liegen. \\\\
+Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, kann bietet sich die \textbf{Hamming}-Distanz an.
+\begin{definition}
+Seien $a = (a_1, a_2, ..., a_n)$, $b = (b_1, b_2, ..., b_n) \in A^n$ und $A$ ein Alphabet, so ist die \textbf{Hamming-Distanz} $d$ von zwei Codewörtern $a$ und $b$ definiert als die Anzahl der abweichenden Stellen in $a$ und $b$:
+\[d(a, b) = \lvert \lbrace i \mid 1 \leq i \leq n, a_i \neq b_i \rbrace \rvert\]
+Desweiteren sei die \textbf{Minimaldistanz} eines Blockcodes $C$ mit $\lvert C \rvert > 1$ definiert als 
+\[d(C) = \min \lbrace d(x, y) \mid x, y \in C, x \neq y \rbrace\] \parencite[vgl. ][S. 11]{Manz2017} \parencite[vgl. ][S. 105]{Roman1992} \parencite[vgl. ][S. 155]{Hamming1950}.
+\end{definition} 
+\begin{example}
+Seien $A = \lbrace 0, 1 \rbrace$ und $n = 5$. Dann ist $A^n = \lbrace (0, 0, 0, 0, 0), (0, 0, 0, 0, 1), ..., (1, 1, 1, 1, 1) \rbrace$. Dann gilt für einen Blockcode $C$:
+\begin{itemize}
+\item $C = A^n \quad \rightarrow \quad d(C) = 1$
+\item $C = \lbrace (0, 0, 0, 0, 1), (0, 0, 0, 1, 0), ..., (1, 0, 0, 0, 0)\rbrace \quad \rightarrow \quad d(C) = 2$
+\item $C = \lbrace (0, 1, 0, 1, 0), (1, 0, 1, 0, 1) \rbrace \quad \rightarrow \quad d(C) = 5$
+\end{itemize}
+\end{example}
+Wenn die Werte einer Codierungsfunktion im Bildbereich weit verstreut sind, der Code also eine große Minimaldistanz aufweist, werden die einzelnen Codeworte unterscheidbarer. Folglich ergibt sich aus der Minimaldistanz ein relevantes Kriterium für die Eigenschaft eines Codes, \textbf{fehlerkorrigierend} zu sein und beeinflusst, wie viele Fehler korrigiert werden können \parencite[vgl. ][S. 155]{Hamming1950}.
 \subsection{Noisy Channels Coding Theorem}
 \textsc{Shannon} konnte 1948 zeigen, dass es für einen binären, symmetrischen und rauschenden Kanal (\acs{BSC}) Codes gibt, bei der die auftretende Fehlerwahrscheinlichkeit beliebig klein wird, solange sich die Datenrate der Übertragung unterhalb der Kapazität eines Kanals befindet.
 \begin{theorem}

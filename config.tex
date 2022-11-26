@@ -14,7 +14,7 @@
 \usepackage[german]{varioref}         % nicer references \vref
 \usepackage{caption}	                % better Captions
 \usepackage{booktabs}                 % nicer Tabs
-\usepackage[hidelinks=true]{hyperref} % keine roten Markierungen bei Links
+\usepackage{hyperref} % keine roten Markierungen bei Links
 \usepackage{fnpct}                    % Correct superscripts 
 \usepackage{calc}                     % Used for extra space below footsepline, in particular
 \usepackage{array}
@@ -24,6 +24,9 @@
 \usepackage{setspace}
 \usepackage{tocloft}
 \usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{ntheorem}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usetikzlibrary{backgrounds}
@@ -37,7 +40,7 @@
 \newtheoremstyle{break}% name
   {}%         Space above, empty = `usual value'
   {}%         Space below
-  {\itshape}% Body font
+  {}% Body font
   {}%         Indent amount (empty = no indent, \parindent = para indent)
   {\bfseries}% Thm head font
   {}%        Punctuation after thm head
@@ -49,6 +52,7 @@
 \newtheorem{note}{Bemerkung}
 \newtheorem{proposition}{Satz}
 \newtheorem{theorem}{Theorem}
+\newtheorem{example}{Beispiel}
 \newtheorem{lemma}{Lemma}
 
 %%
