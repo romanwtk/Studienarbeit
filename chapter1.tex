@@ -7,7 +7,7 @@ Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das 
 Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Subjekte der Anschauung.
 \begin{definition}\label{Alphabet}
 Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a_i \in \Sigma$, wobei $\Sigma$ eine endliche Menge von Zeichen (genannt \textbf{Alphabet}) bezeichnet.
-\[m = (a_1, a_2, ..., a_{n-1}, a_n) \quad \forall i = 1, ..., n: a_i \in \Sigma\]
+\[m = \langle a_1, a_2, ..., a_{n-1}, a_n \rangle \quad \forall i = 1, ..., n: a_i \in \Sigma\]
 \end{definition}
 Ein typisches Alphabet sind die Zeichen der ASCII-Kodierung, mit denen nahezu alle Worte und Sätze der natürlichen englischen Sprache gebildet werden können \parencite[vgl. ][]{rfc20}. Dieses Alphabet besteht nun nicht aus Zeichen der natürlichen Sprache, sondern aus 7-Bit-langen Zahlenwerten, was die Anwendung von Codes oder kryptographischen Verfahren ermöglicht. Im Rahmen dieser Arbeit wird implizit angenommen, dass Zeichen stets in einem Zahlenformat repräsentiert werden. \\\\
 Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (ein natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
@@ -59,24 +59,24 @@ Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung un
 Die Zuordnung eines Codewortes $c$ zu einer Nachricht $m$ wird als \textbf{Codierung} (der Nachricht) bezeichnet.
 \begin{definition}
 Sei $A$ ein Alphabet ($\rightarrow$ Definition \ref{Alphabet}) und $n \in \mathbb{N}$. \\ 
-Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace (a_1, a_2, ..., a_n) \mid a_i \in A \rbrace$.  \\\\
+Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace \langle a_1, a_2, ..., a_n \rangle \mid a_i \in A \rbrace$.  \\\\
 Ein \textbf{Blockcode} $C$ der Länge $n$ über dem Alphabet $A$ ist definiert als $C \subseteq A^{n} \text{, wobei } \lvert C \rvert > 0$ gelten muss.\\\\
 Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f: B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
 \end{definition}
 Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise codiert, sondern über Schieberegister in Abhängigkeit zueinander, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergebe \parencite[vgl. ][S. 752]{Viterbi1971}. Der Ansatz, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weist Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Bedeutung auf Blockcodes liegen. \\\\
 Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codewörtern, bietet sich die \textbf{Hamming-Distanz} an.
 \begin{definition}
-Seien $a = (a_1, a_2, ..., a_n)$, $b = (b_1, b_2, ..., b_n) \in A^n$ und $A$ ein Alphabet, so ist die \textbf{Hamming-Distanz} $d$ von zwei Codewörtern $a$ und $b$ definiert als die Anzahl der abweichenden Stellen in $a$ und $b$:
+Seien $a = \langle a_1, a_2, ..., a_n \rangle$, $b = \langle b_1, b_2, ..., b_n \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{Hamming-Distanz} $d$ von zwei Codewörtern $a$ und $b$ definiert als die Anzahl der abweichenden Stellen in $a$ und $b$:
 \[d(a, b) = \lvert \lbrace i \mid 1 \leq i \leq n, a_i \neq b_i \rbrace \rvert\]
 Des Weiteren sei die \textbf{Minimaldistanz} eines Blockcodes $C$ mit $\lvert C \rvert > 1$ definiert als 
 \[d(C) = \min \lbrace d(x, y) \mid x, y \in C, x \neq y \rbrace\] \parencite[vgl. ][S. 11]{Manz2017} \parencite[vgl. ][S. 105]{Roman1992} \parencite[vgl. ][S. 155]{Hamming1950}.
 \end{definition} 
 \begin{example}
-Seien $A = \lbrace 0, 1 \rbrace$ und $n = 5$. Dann ist $A^n = \lbrace (0, 0, 0, 0, 0), (0, 0, 0, 0, 1), ..., (1, 1, 1, 1, 1) \rbrace$. Dann gilt für einen Blockcode $C$:
+Seien $A = \lbrace 0, 1 \rbrace$ und $n = 5$. Dann ist $A^n = \lbrace \langle 0, 0, 0, 0, 0\rangle, \langle 0, 0, 0, 0, 1 \rangle , ..., \langle 1, 1, 1, 1, 1 \rangle \rbrace$. Dann gilt für einen Blockcode $C$:
 \begin{itemize}
 \item $C = A^n \quad \rightarrow \quad d(C) = 1$
-\item $C = \lbrace (0, 0, 0, 0, 1), (0, 0, 0, 1, 0), ..., (1, 0, 0, 0, 0)\rbrace \quad \rightarrow \quad d(C) = 2$
-\item $C = \lbrace (0, 1, 0, 1, 0), (1, 0, 1, 0, 1) \rbrace \quad \rightarrow \quad d(C) = 5$
+\item $C = \lbrace \langle 0, 0, 0, 0, 1 \rangle , \langle 0, 0, 0, 1, 0 \rangle , ..., \langle 1, 0, 0, 0, 0\rangle\rbrace \quad \rightarrow \quad d(C) = 2$
+\item $C = \lbrace \langle 0, 1, 0, 1, 0 \rangle , \langle 1, 0, 1, 0, 1 \rangle \rbrace \quad \rightarrow \quad d(C) = 5$
 \end{itemize}
 \end{example}
 Wenn die Werte einer Codierungsfunktion im Bildbereich weit verstreut sind, der Code also eine große Minimaldistanz aufweist, werden die einzelnen Codeworte unterscheidbarer. Folglich ergibt sich aus der Minimaldistanz ein relevantes Kriterium für die Eigenschaft eines Codes, \textbf{fehlererkennend} oder sogar \textbf{fehlerkorrigierend} zu sein und beeinflusst, wie viele Fehler erkannt beziehungsweise korrigiert werden können \parencite[vgl. ][S. 155]{Hamming1950}. \\\\
@@ -103,7 +103,7 @@ Seien $c, c' \in C; c \neq c'$ Codewörter eines Blockcodes $C \in A^n$, $\epsil
 \fill[black] (-0.95, 0.3) circle (0.05 cm) node[anchor=west]{$a_j$};
 
 \draw[dashed, color=violet] (0,0) -- (3, 0);
-\draw[color=violet] (1.5, 0.25) node {$\geq d$};
+\draw[color=violet] (1.5, 0.17) node {$2\epsilon + 1$};
 
 \draw (3,0) circle(1);
 \draw[dashed] (3,0) ellipse (1 and .2);
@@ -126,9 +126,9 @@ Dann ist $C$ \textbf{$t$-fehlererkennend}, wenn $\forall c \in C: B_t(c) \cap (C
 Ein Blockcode $C$ ist $t$-fehlererkennend, wenn $d(C) \geq t + 1$ gilt \parencite[vgl. ][S. 13]{Manz2017}.
 \end{note}
 \begin{example}
-Sei $A = \lbrace 0, 1 \rbrace$ und $A^3 = \lbrace (0, 0, 0), (0, 0, 1), ..., (1, 1, 1) \rbrace$. Ferner sei $C \in A^3$ ein Blockcode für Nachrichten der Form $m = (m_1, m_2)$ mit der Codierfunktion $f: M \to C, (m_1, m_2) \mapsto (m_1, m_2, ((m_1 + m_2) \mod 2))$. \\\\
-Für die Nachricht $x = (0, 1)$ ergibt sich also $f(x) = (0, 1, 1)$. \\\\
-Dann ist $C = \lbrace (0, 0, 0), (0, 1, 1), (1, 0, 1), (1, 1, 0)\rbrace$. Daraus folgt $d(C) = 2$. Damit ist $C$ 1-fehlererkennend, da $2 = 1 + 1$, aber nicht fehlerkorrigierend, da $2 \ngeq 2 \cdot 1 + 1$ gilt.
+Sei $A = \lbrace 0, 1 \rbrace$ und $A^3 = \lbrace \langle 0, 0, 0 \rangle , \langle 0, 0, 1 \rangle , ..., \langle 1, 1, 1 \rangle \rbrace$. Ferner sei $C \in A^3$ ein Blockcode für Nachrichten der Form $m = \langle m_1, m_2 \rangle$ mit der Codierfunktion $f: M \to C, \langle m_1, m_2 \rangle \mapsto \langle m_1, m_2, ((m_1 + m_2) \mod 2) \rangle$. \\\\
+Für die Nachricht $x = \langle 0, 1 \rangle$ ergibt sich also $f(x) = \langle 0, 1, 1 \rangle$. \\\\
+Dann ist $C = \lbrace \langle 0, 0, 0\rangle , \langle 0, 1, 1 \rangle , \langle 1, 0, 1 \rangle , \langle 1, 1, 0\rangle \rbrace$. Daraus folgt $d(C) = 2$. Damit ist $C$ 1-fehlererkennend, da $2 = 1 + 1$, aber nicht fehlerkorrigierend, da $2 \ngeq 2 \cdot 1 + 1$ gilt.
 \end{example}
 Welches Potenzial von fehlerkorrigierenden Codes für das zugrundeliegende Problem ausgeht, verdeutlicht das folgende Theorem:
 \subsection{Noisy Channels Coding Theorem}
