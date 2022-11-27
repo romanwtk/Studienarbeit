@@ -32,9 +32,9 @@ Dass ein Kanal eine Nachricht ohne Rauschen überträgt, ist zwar ein erstrebens
 
 \section{Problemstellung und Zielsetzung}
 Da die Datenübertragung über eine Vielzahl von Kanälen eben nicht fehlerfrei verläuft, liegt es nahe, die Daten so zu übertragen, dass fehlende Bits aus dem Rest der Nachricht erschlossen werden können, wie es zum Beispiel bei natürlicher Sprache der Fall ist. Unsere Worte enthalten häufig Buchstaben, die nicht zwingend erforderlich sind, um das gemeinte Wort zu erkennen \parencite[vgl. ][S. 3]{vanLint1973}. \\\\
-Übertragt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich auch nach der Übermittlung nicht verringert hat. Diese Verfahren werden als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, die die Transformation der zu versendenden Daten, beispielsweise für Kompression,  zum Ziel hat \parencite[vgl. ][S. 1]{Manz2017}. Der Fokus dieser Arbeit liegt dabei auf der Kanalcodierung, da kryptographische Verfahren auf ihr aufgebaut werden können.
+Übertragt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich auch nach der Übermittlung nicht verringert hat. Ein spezieller Typ dieser Verfahren wird als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, die die Transformation der zu versendenden Daten, beispielsweise zur Kompression und Redundanzverringerung,  zum Ziel hat \parencite[vgl. ][S. 1]{Manz2017}. Der Fokus dieser Arbeit liegt dabei auf der Kanalcodierung, da die betrachteten kryptographischen Verfahren auf ihr basieren.
 \section{Kanalcodierung}
-Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \ac{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}. 
+Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \acs{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}. Populäre Beiträge der Grundlagenforschung wie jener von \citeauthor{Hamming1950} sind daher auch trotz ihres einige Dekaden umspannenden Alters Fundament der folgenden Definitionen.
 \subsection{Grundbegriffe}
 Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung und Präzisierung der Abbildung \ref{Gegenstand} erforderlich.
 \begin{figure}[h!]
@@ -56,7 +56,7 @@ Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung un
 \caption{Vereinfachte Darstellung eines \ac{ITS} nach \parencite[vgl. ][S. 3]{Borda2011}}
 \label{ITS}
 \end{figure}
-Die Zuordnung einer Nachricht $m$ zu einem Codewort $c$ ist die \textbf{Codierung}.
+Die Zuordnung eines Codewortes $c$ zu einer Nachricht $m$ wird als \textbf{Codierung} (der Nachricht) bezeichnet.
 \begin{definition}
 Sei $A$ ein Alphabet ($\rightarrow$ Definition \ref{Alphabet}) und $n \in \mathbb{N}$. \\ 
 Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace (a_1, a_2, ..., a_n) \mid a_i \in A \rbrace$.  \\\\
@@ -64,11 +64,11 @@ Ein \textbf{Blockcode} $C$ der Länge $n$ über dem Alphabet $A$ ist definiert a
 Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f: B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
 \end{definition}
 Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise codiert, sondern über Schieberegister in Abhängigkeit zueinander, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergebe \parencite[vgl. ][S. 752]{Viterbi1971}. Der Ansatz, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weist Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Bedeutung auf Blockcodes liegen. \\\\
-Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, kann bietet sich die \textbf{Hamming}-Distanz an.
+Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codewörtern, bietet sich die \textbf{Hamming-Distanz} an.
 \begin{definition}
 Seien $a = (a_1, a_2, ..., a_n)$, $b = (b_1, b_2, ..., b_n) \in A^n$ und $A$ ein Alphabet, so ist die \textbf{Hamming-Distanz} $d$ von zwei Codewörtern $a$ und $b$ definiert als die Anzahl der abweichenden Stellen in $a$ und $b$:
 \[d(a, b) = \lvert \lbrace i \mid 1 \leq i \leq n, a_i \neq b_i \rbrace \rvert\]
-Desweiteren sei die \textbf{Minimaldistanz} eines Blockcodes $C$ mit $\lvert C \rvert > 1$ definiert als 
+Des Weiteren sei die \textbf{Minimaldistanz} eines Blockcodes $C$ mit $\lvert C \rvert > 1$ definiert als 
 \[d(C) = \min \lbrace d(x, y) \mid x, y \in C, x \neq y \rbrace\] \parencite[vgl. ][S. 11]{Manz2017} \parencite[vgl. ][S. 105]{Roman1992} \parencite[vgl. ][S. 155]{Hamming1950}.
 \end{definition} 
 \begin{example}
@@ -79,7 +79,58 @@ Seien $A = \lbrace 0, 1 \rbrace$ und $n = 5$. Dann ist $A^n = \lbrace (0, 0, 0, 
 \item $C = \lbrace (0, 1, 0, 1, 0), (1, 0, 1, 0, 1) \rbrace \quad \rightarrow \quad d(C) = 5$
 \end{itemize}
 \end{example}
-Wenn die Werte einer Codierungsfunktion im Bildbereich weit verstreut sind, der Code also eine große Minimaldistanz aufweist, werden die einzelnen Codeworte unterscheidbarer. Folglich ergibt sich aus der Minimaldistanz ein relevantes Kriterium für die Eigenschaft eines Codes, \textbf{fehlerkorrigierend} zu sein und beeinflusst, wie viele Fehler korrigiert werden können \parencite[vgl. ][S. 155]{Hamming1950}.
+Wenn die Werte einer Codierungsfunktion im Bildbereich weit verstreut sind, der Code also eine große Minimaldistanz aufweist, werden die einzelnen Codeworte unterscheidbarer. Folglich ergibt sich aus der Minimaldistanz ein relevantes Kriterium für die Eigenschaft eines Codes, \textbf{fehlererkennend} oder sogar \textbf{fehlerkorrigierend} zu sein und beeinflusst, wie viele Fehler erkannt beziehungsweise korrigiert werden können \parencite[vgl. ][S. 155]{Hamming1950}. \\\\
+\textsc{\citeauthor{Hamming1950}} nutzt für seine Argumentation in \parencite{Hamming1950} eine geometrische Betrachtung:
+\begin{definition}
+Sei $B$ eine Kugel mit Radius $r \geq 2$ und Mittelpunkt $x \in A^n$. Dann liegen alle $a_i \in A^n$ mit $d(a_i, x) = r$ auf der Kugeloberfläche von $B$. 
+\end{definition}
+\begin{note}Ein Punkt $a_j$ mit $d(a_i, x) \neq r$ liegt nicht auf der Kugeloberfläche und kann folglich kein fehlerfreies Codewort sein. Ein Code $C$ mit Minimaldistanz $2$ ist damit \textbf{fehlererkennend} für maximal ein falsch übertragenes Zeichen (notiert: {\glqq}1-fehlererkennend{\grqq}). \\\\
+Ferner ist ein Code $C'$ mit Minimaldistanz $3$ \textbf{fehlerkorrigierend}: Sei $a_r$ ein gültiges Codewort mit einer Minimaldistanz von $3$ zu allen anderen Codewörtern in $C'$. Für ein in einer Stelle abweichendes Codewort $a_f$ gilt folglich $d(a_r, a_f) = 1$, aber $\forall a_i \in C' \setminus \lbrace a_r, a_f \rbrace : d(a_i, a_f) > 1$. Damit lässt sich $a_f$ eindeutig $a_r$ zuordnen, wodurch sich der Fehler korrigieren lässt und $C'$ \textbf{1-fehlerkorrigierend} ist \parencite[vgl. ][S. 155f.]{Hamming1950}.
+\end{note}
+Die Eigenschaft eines Codes, fehlererkennend oder fehlerkorrigierend zu sein, ist skalierbar: 
+\begin{definition}
+Seien $c, c' \in C; c \neq c'$ Codewörter eines Blockcodes $C \in A^n$, $\epsilon \in \mathbb{N}$, $B_e(c) = \lbrace x \in A^n \mid d(x, c) \leq \epsilon \rbrace$ und $B_e(c')$ analog $B_e(c') = \lbrace x \in A^n \mid d(x, c') \leq \epsilon \rbrace$. \\Dann ist $C$ \textbf{$\epsilon$-fehlerkorrigierend}, wenn $\forall c, c' \in C: B_e(c) \cap B_e(c') = \emptyset$ gilt \parencite[vgl. ][S. 12f.]{Manz2017}.
+\end{definition}
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=2]
+\draw (0,0) circle(1);
+\draw[dashed] (0,0) ellipse (1 and .2);
+\draw[-, color=red] (0,0)--(.5,0.866);
+\draw[color=red] (.45,.45) node {$\epsilon$};
+\fill[black] (0, 0) circle (0.05 cm) node[anchor=east]{$c$};
+\fill[black] (0.2, -0.6) circle (0.05 cm) node[anchor=west]{$a_i$};
+\fill[black] (-0.95, 0.3) circle (0.05 cm) node[anchor=west]{$a_j$};
+
+\draw[dashed, color=violet] (0,0) -- (3, 0);
+\draw[color=violet] (1.5, 0.25) node {$\geq d$};
+
+\draw (3,0) circle(1);
+\draw[dashed] (3,0) ellipse (1 and .2);
+\draw[-, color=red] (3,0)--(3.5,0.866);
+\draw[color=red] (3.45,.45) node {$\epsilon$};
+\fill[black] (3, 0) circle (0.05 cm) node[anchor=west]{$c'$};
+\fill[black] (3.2, -0.6) circle (0.05 cm) node[anchor=west]{$a_g$};
+\fill[black] (2.05, -0.3) circle (0.05 cm) node[anchor=west]{$a_h$};
+\end{tikzpicture}
+\caption{Visualisierung der Kugelinterpretation nach \parencite{Hamming1950}}
+\end{figure}
+\begin{note}
+Ein Blockcode $C$ ist $\epsilon$-fehlerkorrigierend, wenn $d(C) \geq 2 \cdot e + 1$ gilt \parencite[vgl. ][S. 12f.]{Manz2017}.
+\end{note}
+\begin{definition}
+Sei $c \in C$ Codewort eines Blockcodes $C \in A^n$ und $B_t(c) = \lbrace x \in A^n \mid d(x, c) \leq t \rbrace$ die zu $c$ gehörige Kugel mit allen Elementen aus $A^n$, die höchstens $t$ entfernt sind. \\
+Dann ist $C$ \textbf{$t$-fehlererkennend}, wenn $\forall c \in C: B_t(c) \cap (C \setminus \lbrace c \rbrace ) = \emptyset$, die Kugel um $c$ also keine anderen Codewörter enthält \parencite[vgl. ][S. 13]{Manz2017}.
+\end{definition}
+\begin{note}
+Ein Blockcode $C$ ist $t$-fehlererkennend, wenn $d(C) \geq t + 1$ gilt \parencite[vgl. ][S. 13]{Manz2017}.
+\end{note}
+\begin{example}
+Sei $A = \lbrace 0, 1 \rbrace$ und $A^3 = \lbrace (0, 0, 0), (0, 0, 1), ..., (1, 1, 1) \rbrace$. Ferner sei $C \in A^3$ ein Blockcode für Nachrichten der Form $m = (m_1, m_2)$ mit der Codierfunktion $f: M \to C, (m_1, m_2) \mapsto (m_1, m_2, ((m_1 + m_2) \mod 2))$. \\\\
+Für die Nachricht $x = (0, 1)$ ergibt sich also $f(x) = (0, 1, 1)$. \\\\
+Dann ist $C = \lbrace (0, 0, 0), (0, 1, 1), (1, 0, 1), (1, 1, 0)\rbrace$. Daraus folgt $d(C) = 2$. Damit ist $C$ 1-fehlererkennend, da $2 = 1 + 1$, aber nicht fehlerkorrigierend, da $2 \ngeq 2 \cdot 1 + 1$ gilt.
+\end{example}
+Welches Potenzial von fehlerkorrigierenden Codes für das zugrundeliegende Problem ausgeht, verdeutlicht das folgende Theorem:
 \subsection{Noisy Channels Coding Theorem}
 \textsc{Shannon} konnte 1948 zeigen, dass es für einen binären, symmetrischen und rauschenden Kanal (\acs{BSC}) Codes gibt, bei der die auftretende Fehlerwahrscheinlichkeit beliebig klein wird, solange sich die Datenrate der Übertragung unterhalb der Kapazität eines Kanals befindet.
 \begin{theorem}
