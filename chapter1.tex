@@ -13,7 +13,18 @@ Ein typisches Alphabet sind die Zeichen der \textit{ASCII}-Kodierung, mit denen 
 Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (ein natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
 Wird diese Nachricht nun über einen Kanal an eine andere Partei übertragen, so nennen wir diese den \textbf{Empfänger}. Entgegen der in der Kryptographie üblichen \textit{Alice-Bob}-Notation wird in dieser Arbeit diese Terminologie beibehalten, um an den codierungstheoretischen Hintergrund anzuknüpfen. \\\\
 Ein \textbf{Kanal} bezeichne ein Medium zur Datenübertragung wie beispielsweise einen elektrischen Leiter, einen Lichtwellenleiter oder die Luft für eine drahtlose Verbindung. Es gibt Kanäle, die Informationen \textbf{digital} übertragen, also als diskrete Binärwerte, und im Gegensatz dazu Kanäle, die fortlaufend und stetig Signale übertragen \parencite[vgl. ][S. 1]{Borda2011}.
-\textbf{Rauschen} bezeichne nicht-deterministische Daten, die Nachrichten bei einer Übertragung über einen Kanal unbeabsichtigt hinzugefügt werden und so die Nachricht verändern, sie folglich mit \textbf{Fehlern} versetzen \parencite[vgl. ][S. 1]{vanLint1973}. \\\\
+\textbf{Rauschen} bezeichne nicht-deterministische Daten, die Nachrichten bei einer Übertragung über einen Kanal unbeabsichtigt hinzugefügt werden und so die Nachricht verändern, sie folglich mit \textbf{Fehlern} versetzen \parencite[vgl. ][S. 1]{vanLint1973}. 
+\begin{definition}
+Ein \textbf{Kanal} $K$ mit der Menge der Eingabewerte $I$ und der Menge der Ausgabewerte $J$ sei definiert als Matrix 
+\[K_{ij} = \textnormal{Pr}(j \mid i) \quad i \in I, j \in J\]
+wobei $\textnormal{Pr}(j \mid i)$ definiert sei als die Wahrscheinlichkeit für die Ausgabe $j$ unter der Bedingung $i$. \\\\
+Sofern mindestens ein Koeffizient der Matrix $i \neq j$ einen Wert $> 0$ aufweist, ist der Kanal \textbf{rauschend} \parencite[vgl. ][S. 73f.]{Biggs08}.
+\end{definition}
+\begin{example}
+Ein \textbf{\ac{BSC}} $\Gamma$ mit einer Bitfehlerwahrscheinlichkeit $e$ ist definiert durch 
+\[\Gamma = \left( \begin{matrix} \Gamma_{00} & \Gamma_{01} \\ \Gamma_{10} & \Gamma_{11}\end{matrix}\right) = \left( \begin{matrix}1 - e & e \\ e & 1 - e\end{matrix}\right)\]
+\end{example}
+
 Dass ein Kanal eine Nachricht ohne Rauschen überträgt, ist zwar ein erstrebenswerter Zustand, praktisch jedoch aufgrund der Physik nicht zu erreichen. Jede physische Datenübertragung verläuft nicht fehlerfrei, weshalb die Beziehung $m = m'$ daher nur in einem theoretischen Idealfall gilt. Diese Feststellung liefert die Begründung für die Beschäftigung mit der Codierungstheorie.
 \begin{figure}[h!]
 \centering
@@ -36,7 +47,7 @@ Da die Datenübertragung über eine Vielzahl von Kanälen eben nicht fehlerfrei 
 \section{Kanalcodierung}
 Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \acs{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}. Populäre Beiträge der Grundlagenforschung wie jener von \textsc{\citeauthor{Hamming1950}} sind daher auch trotz ihres einige Dekaden umspannenden Alters Fundament der folgenden Definitionen.
 \subsection{Grundbegriffe}
-Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung und Präzisierung der Abbildung \ref{Gegenstand} erforderlich.
+Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung und Präzisierung der Abbildung \ref{Gegenstand} erforderlich. Die Zuordnung eines Codewortes $c$ zu einer Nachricht $m$ wird als \textbf{Codierung} (der Nachricht) bezeichnet. \\
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}
@@ -56,12 +67,12 @@ Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung un
 \caption{Vereinfachte Darstellung eines \ac{ITS} (nach \parencite[][S. 3]{Borda2011})}
 \label{ITS}
 \end{figure}
-Die Zuordnung eines Codewortes $c$ zu einer Nachricht $m$ wird als \textbf{Codierung} (der Nachricht) bezeichnet.
+
 \begin{definition}
 Sei $A$ ein Alphabet ($\rightarrow$ Definition \ref{Alphabet}) und $n \in \mathbb{N}$. \\ 
 Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace \langle a_1, a_2, ..., a_n \rangle \mid a_i \in A \rbrace$.  \\\\
 Ein \textbf{Blockcode} $C$ der Länge $n$ über dem Alphabet $A$ ist definiert als $C \subseteq A^{n} \text{, wobei } \lvert C \rvert > 0$ gelten muss.\\\\
-Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f: B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
+Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f\colon B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
 \end{definition}
 Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise codiert, sondern über Schieberegister in Abhängigkeit zueinander, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergibt \parencite[vgl. ][S. 752]{Viterbi1971}. Der Ansatz, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weist Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Bedeutung auf Blockcodes liegen. \\\\
 Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codeworte, bietet sich die \textbf{Hamming-Distanz} an.
@@ -82,9 +93,9 @@ Seien $A = \lbrace 0, 1 \rbrace$ und $n = 5$. Dann ist $A^n = \lbrace \langle 0,
 Wenn die Werte einer Codierungsfunktion im Bildbereich weit verstreut sind, der Code also eine große Minimaldistanz aufweist, werden die einzelnen Codeworte unterscheidbarer. Folglich ergibt sich aus der Minimaldistanz ein relevantes Kriterium für die Eigenschaft eines Codes, \textbf{fehlererkennend} oder sogar \textbf{fehlerkorrigierend} zu sein. Sie beeinflusst, wie viele Fehler erkannt beziehungsweise korrigiert werden können \parencite[vgl. ][S. 155]{Hamming1950}. \\\\
 \textsc{\citeauthor{Hamming1950}} nutzt für seine Argumentation in \parencite{Hamming1950} eine geometrische Betrachtung:
 \begin{definition}
-Sei $B$ eine Kugel mit Radius $r \geq 2$ und Mittelpunkt $x \in A^n$. Dann liegen alle $a_i \in A^n$ mit $d(a_i, x) = r$ auf der Kugeloberfläche von $B$. 
+Sei $B$ eine Kugel mit Radius $r \geq 2$ und Mittelpunkt $x \in A^n$. Dann liegen alle $a_i \in A^n$ mit $d(a_i, x) = r$ auf der Kugeloberfläche von $B$. Sei $C \subseteq A^n$ nun ein Blockcode mit $d(C) = r$ und $x \in C$. Dann liegen alle $c \in (C \setminus \lbrace x \rbrace )$ auf der Kugeloberfläche oder außerhalb der Kugel $B$. 
 \end{definition}
-\begin{note}Ein Punkt $a_j$ mit $d(a_i, x) \neq r$ liegt nicht auf der Kugeloberfläche und kann folglich kein fehlerfreies Codewort sein. Ein Code $C$ mit Minimaldistanz $2$ ist damit \textbf{fehlererkennend} für maximal ein falsch übertragenes Zeichen (notiert: {\glqq}1-fehlererkennend{\grqq}). \\\\
+\begin{note}Ein Punkt $a_j$ mit $d(a_i, x) < r$ (unterscheidet sich in nur einer Stelle von $x$) liegt nicht auf der Kugeloberfläche und kann folglich kein fehlerfreies Codewort sein. Ein Code $C$ mit Minimaldistanz $2$ ist damit \textbf{fehlererkennend} für maximal ein falsch übertragenes Zeichen (notiert: {\glqq}1-fehlererkennend{\grqq}). \\\\
 Ferner ist ein Code $C'$ mit Minimaldistanz $3$ \textbf{fehlerkorrigierend}: Sei $a_r$ ein gültiges Codewort mit einer Minimaldistanz von $3$ zu allen anderen Codeworten in $C'$. Für ein in einer Stelle abweichendes Codewort $a_f$ gilt folglich $d(a_r, a_f) = 1$, aber $\forall a_i \in C' \setminus \lbrace a_r, a_f \rbrace : d(a_i, a_f) > 1$. Damit lässt sich $a_f$ eindeutig $a_r$ zuordnen, wodurch sich der Fehler korrigieren lässt und $C'$ \textbf{1-fehlerkorrigierend} ist \parencite[vgl. ][S. 155f.]{Hamming1950}.
 \end{note}
 Die Eigenschaft eines Codes, fehlererkennend oder fehlerkorrigierend zu sein, ist skalierbar: 
@@ -126,7 +137,7 @@ Dann ist $C$ \textbf{$t$-fehlererkennend}, wenn $\forall c \in C: B_t(c) \cap (C
 Ein Blockcode $C$ ist $t$-fehlererkennend, wenn $d(C) \geq t + 1$ gilt \parencite[vgl. ][S. 13]{Manz2017}.
 \end{note}
 \begin{example}
-Sei $A = \lbrace 0, 1 \rbrace$ und $A^3 = \lbrace \langle 0, 0, 0 \rangle , \langle 0, 0, 1 \rangle , ..., \langle 1, 1, 1 \rangle \rbrace$. Ferner sei $C \in A^3$ ein Blockcode für Nachrichten der Form $m = \langle m_1, m_2 \rangle$ mit der Codierfunktion $f: M \to C, \langle m_1, m_2 \rangle \mapsto \langle m_1, m_2, ((m_1 + m_2) \mod 2) \rangle$. \\\\
+Sei $A = \lbrace 0, 1 \rbrace$ und $A^3 = \lbrace \langle 0, 0, 0 \rangle , \langle 0, 0, 1 \rangle , ..., \langle 1, 1, 1 \rangle \rbrace$. Ferner sei $C \in A^3$ ein Blockcode für Nachrichten der Form $m = \langle m_1, m_2 \rangle$ mit der Codierfunktion $f\colon M \to C, \langle m_1, m_2 \rangle \mapsto \langle m_1, m_2, ((m_1 + m_2) \mod 2) \rangle$. \\\\
 Für die Nachricht $x = \langle 0, 1 \rangle$ ergibt sich also $f(x) = \langle 0, 1, 1 \rangle$. \\\\
 Dann ist $C = \lbrace \langle 0, 0, 0\rangle , \langle 0, 1, 1 \rangle , \langle 1, 0, 1 \rangle , \langle 1, 1, 0\rangle \rbrace$. Daraus folgt $d(C) = 2$. Damit ist $C$ 1-fehlererkennend, da $2 = 1 + 1$, aber nicht fehlerkorrigierend, da $2 \ngeq 2 \cdot 1 + 1$ gilt.
 \end{example}
@@ -140,3 +151,40 @@ wobei $e(D)$ eine vollständig von Kanalparametern abhängige positive Funktion,
 \end{theorem}
 Folglich ist es möglich, Datenübertragungsvorgänge unter der Wahl einer geeigneten Datenübertragungsrate und einer Codierung nahezu fehlerfrei umzusetzen, völlig unabhängig von der Länge der zu übertragenden Nachricht. Es folgt auch, dass sich die Fehleranzahl nicht linear zur Fehleranfälligkeit (angegeben durch die Kapazität) des Kanals verhält \parencite[vgl. ][S. 209ff.]{Borda2011}.
 \section{Finitfeldarithmetik}
+Viele der in der Praxis häufig eingesetzten Codierfunktionen basieren auf der Arithmetik in endlichen Körpern und \textit{Galois}-Feldern, die im Folgenden eingeführt werden. \\\\
+Ausgangspunkt der Definition von endlichen Körpern ist nach \textsc{\citeauthor{Niederreiter97}} die algebraische Struktur der \textbf{Gruppe}.
+\begin{definition}
+Sei $G$ eine Menge und $\circ$ eine binäre Relation $\circ: G \times G \to G$ mit folgenden Eigenschaften:
+\begin{enumerate}
+\item \textbf{Assoziativität: }\\
+$\forall\, a, b, c \in G: \quad a \circ (b \circ c) = (a \circ b) \circ c$
+\item \textbf{Existenz eines neutralen Elements: }\\
+$\exists\, e \in G,  \: \forall \, a \in G: \quad a \circ e = e \circ a = a$
+\item \textbf{Existenz inverser Elemente: }\\
+$\forall\, a \in G,  \: \exists \, a^{-1} \in G: \quad a \circ a^{-1} = a^{-1} \circ a = e$
+\end{enumerate}
+Dann ist $(G, \circ)$ eine \textbf{Gruppe}. \\\\
+Gilt für eine Gruppe zudem $\forall\, a, b \in G: \: a \circ b = b \circ a$, so ist sie \textbf{kommutativ}, auch bezeichnet als \textbf{abelsch} \parencite[vgl. ][S. 2]{Niederreiter97}.
+\end{definition}
+\begin{example}
+Gegeben seien die Menge der ganzen Zahlen $\mathbb{Z}$ und eine binäre Relation.
+\begin{itemize}
+\item $(\mathbb{Z}, +)$, wobei $+$ die Addition bezeichne, ist eine \textbf{abelsche Gruppe}, da die folgenden Eigenschaften erfüllt sind: 
+\begin{enumerate}
+\item Assoziativität: \\
+Seien $a, b, c \in \mathbb{Z}$. Dann gilt mit dem Distributivgesetz der Addition $a + (b + c) = a + b + c = (a + b) + c$
+\item Existenz eines neutralen Elements: \\
+$\forall\, x \in \mathbb{Z}: \quad x + 0 = 0 + x = x$
+\item Existenz inverser Elemente: \\
+$\forall\, x \in \mathbb{Z}, \: \exists \, -x \in \mathbb{Z}: \quad x + (-x) = 0$
+\item Kommutativität: \\
+$\forall\, a, b \in \mathbb{Z}: \quad a + b = b + a$
+\end{enumerate}
+\item $(\mathbb{Z}, \cdot)$, wobei $\cdot$ die Multiplikation bezeichne, ist keine Gruppe, da die inversen Elemente zu Elementen von $\mathbb{Z}$ nicht Teil von $\mathbb{Z}$ sind.
+\[\forall\, x \in \mathbb{Z}: \quad x \cdot \frac{1}{x} = 1 \text{, aber } \frac{1}{x} \notin \mathbb{Z}\]
+\end{itemize}
+\end{example}
+\paragraph{Kryptographische Bedeutung} Zu Gruppen existieren einige mathematische Probleme, die sich für kryptographische Verfahren anbieten. \textsc{\citeauthor{Myasnikov08}} stellen in \parencite{Myasnikov08} kryptographische Protokolle dar, die beispielsweise auf dem \textit{Konjugationssuchproblem} nicht-kommutativer Gruppen basieren: \\
+Für zwei Elemente $u, v \in G$ einer Gruppe $G$ soll mindestens ein $x \in G$ gefunden werden, sodass $u^{x} = v$ gilt. Ist kein anderer Algorithmus für dieses Problem für die  Gruppe $G$ bekannt, so lässt sich $x \to u^x$ als Einwegfunktion auffassen und so ein kryptographisches Protokoll konstruieren \parencite[vgl. ][S. 37f.]{Myasnikov08}. 
+\\\\Abhängig davon, ob eine Gruppe abelsch ist oder nicht, lassen sich unterschiedliche Such- oder Entscheidungsprobleme zur Konstruktion kryptographischer Verfahren verwenden, die in \parencite{Myasnikov08} dargestellt, aber in dieser Arbeit nicht weiter behandelt werden.
+
