@@ -195,7 +195,7 @@ Für zwei Elemente $u, v \in G$ einer Gruppe $G$ soll mindestens ein $x \in G$ g
 \\\\Abhängig davon, ob eine Gruppe abelsch ist oder nicht, lassen sich unterschiedliche Such- oder Entscheidungsprobleme zur Konstruktion kryptographischer Verfahren verwenden, die in \parencite{Myasnikov08} dargestellt, aber in dieser Arbeit nicht weiter behandelt werden.
 \subsection{Felder}
 \begin{definition}
-Ein \textbf{Ring} $(R, +, \circ)$ ist eine Menge $R$ mit den zwei auf ihr definierten binären Relationen, notiert durch $+$ und $\circ$, für die gilt:
+Ein \textbf{Ring} $(R, +, \circ)$ ist eine nicht-leere Menge $R$ mit den zwei auf ihr definierten binären Relationen, notiert durch $+$ und $\circ$, für die gilt:
 \begin{itemize}
 \item $R$ ist abelsche Gruppe bezüglich der Operation $+$
 \item Die Operation $\circ$ ist assoziativ, folglich gilt 
@@ -203,10 +203,51 @@ Ein \textbf{Ring} $(R, +, \circ)$ ist eine Menge $R$ mit den zwei auf ihr defini
 \item Das Distributivgesetz gilt, also ist
 \[\forall \, a, b, c \in R: \quad \big( a \circ (b + c) \Leftrightarrow a \circ b + a \circ c \big) \! \land \! \big( (b + c) \circ a \Leftrightarrow b \circ a + c \circ a \big)\] 
 \end{itemize}
-Ein Ring ist \textbf{kommutativ}, wenn die Operation $\circ$ kommutativ ist. Ferner ist ein Ring ein \textbf{Divisionsring}, falls $(R \setminus \lbrace 0 \rbrace , \circ )$ eine Gruppe bildet \parencite[vgl. ][S. 13]{Niederreiter97}. 
+Ein Ring ist \textbf{kommutativ}, wenn die Operation $\circ$ kommutativ ist. Ferner ist ein Ring ein \textbf{Divisionsring}, falls $(R \setminus \lbrace 0 \rbrace , \circ )$ eine Gruppe bildet \parencite[vgl. ][S. 13]{Niederreiter97}\parencite[vgl. ][S. 1f.]{Howie06}. 
 \end{definition}
 \begin{definition}
-Ein kommutativer Divisionring wird als \textbf{Feld} bezeichnet \parencite[vgl. ][S. 13]{Niederreiter97}. 
+Ein kommutativer Divisionsring wird als \textbf{Feld} bezeichnet \parencite[vgl. ][S. 13]{Niederreiter97}. 
 \end{definition}
+Um nun endliche Körper und \textit{Galois-Felder} definieren zu können, ist das Konzept der \textbf{Restklasse} unabdingbar, das nun zunächst wieder auf Ringen definiert wird.
+\begin{definition}
+Sei $R$ ein Ring. Dann ist $J$ ein \textbf{Unterring} von $R$, falls $J$ abgeschlossen ist unter beiden Operationen $+ \text{ und } \circ$ \parencite[vgl. ][S. 13]{Niederreiter97}. 
+\end{definition}
+\begin{note}
+Abgeschlossenheit bezeichnet hier, dass das Ergebnis der Operation auf zwei beliebigen Elementen des Rings ein Element ergibt, das wiederum Element des Rings ist.
+\end{note}
+\begin{definition}
+Ferner ist $J$ ein \textbf{Ideal} von $R$, falls $J$ ein Unterring von $R$ ist und 
+\[\forall \, a \in J, r \in R: \quad \big( (ar \in J) \land (ra \in J) \big)\] gilt \parencite[vgl. ][S. 13]{Niederreiter97}.
+\end{definition}
+\begin{note}
+Ein Ideal ist nun nicht mehr nur bezüglich eigenen Elementen und beiden Operationen abgeschlossen, sondern in Bezug auf die Multiplikation auch bezüglich Elementen des übergeordneten Rings.
+\end{note}
+\begin{definition}
+Sei $R$ eine Restklasse, $a \in R$ und $J$ ein Ideal von $R$. Die \textbf{Restklasse} von $a \mod J$ sei definiert als Menge aller Elemente der Form $a + c \in R, \forall \, c \in J$ \parencite[vgl. ][S. 13]{Niederreiter97}\parencite[vgl. ][S. 10]{Howie06}:
+\[[a] = a + J = \lbrace a + c \in R : c \in J \rbrace\]
+\end{definition}
+\begin{note}
+Zwei Elemente $a, b \in R$ sind \textit{kongruent} modulo $J$, wenn sie Elemente der gleichen Restklasse bezüglich $J$ sind, geschrieben $a \equiv b \mod J$. 
+\end{note}
+Auch auf Restklassen lassen sich die Operationen eines Rings anwenden:
+\begin{align*}
+(a + J) + (b + J) &= (a + b) + J \\
+(a + J) \circ (b + J) &= ab + J
+\end{align*}
+\begin{note}
+Durch diese beiden Operationen auf Restklassen ensteht ein Ring, der als \textbf{Restklassenring} bezeichnet und mit $R / J$  notiert wird \parencite[vgl. ][S. 13f.]{Niederreiter97} \parencite[vgl. ][S. 10]{Howie06}.
+\end{note}
+\begin{example}
+Ein klassisches Beispiel für einen auf diese Weise entstandenen Restklassenring ist \item $\mathbb{Z} / (p), p \in \mathbb{P}$, wobei $\mathbb{P}$ die Menge aller Primzahlen bezeichnet. Hier ist $(p)$ ein prinzipales Ideal, das durch $p$ generiert wird. Dieser Ring ist ein Feld, wie in \parencite{Niederreiter97} bewiesen wird und aufgrund der endlichen Anzahl an Elementen \textit{finit}. Die Elemente sind beschrieben durch 
+\[\lbrace [0] = 0 + (n), [1] = 1 + (n), ... \rbrace\] 
+Der Restklassenring $\mathbb{Z} / (3)$ enthält die Elemente $[0], [1] \text{ und } [2]$.
+\end{example} 
+Für \textit{Galois-Felder} wird nun lediglich noch eine Abbildung benötigt:
+\begin{definition}
+Eine Abbildung $\phi \colon R \to S$, wobei $R$ und $S$ Ringe sind, ist ein \textbf{Homomorphismus}, falls
+\[ \phi (a + b) = \phi (a) + \phi (b) \quad \land \quad \phi (ab) = \phi (a) \phi (b)\]
+\parencite[vgl. ][S. 14]{Niederreiter97} \parencite[vgl. ][S. 8]{Howie06}
+\end{definition}
+
 
 
