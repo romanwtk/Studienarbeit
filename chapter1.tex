@@ -153,6 +153,7 @@ Folglich ist es möglich, Datenübertragungsvorgänge unter der Wahl einer geeig
 \section{Finitfeldarithmetik}
 Viele der in der Praxis häufig eingesetzten Codierfunktionen basieren auf der Arithmetik in endlichen Körpern und \textit{Galois}-Feldern, die im Folgenden eingeführt werden. \\\\
 Ausgangspunkt der Definition von endlichen Körpern ist nach \textsc{\citeauthor{Niederreiter97}} die algebraische Struktur der \textbf{Gruppe}.
+\subsection{Gruppen}
 \begin{definition}
 Sei $G$ eine Menge und $\circ$ eine binäre Relation $\circ: G \times G \to G$ mit folgenden Eigenschaften:
 \begin{enumerate}
@@ -172,19 +173,40 @@ Gegeben seien die Menge der ganzen Zahlen $\mathbb{Z}$ und eine binäre Relation
 \item $(\mathbb{Z}, +)$, wobei $+$ die Addition bezeichne, ist eine \textbf{abelsche Gruppe}, da die folgenden Eigenschaften erfüllt sind: 
 \begin{enumerate}
 \item Assoziativität: \\
-Seien $a, b, c \in \mathbb{Z}$. Dann gilt mit dem Distributivgesetz der Addition $a + (b + c) = a + b + c = (a + b) + c$
+Seien $a, b, c \in \mathbb{Z}$. Dann gilt mit dem Distributivgesetz der Addition $a + (b + c) \Leftrightarrow a + b + c \Leftrightarrow (a + b) + c$
 \item Existenz eines neutralen Elements: \\
-$\forall\, x \in \mathbb{Z}: \quad x + 0 = 0 + x = x$
+$\forall\, x \in \mathbb{Z}: \quad x + 0 \Leftrightarrow 0 + x \Leftrightarrow x$
 \item Existenz inverser Elemente: \\
 $\forall\, x \in \mathbb{Z}, \: \exists \, -x \in \mathbb{Z}: \quad x + (-x) = 0$
 \item Kommutativität: \\
-$\forall\, a, b \in \mathbb{Z}: \quad a + b = b + a$
+$\forall\, a, b \in \mathbb{Z}: \quad a + b \Leftrightarrow b + a$
 \end{enumerate}
 \item $(\mathbb{Z}, \cdot)$, wobei $\cdot$ die Multiplikation bezeichne, ist keine Gruppe, da die inversen Elemente zu Elementen von $\mathbb{Z}$ nicht Teil von $\mathbb{Z}$ sind.
 \[\forall\, x \in \mathbb{Z}: \quad x \cdot \frac{1}{x} = 1 \text{, aber } \frac{1}{x} \notin \mathbb{Z}\]
 \end{itemize}
 \end{example}
+\begin{definition}
+Eine multiplikative Gruppe ist \textbf{zyklisch}, sofern
+\[\exists \, a \in G, \forall \, b \in G, \exists \, j \in \mathbb{Z}: \quad b = a^j\]
+Dann ist $a$ ein \textbf{Generator} der multiplikativen Gruppe\footnote{Wird zu einer Gruppe keine binäre Relation angegeben, handelt es sich implizit um eine multiplikative Verknüpfung.} $G$ \parencite[vgl. ][S. 3f.]{Niederreiter97}. Die Gruppe ist durch $G = \langle a \rangle$ hinreichend beschrieben.
+\end{definition}
 \paragraph{Kryptographische Bedeutung} Zu Gruppen existieren einige mathematische Probleme, die sich für kryptographische Verfahren anbieten. \textsc{\citeauthor{Myasnikov08}} stellen in \parencite{Myasnikov08} kryptographische Protokolle dar, die beispielsweise auf dem \textit{Konjugationssuchproblem} nicht-kommutativer Gruppen basieren: \\
 Für zwei Elemente $u, v \in G$ einer Gruppe $G$ soll mindestens ein $x \in G$ gefunden werden, sodass $u^{x} = v$ gilt. Ist kein anderer Algorithmus für dieses Problem für die  Gruppe $G$ bekannt, so lässt sich $x \to u^x$ als Einwegfunktion auffassen und so ein kryptographisches Protokoll konstruieren \parencite[vgl. ][S. 37f.]{Myasnikov08}. 
 \\\\Abhängig davon, ob eine Gruppe abelsch ist oder nicht, lassen sich unterschiedliche Such- oder Entscheidungsprobleme zur Konstruktion kryptographischer Verfahren verwenden, die in \parencite{Myasnikov08} dargestellt, aber in dieser Arbeit nicht weiter behandelt werden.
+\subsection{Felder}
+\begin{definition}
+Ein \textbf{Ring} $(R, +, \circ)$ ist eine Menge $R$ mit den zwei auf ihr definierten binären Relationen, notiert durch $+$ und $\circ$, für die gilt:
+\begin{itemize}
+\item $R$ ist abelsche Gruppe bezüglich der Operation $+$
+\item Die Operation $\circ$ ist assoziativ, folglich gilt 
+\[\forall \, a, b, c \in R: \quad (a \circ b) \circ c \Leftrightarrow a \circ (b \circ c)\]
+\item Das Distributivgesetz gilt, also ist
+\[\forall \, a, b, c \in R: \quad \big( a \circ (b + c) \Leftrightarrow a \circ b + a \circ c \big) \! \land \! \big( (b + c) \circ a \Leftrightarrow b \circ a + c \circ a \big)\] 
+\end{itemize}
+Ein Ring ist \textbf{kommutativ}, wenn die Operation $\circ$ kommutativ ist. Ferner ist ein Ring ein \textbf{Divisionsring}, falls $(R \setminus \lbrace 0 \rbrace , \circ )$ eine Gruppe bildet \parencite[vgl. ][S. 13]{Niederreiter97}. 
+\end{definition}
+\begin{definition}
+Ein kommutativer Divisionring wird als \textbf{Feld} bezeichnet \parencite[vgl. ][S. 13]{Niederreiter97}. 
+\end{definition}
+
 
