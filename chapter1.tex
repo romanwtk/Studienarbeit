@@ -1,4 +1,4 @@
-% !TEX root =  master.tex
+<a% !TEX root =  master.tex
 \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=6em, text centered, minimum height=3em]
 \tikzstyle{greenblock} = [ellipse, draw, fill=green!20, text width=4em, text centered, minimum height=3em]
 \chapter{Codierungstheorie}
@@ -69,7 +69,7 @@ Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung un
 \end{figure}
 
 \begin{definition}
-Sei $A$ ein Alphabet ($\rightarrow$ Definition \ref{Alphabet}) und $n \in \mathbb{N}$. \\ 
+Sei $A$ ein Alphabet und $n \in \mathbb{N}$. \\ 
 Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace \langle a_1, a_2, ..., a_n \rangle \mid a_i \in A \rbrace$.  \\\\
 Ein \textbf{Blockcode} $C$ der Länge $n$ über dem Alphabet $A$ ist definiert als $C \subseteq A^{n} \text{, wobei } \lvert C \rvert > 0$ gelten muss.\\\\
 Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f\colon B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
@@ -95,8 +95,8 @@ Wenn die Werte einer Codierungsfunktion im Bildbereich weit verstreut sind, der 
 \begin{definition}
 Sei $B$ eine Kugel mit Radius $r \geq 2$ und Mittelpunkt $x \in A^n$. Dann liegen alle $a_i \in A^n$ mit $d(a_i, x) = r$ auf der Kugeloberfläche von $B$. Sei $C \subseteq A^n$ nun ein Blockcode mit $d(C) = r$ und $x \in C$. Dann liegen alle $c \in (C \setminus \lbrace x \rbrace )$ auf der Kugeloberfläche oder außerhalb der Kugel $B$. 
 \end{definition}
-\begin{note}Ein Punkt $a_j$ mit $d(a_i, x) < r$ (unterscheidet sich in nur einer Stelle von $x$) liegt nicht auf der Kugeloberfläche und kann folglich kein fehlerfreies Codewort sein. Ein Code $C$ mit Minimaldistanz $2$ ist damit \textbf{fehlererkennend} für maximal ein falsch übertragenes Zeichen (notiert: {\glqq}1-fehlererkennend{\grqq}). \\\\
-Ferner ist ein Code $C'$ mit Minimaldistanz $3$ \textbf{fehlerkorrigierend}: Sei $a_r$ ein gültiges Codewort mit einer Minimaldistanz von $3$ zu allen anderen Codeworten in $C'$. Für ein in einer Stelle abweichendes Codewort $a_f$ gilt folglich $d(a_r, a_f) = 1$, aber $\forall a_i \in C' \setminus \lbrace a_r, a_f \rbrace : d(a_i, a_f) > 1$. Damit lässt sich $a_f$ eindeutig $a_r$ zuordnen, wodurch sich der Fehler korrigieren lässt und $C'$ \textbf{1-fehlerkorrigierend} ist \parencite[vgl. ][S. 155f.]{Hamming1950}.
+\begin{note}Ein Punkt $a_j \neq x$ mit $d(a_i, x) < r$ (unterscheidet sich in in weniger als $r$ Stellen von $x$) liegt nicht auf der Kugeloberfläche und kann folglich kein fehlerfreies Codewort sein. Ein Code $C$ mit Minimaldistanz $2$ ist damit \textbf{fehlererkennend} für maximal ein falsch übertragenes Zeichen (notiert: {\glqq}1-fehlererkennend{\grqq}). \\\\
+Ferner ist ein Code $C'$ mit Minimaldistanz $3$ \textbf{fehlerkorrigierend}: Sei $a_r$ ein gültiges Codewort mit einer Minimaldistanz von $3$ zu allen anderen Codeworten in $C'$. Für ein in einer Stelle abweichendes Wort $a_f$ gilt folglich $d(a_r, a_f) = 1$, aber $\forall a_i \in C' \setminus \lbrace a_r, a_f \rbrace : d(a_i, a_f) > 1$. Damit lässt sich $a_f$ eindeutig $a_r$ zuordnen, wodurch sich der Fehler korrigieren lässt und $C'$ \textbf{1-fehlerkorrigierend} ist \parencite[vgl. ][S. 155f.]{Hamming1950}.
 \end{note}
 Die Eigenschaft eines Codes, fehlererkennend oder fehlerkorrigierend zu sein, ist skalierbar: 
 \begin{definition}
@@ -193,7 +193,7 @@ Dann ist $a$ ein \textbf{Generator} der multiplikativen Gruppe\footnote{Wird zu 
 \paragraph{Kryptographische Bedeutung} Zu Gruppen existieren einige mathematische Probleme, die sich für kryptographische Verfahren anbieten. \textsc{\citeauthor{Myasnikov08}} stellen in \parencite{Myasnikov08} kryptographische Protokolle dar, die beispielsweise auf dem \textit{Konjugationssuchproblem} nicht-kommutativer Gruppen basieren: \\
 Für zwei Elemente $u, v \in G$ einer Gruppe $G$ soll mindestens ein $x \in G$ gefunden werden, sodass $u^{x} = v$ gilt. Ist kein anderer Algorithmus für dieses Problem für die  Gruppe $G$ bekannt, so lässt sich $x \to u^x$ als Einwegfunktion auffassen und so ein kryptographisches Protokoll konstruieren \parencite[vgl. ][S. 37f.]{Myasnikov08}. 
 \\\\Abhängig davon, ob eine Gruppe abelsch ist oder nicht, lassen sich unterschiedliche Such- oder Entscheidungsprobleme zur Konstruktion kryptographischer Verfahren verwenden, die in \parencite{Myasnikov08} dargestellt, aber in dieser Arbeit nicht weiter behandelt werden.
-\subsection{Felder}
+\subsection{Körper}
 \begin{definition}
 Ein \textbf{Ring} $(R, +, \circ)$ ist eine nicht-leere Menge $R$ mit den zwei auf ihr definierten binären Relationen, notiert durch $+$ und $\circ$, für die gilt:
 \begin{itemize}
@@ -207,7 +207,7 @@ Ein Ring ist \textbf{kommutativ}, wenn die Operation $\circ$ kommutativ ist. Fer
 \end{definition}
 Ein Ring beinhaltet folglich eine Gruppe, jedoch auch eine Operation, die nicht notwendigerweise die Anforderungen an eine Gruppe erfüllt. Da beispielsweise der Menge $\mathbb{Z}$ inverse Elemente bezüglich der Multiplikation fehlen, so ist $(\mathbb{Z}, +, \circ)$ dennoch ein Ring, wenn auch kein Divisionsring. 
 \begin{definition}
-Ein kommutativer Divisionsring wird als \textbf{Feld} oder \textbf{Körper} bezeichnet \parencite[vgl. ][S. 13]{Niederreiter97}. 
+Ein kommutativer Divisionsring wird als \textbf{Feld} oder \textbf{Körper} bezeichnet \parencite[vgl. ][S. 13]{Niederreiter97}.
 \end{definition}
 Um nun endliche Körper und \textit{Galois-Felder} definieren zu können, ist das Konzept der \textbf{Restklasse} unabdingbar, das nun zunächst wieder auf Ringen definiert wird.
 \begin{definition}

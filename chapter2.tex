@@ -1,2 +1,66 @@
 % !TEX root =  master.tex
 \chapter{Lineare fehlerkorrigierende Codes für kryptographische Zwecke}
+Mithilfe der vorgestellten Polynome soll nun eine Klasse von Blockcodes betrachtet werden, zu der auch \textit{Reed-Solomon}-Codes und \textit{Goppa}-Codes, die beiden Codes aus den Verfahren von \textsc{Niederreiter} und \textsc{McEliece}, zählen. Diese Klasse wird als \textbf{lineare Codes} bezeichnet. \\\\
+Für die Definition linearer Codes ist eine Wiederholung der algebraischen Struktur des \textbf{Vektorraums} notwendig. In \parencite{Fischer2020LA} ist folgende Definition zu finden:
+\begin{definition}
+Sei $K$ ein Körper. Eine Menge $V$ mit einer additiven Verknüpfung 
+\[+ \colon V \times V \to V; \quad \langle v, w \rangle \mapsto v + w\]
+und einer Skalarmultiplikation 
+\[\cdot\colon K \times V \to V; \quad \langle \lambda, v \rangle \mapsto \lambda \cdot v\]
+heißt \textbf{$K$-Vektorraum}, sofern
+\begin{itemize}
+\item $(V, +)$ ist \textbf{abelsche Gruppe}
+\item Die Skalarmultiplikation ist sowohl bezüglich des Skalars als auch der Komponente distributiv und assoziativ, ferner existiert ein neutrales Element. So muss $\forall \lambda, \mu \in K, v, w \in V$ gelten:
+\begin{align*}
+( \lambda + \mu ) \cdot v &= \lambda \cdot v + \mu \cdot v \\
+\lambda \cdot (v + w) &= \lambda \cdot v + \lambda \cdot w \\
+\lambda \cdot (\mu \cdot v) &= (\lambda \cdot \mu ) \cdot v \\
+1 \cdot v &= v
+\end{align*}
+\end{itemize}
+\parencite[vgl.][S. 95]{Fischer2020LA}
+\end{definition}
+Vektorräume beinhalten folglich Vektoren beliebiger Dimension, deren Komponenten addiert und mit Skalaren multipliziert werden können. Für die Definition linearer Codes ist es erforderlich, Primzahlkörper $\mathbb{F}_{q^n}$ als Vektorräume aufzufassen.
+\begin{theorem}
+Endliche Körper $\mathbb{F}_{q^n}$ bilden $\mathbb{F}_{q}$-Vektorräume.
+\end{theorem}
+\begin{proof}
+Es bietet sich an, induktiv vorzugehen:
+\begin{itemize}
+\item \textbf{Annahme}: $\mathbb{F}_{q^n}$ bildet einen Vektorraum $V(q, n)$.
+\item \textbf{Induktionsanfang}: Zu zeigen ist, dass $\mathbb{F}_{q^1}$ die Forderungen eines Vektorraums erfüllt.
+\begin{itemize}
+\item Die Forderung danach, dass $(\mathbb{F}_{q}, +)$ eine abelsche Gruppe bildet, folgt unmittelbar aus der Körperdefinition.
+\item Die Forderungen nach Distributivität und Assoziativität der Skalarmultiplikation bzw. Addition folgen direkt aus der Ringeigenschaft, da $\lambda, \mu, v \in \mathbb{F}_{q^1}$.
+\item Die Existenz eines neutralen Elements bezüglich der Skalarmultiplikation ergibt sich daraus, dass gemäß Definition $q \geq 2 > 1 \Rightarrow 1 \in \mathbb{F_q}$ gilt. 
+\end{itemize}
+\item \textbf{Induktionsschritt $q^1 \to q^n$}: Sei die komponentenweise Addition induktiv definiert als \[(v_1, v_2, ..., v_n) + (w_1, w_2, ..., w_n) = (v_1 + w_1, v_2 + w_2, ..., v_n + w_n)\] und die Skalarmultiplikation als
+\[k \cdot (v_1, v_2, ..., v_n) = (k\cdot v_1, k \cdot v_2, ..., k \cdot v_n)\].
+Alle obigen Forderungen folgen damit induktiv und $\mathbb{F}_{q^n}$ ist ein $\mathbb{F}_q$-Vektorraum.
+\end{itemize}
+\end{proof}
+\begin{definition}
+Ein \textbf{Untervektorraum} $W$ eines Vektorraums $V$ ist eine Teilmenge $W \subset V$, sofern gilt:
+\begin{itemize}
+\item $W \neq \emptyset$
+\item $v, w \in W: \quad v + w \in W$
+\item $v \in W, \lambda \in K: \quad \lambda \cdot v \in W$ 
+\end{itemize}
+\parencite[vgl. ][S. 96]{Fischer2020LA}
+\end{definition}
+\begin{definition}
+Sei $\mathbb{F}_q$ ein endlicher Körper, $\lvert K \rvert = q$. Dann ist ein Blockcode $C$ ein \textbf{linearer Code} mit dem Alphabet $\mathbb{F}_q$ und Länge $n$, falls die Menge $C$ ein \textbf{Untervektorraum} von $\mathbb{F}_{q^n}$ ist \parencite[vgl. ][S. 29]{Manz2017}. 
+\end{definition}
+Folglich beschreibt ein linearer Code Tupel der Länge $n$ mit Komponenten aus $\mathbb{F}_q$. Ferner stellt die Untervektorraum-Eigenschaft sicher, dass die Addition von Codeworten und die Multiplikation eines Codewortes mit einem Skalar aus dem übergeordneten endlichen Körper $\mathbb{F}_q$ weiterhin valide Codeworte erzeugt. Dies ist eine elementare Eigenschaft linearer Codes.
+\\\\
+Eine Subklasse der linearen Codes sind die \textbf{zyklischen Codes}. 
+\begin{definition}
+Ein $k$-dimensionaler Untervektorraum $C$ von $\mathbb{F}_{q^n}$ ist dann ein \textbf{zyklischer Code}, wenn
+\[\forall \, \langle a_0, a_1, ..., a_{n-1} \rangle \in C: \quad \langle a_{n-1}, a_0, a_1, ..., a_{n-2} \rangle \in C\] gilt \parencite[vgl. ][S. 42]{vanLint1973}.
+\end{definition}
+Ein linearer Code ist folglich dann zyklisch, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{Reed-Colomon-Code}, der Gegenstand des nächsten Abschnitts ist.
+\section{Reed-Solomon-Codes}
+
+
+ 
+
