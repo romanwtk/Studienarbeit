@@ -60,6 +60,16 @@ Ein $k$-dimensionaler Untervektorraum $C$ von $\mathbb{F}_{q^n}$ ist dann ein \t
 \end{definition}
 Ein linearer Code ist folglich dann zyklisch, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{Reed-Colomon-Code}, der Gegenstand des nächsten Abschnitts ist.
 \section{Reed-Solomon-Codes}
+Die grundlegende Idee von linearen zyklischen Codes über Polynomen besteht darin, Fehler über Interpolation zu korrigieren. Bildlich gesehen soll also ein Codewort konstruiert werden, dessen einzelnen Komponenten entlang einer interpolierbaren Abbildung aufgereiht sind. Sollte nun ein Übertragungsfehler die Lage eines Punktes (also einer Komponente) verändern, so ist die korrekte Lage durch die anderen Punkte jedoch hinreichend bestimmt und kann korrigiert werden.
+\paragraph{Idee}
+Eine Nachricht der Länge $k$ in Form eines Elementes eines endlichen Körpers $\mathbb{F}_{q^k}$ kann als Polynom aufgefasst werden, indem die entsprechenden Komponenten der Nachricht die Koeffizienten des Polynoms bilden. Werden nun $n$ sogenannte Stützstellen aus dem dem Code zugrundeliegenden Körper $\mathbb{F}_{q^n}$ ausgewählt, so ergibt die Auswertung des Polynoms an den jeweiligen Stützstellen die Komponenten eines betrachteten Codewortes. \\\\
+Durch bereits $k$ Komponenten des Codewortes ist das Polynom hinreichend bestimmt, sodass $n-k$ Punkte, die nicht auf dem Polynom liegen, als Fehler erkannt und korrigiert werden können.
+\begin{definition}
+Sei $u = \langle u_1, u_2, ..., u_n \rangle \in \mathbb{F}_{q^n}$ . Dann ist $a = \langle a_1, a_2, ..., a_n \rangle \in \mathbb{F}_{q^n}$ ein Codewort eines \textbf{Reed-Solomon-Codes} $C$ mit Länge $n$, Dimension $k$ und Minimaldistanz $d$, falls gilt:
+\[C = \lbrace a \mid a_i = f(u_i), \deg f(x) < k, f \in \mathbb{F}_{q^n}[x] \rbrace\]
+\parencite[vgl. ][S. 9]{Mahr88}
+\end{definition}
+
 
 
  
