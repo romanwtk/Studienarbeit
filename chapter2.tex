@@ -22,21 +22,21 @@ heißt \textbf{$K$-Vektorraum}, sofern
 \end{definition}
 Vektorräume beinhalten folglich Vektoren beliebiger Dimension, deren Komponenten addiert und mit Skalaren multipliziert werden können. Für die Definition linearer Codes ist es erforderlich, Primzahlkörper $\mathbb{F}_{q^n}$ als Vektorräume aufzufassen.
 \begin{theorem}
-Endliche Körper $\mathbb{F}_{q^n}$ bilden $\mathbb{F}_{q}$-Vektorräume.
+Endliche Körper $\mathbb{F}_{q}^{n}$ bilden $\mathbb{F}_{q}$-Vektorräume.
 \end{theorem}
 \begin{proof}
 Es bietet sich an, induktiv vorzugehen:
 \begin{itemize}
-\item \textbf{Annahme}: $\mathbb{F}_{q^n}$ bildet einen Vektorraum $V(q, n)$.
-\item \textbf{Induktionsanfang}: Zu zeigen ist, dass $\mathbb{F}_{q^1}$ die Forderungen eines Vektorraums erfüllt.
+\item \textbf{Annahme}: $\mathbb{F}_{q}^{n}$ bildet einen Vektorraum $V(q, n)$.
+\item \textbf{Induktionsanfang}: Zu zeigen ist, dass $\mathbb{F}_{q}^{1}$ die Forderungen eines Vektorraums erfüllt.
 \begin{itemize}
 \item Die Forderung danach, dass $(\mathbb{F}_{q}, +)$ eine abelsche Gruppe bildet, folgt unmittelbar aus der Körperdefinition.
-\item Die Forderungen nach Distributivität und Assoziativität der Skalarmultiplikation bzw. Addition folgen direkt aus der Ringeigenschaft, da $\lambda, \mu, v \in \mathbb{F}_{q^1}$.
+\item Die Forderungen nach Distributivität und Assoziativität der Skalarmultiplikation bzw. Addition folgen direkt aus der Ringeigenschaft, da $\lambda, \mu, v \in \mathbb{F}_{q}^{1}$.
 \item Die Existenz eines neutralen Elements bezüglich der Skalarmultiplikation ergibt sich daraus, dass gemäß Definition $q \geq 2 > 1 \Rightarrow 1 \in \mathbb{F_q}$ gilt. 
 \end{itemize}
-\item \textbf{Induktionsschritt $q^1 \to q^n$}: Sei die komponentenweise Addition induktiv definiert als \[(v_1, v_2, ..., v_n) + (w_1, w_2, ..., w_n) = (v_1 + w_1, v_2 + w_2, ..., v_n + w_n)\] und die Skalarmultiplikation als
+\item \textbf{Induktionsschritt $1 \to n$}: Sei die komponentenweise Addition induktiv definiert als \[(v_1, v_2, ..., v_n) + (w_1, w_2, ..., w_n) = (v_1 + w_1, v_2 + w_2, ..., v_n + w_n)\] und die Skalarmultiplikation als
 \[k \cdot (v_1, v_2, ..., v_n) = (k\cdot v_1, k \cdot v_2, ..., k \cdot v_n)\].
-Alle obigen Forderungen folgen damit induktiv und $\mathbb{F}_{q^n}$ ist ein $\mathbb{F}_q$-Vektorraum.
+Alle obigen Forderungen folgen damit induktiv und $\mathbb{F}_{q}^{n}$ ist ein $\mathbb{F}_q$-Vektorraum.
 \end{itemize}
 \end{proof}
 \begin{definition}
@@ -55,20 +55,37 @@ Folglich beschreibt ein linearer Code Tupel der Länge $n$ mit Komponenten aus $
 \\\\
 Eine Subklasse der linearen Codes sind die \textbf{zyklischen Codes}. 
 \begin{definition}
-Ein $k$-dimensionaler Untervektorraum $C$ von $\mathbb{F}_{q^n}$ ist dann ein \textbf{zyklischer Code}, wenn
+Ein $k$-dimensionaler Untervektorraum $C$ von $\mathbb{F}_{q}^{n}$ ist dann ein \textbf{zyklischer Code}, wenn
 \[\forall \, \langle a_0, a_1, ..., a_{n-1} \rangle \in C: \quad \langle a_{n-1}, a_0, a_1, ..., a_{n-2} \rangle \in C\] gilt \parencite[vgl. ][S. 42]{vanLint1973}.
 \end{definition}
 Ein linearer Code ist folglich dann zyklisch, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{Reed-Colomon-Code}, der Gegenstand des nächsten Abschnitts ist.
 \section{Reed-Solomon-Codes}
 Die grundlegende Idee von linearen zyklischen Codes über Polynomen besteht darin, Fehler über Interpolation zu korrigieren. Bildlich gesehen soll also ein Codewort konstruiert werden, dessen einzelnen Komponenten entlang einer interpolierbaren Abbildung aufgereiht sind. Sollte nun ein Übertragungsfehler die Lage eines Punktes (also einer Komponente) verändern, so ist die korrekte Lage durch die anderen Punkte jedoch hinreichend bestimmt und kann korrigiert werden.
 \paragraph{Idee}
-Eine Nachricht der Länge $k$ in Form eines Elementes eines endlichen Körpers $\mathbb{F}_{q^k}$ kann als Polynom aufgefasst werden, indem die entsprechenden Komponenten der Nachricht die Koeffizienten des Polynoms bilden. Werden nun $n$ sogenannte Stützstellen aus dem dem Code zugrundeliegenden Körper $\mathbb{F}_{q^n}$ ausgewählt, so ergibt die Auswertung des Polynoms an den jeweiligen Stützstellen die Komponenten eines betrachteten Codewortes. \\\\
+Eine Nachricht der Länge $k$ in Form eines Elementes eines endlichen Körpers $\mathbb{F}_{q}^{k}$ kann als Polynom aufgefasst werden, indem die entsprechenden Komponenten der Nachricht die Koeffizienten des Polynoms bilden. Werden nun $n$ paarweise verschiedene Stützstellen aus dem dem Code zugrundeliegenden Körper $\mathbb{F}_{q}^{n}$ ausgewählt, so ergibt die Auswertung des Polynoms an den jeweiligen Stützstellen die Komponenten eines betrachteten Codewortes. \\\\
 Durch bereits $k$ Komponenten des Codewortes ist das Polynom hinreichend bestimmt, sodass $n-k$ Punkte, die nicht auf dem Polynom liegen, als Fehler erkannt und korrigiert werden können.
 \begin{definition}
-Sei $u = \langle u_1, u_2, ..., u_n \rangle \in \mathbb{F}_{q^n}$ . Dann ist $a = \langle a_1, a_2, ..., a_n \rangle \in \mathbb{F}_{q^n}$ ein Codewort eines \textbf{Reed-Solomon-Codes} $C$ mit Länge $n$, Dimension $k$ und Minimaldistanz $d$, falls gilt:
-\[C = \lbrace a \mid a_i = f(u_i), \deg f(x) < k, f \in \mathbb{F}_{q^n}[x] \rbrace\]
+Sei $u = \langle u_1, u_2, ..., u_n \rangle \in \mathbb{F}_{q}^{n}$, wobei $\forall i, j \in \lbrace 1, ..., n \rbrace : u_i \neq u_j$. Dann ist $a = \langle a_1, a_2, ..., a_n \rangle \in \mathbb{F}_{q}^{n}$ ein Codewort eines \textbf{Reed-Solomon-Codes} $C$ mit Länge $n$, Dimension $k$ und Minimaldistanz $d$, falls gilt:
+\[C = \lbrace a \mid a_i = f(u_i), \deg f(x) < k, f \in \mathbb{F}_{q}^{n}[x] \rbrace\]
 \parencite[vgl. ][S. 9]{Mahr88}
 \end{definition}
+\begin{example}
+Sei $a = \langle 0, 1, 2, 1 \rangle \in \mathbb{F}_{7}^{4}$. Dann ist $f(X) = 0 + 1 \cdot X + 2 \cdot X^2 + 1 \cdot X^3 \in \mathbb{F}_{7}[X]$ ein dazugehöriges Polynom. \\\\
+Betrachtet werde nun ein \textbf{Reed-Solomon-Code} $C$ mit Länge $n = 7$ und Dimension $k = 4$:
+\[C = \lbrace a \mid a_i = f(u_i), \deg f(x) < 4, f \in \mathbb{F}_{7}^{7}[x]\rbrace\]
+\begin{itemize}
+\item Gewählt sind folglich $n$ paarweise verschiedene Stützstellen, deren Wahlfreiheit in $\mathbb{F}_7$ lediglich in der Anordnung besteht. Möglich ist beispielsweise $u = \langle 0, 1, 2, 3, 4, 5, 6 \rangle \in \mathbb{F}_{7}^{7}$.
+\item Auswertung:
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+Stützstelle $u_i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+Auswertung $f(u_i)$& 0 & 4 & 4 & 6 & 2 & 5 & 0 \\ 
+\hline
+\end{tabular}
+\item Folglich ergibt sich das Codewort $c = \langle 0, 4, 4, 6, 2, 5, 0 \rangle \in \mathbb{F}_{7}^{7}$.
+\end{itemize}
+\end{example}
 
 
 
