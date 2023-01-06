@@ -267,4 +267,24 @@ Für jede Primzahlpotenz $p^f, p \in \mathbb{P} \text{ und } f \in \mathbb{N}$ g
 \end{theorem} 
 Die durch Primzahlpotenzen entstandenen endlichen Körper basieren nun nicht bloß auf den Restklassen des Unterkörpers $\mathbb{F}_p$, sondern werden mit \textbf{Polynomen} erweitert.
 \subsection{Polynome}
-
+Durch die Verkettung der beiden Operationen eines Körpers $\mathbb{K}$ lassen sich \textbf{Polynome} erzeugen. Die Menge aller Polynome über einem Körper $\mathbb{K}$ wird definiert als
+\[\mathbb{K}[x] = \lbrace p(x) = a_{n}x^{n} + ... + a_{1}x + a_0 \mid a_i \in \mathbb{K} \rbrace\]
+\parencite[vgl. ][S. 118f.]{Teschl}
+und bildet einen kommutativen Ring, aufgrund der fehlenden Abgeschlossenheit der Division jedoch keinen Körper. Wird ein Polynom durch ein anderes dividiert, so kann dabei ein Rest entstehen, was die Anwendung des Kongruenzbegriffs nahelegt. Die Polynomdivision aller Polynome aus einem Körper $\mathbb{K}$ mit einem Polynom $m(x)$ erzeugt einen \textbf{Restklassenring} $\mathbb{K}[x]_{m(x)}$ mit der bekannten Addition und Multiplikation auf Polynomen. \\\\
+Die Frage, ob jener Ring auch ein (endlicher) Körper ist, ergibt sich daraus, ob zu jedem Polynom ein multiplikatives Inverses Teil des Rings ist. Dafür ist folgende Eigenschaft eines Polynoms relevant:
+\begin{definition}
+Ein Polynom $p(x) \in \mathbb{K}$ vom Grad (also dem höchsten Exponenten des Polynoms) $\deg (p) > 1$ wird als \textbf{irreduzibel} bezeichnet, falls es kein Polynom $q(k) \in \mathbb{K}$ mit $0 < \deg (q) <  \deg (p)$ gibt, das $p(x)$ teilt \parencite[vgl. ][S. 129]{Teschl}.
+\end{definition}
+Wird ein Polynomring nun durch reduzibles Polynom dividiert, also durch ein Polynom, dass sich selbst weiter dividieren lässt, ist nicht mehr sichergestellt, dass zu jedem Polynom ein multiplikatives Inverses existiert.
+\begin{theorem}
+Ein Ring $\mathbb{K}[x]_{m(x)}$ ist genau dann ein Körper, wenn $m(x)$ irreduzibel über $\mathbb{K}$ ist \parencite[vgl. ][S. 130]{Teschl}.
+\end{theorem}
+Ein Galois-Feld $\mathbb{F}_p$ kann auf diese Weise zu einem Körper $\mathbb{F}_{p^k}$ erweitert werden, in dem aus dem Polynomring $\mathbb{F}_{p}[x]$ ein irreduzibles Polynom $m(x)$ vom Grad $k$ ausgewählt wird. Dann ist 
+\[\mathbb{F}_{p^k} \quad \Leftrightarrow \quad \mathbb{F}_{p}[x]_{m(x)}\]
+\begin{example}
+Typische Beispiele für endliche Körper sind:
+\begin{itemize}
+\item $\mathbb{F}_{2}$ bildet dem irreduziblen Polynom $x^2 + x + 1$ einen endlichen Körper $\mathbb{F}_{2^2} = \lbrace [0], [1], [x], [x+1]\rbrace$
+\item Für das AES-Kryptosystem und eine Vielzahl weiterer kryptographischer und codierungstheoretischer Anwendungen wird der Körper $\mathbb{F}_{2^8}$ mit dem definierenden Polynom $x^8 + x^4 + x^3 + x + 1$ verwendet. Er enthält 256 Elemente \parencite[vgl. ][S. 131]{Teschl}.
+\end{itemize}
+\end{example}
