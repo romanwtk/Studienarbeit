@@ -86,6 +86,31 @@ Auswertung $f(u_i)$& 0 & 4 & 4 & 6 & 2 & 5 & 0 \\
 \item Folglich ergibt sich das Codewort $c = \langle 0, 4, 4, 6, 2, 5, 0 \rangle \in \mathbb{F}_{7}^{7}$.
 \end{itemize}
 \end{example}
+Nun wird in der Literatur gelegentlich auch der zu einem \textit{Reed-Solomon-Code} \textbf{duale Code} verwendet:
+\subsection{Duale Codes}
+\begin{definition}
+Sei $C$ ein linearer $[n, k, d]_q$-Code mit Länge $n$, Dimension $k$ und Minimaldistanz $d$ über einem Körper $\mathbb{F}_q$. Ferner bezeichne die Operation $\circ$ das Skalarprodukt über dem Untervektorraum $\mathbb{F}_{q}^{n}$, das definiert ist durch
+\[\langle a_1, a_2, ..., a_n\rangle \circ \langle b_1, b_2, ..., b_n \rangle = \langle a_{1}b_{1}, a_{2}b_{2}, ..., a_{n}b_{n} \rangle\] 
+Nun ist der zu $C$ \textbf{duale Code} $C^{\perp}$ definiert als
+\[C^{\perp} = \lbrace v \in \mathbb{F}_{p}^{n} \mid v \circ c = 0, \forall c \in C\rbrace\]
+\parencite[vgl. ][S. 35f.]{Manz2017}
+\end{definition}
+
+Diese Definition mag an die aus der linearen Algebra im Reellen bekannte Definition von Orthogonalität ({\glqq}Rechtwinkligkeit{\grqq}) erinnern, jedoch lässt sich dies auf die hier betrachteten Körper nicht übertragen, unter Anderem, da es auch \textbf{selbstduale} Codes gibt \parencite[vgl. ][S. 36]{Manz2017}.
+
+\begin{note}
+Der zu einem $[n, k, d]_{q}$-Code $C$ duale Code $C^{\perp}$ ist ein $[n, n-k, d]_{q}$-Code \parencite[vgl. ][S. 36]{Manz2017}.
+\end{note}
+
+Wird ein dualer Code zu einem dualen Code eines linearen Codes $C$ gebildet, so ist dieser $C$, also gilt:
+\[((C)^{\perp})^{\perp} = C\]
+
+\subsection{Kontroll- und Generatormatrizen}
+Da lineare Codes wie gezeigt Vektorräume bilden, ist die Angabe von \textbf{Basen} möglich. Durch die Definition der Dualität von Codes zueinander, können \textbf{Generator-} und \textbf{Kontrollmatrizen} angegeben werden.
+\begin{definition}
+Sei $C$ ein linearer $[n, k, d]_{q}$-Code und $C^{\perp}$ der duale Code zu $C$. \\
+Ferner sei $\big( \langle h_11, h_12, ..., h_1n \rangle, \langle h_21, ..., h_2n \rangle, ..., \langle h_(n-k)1, ..., h_(n-k)n \rangle \big)$ eine Basis zu $C^{\perp}$.
+\end{definition} 
 
 
 
