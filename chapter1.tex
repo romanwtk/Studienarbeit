@@ -249,13 +249,7 @@ Ein klassisches Beispiel für einen auf diese Weise entstandenen Restklassenring
 \[\lbrace [0] = 0 + (n), [1] = 1 + (n), ... \rbrace\] 
 Der Restklassenring $\mathbb{Z} / (3)$ enthält die Elemente $[0], [1] \text{ und } [2]$.
 \end{example} 
-Für \textit{Galois-Körper} wird nun lediglich noch eine spezieller Abbildungstyp zwischen Ringen benötigt:
-\begin{definition}
-Eine Abbildung $\phi \colon R \to S$, wobei $R$ und $S$ Ringe sind, ist ein \textbf{Homomorphismus}, falls
-\[ \forall \, a \in R \land \forall \, b \in S: \quad \phi (a + b) = \phi (a) + \phi (b) \quad \land \quad \phi (ab) = \phi (a) \phi (b)\]
-\parencite[vgl. ][S. 14]{Niederreiter97} \parencite[vgl. ][S. 8]{Howie06}
-\end{definition}
-
+Nun ist die Definition der \textit{Galois-Körper} unmittelbar möglich:
 \begin{definition}
 Sei $p \in \mathbb{P}$. Dann sei $\mathbb{F}_{p}$ der Körper, der durch den Restklassenring $\mathbb{Z} / (p) = \mathbb{Z} / p \mathbb{Z} $ beschrieben wird und folglich die Struktur $\mathbb{F}_{p} = \lbrace 0, 1, ..., p-1 \rbrace$ aufweist. 
 $\mathbb{F}_{p}$ wird dann als \textbf{Galois-Körper} der Ordnung $p$ bezeichnet \parencite[vgl. ][S. 15]{Niederreiter97}\parencite[vgl. ][S. 75]{Fischer2020LA}.
@@ -283,7 +277,7 @@ Ein Polynom $p(x) \in \mathbb{K}$ vom Grad (also dem höchsten Exponenten des Po
 \end{definition}
 Wird ein Polynomring nun durch reduzibles Polynom dividiert, also durch ein Polynom, dass sich selbst weiter dividieren lässt, existiert zu jedem seiner Teiler kein multiplikatives Inverses mehr, weshalb dadurch folglich kein Körper beschrieben wird.
 \begin{theorem}
-Ein Ring $\mathbb{K}[x]_{m(x)}$ ist genau dann ein Körper, wenn $m(x)$ irreduzibel über $\mathbb{K}$ ist \parencite[vgl. ][S. 130]{Teschl}.
+Ein Ring $\mathbb{K}[x]/({m(x)})$ ist genau dann ein Körper, wenn $m(x)$ irreduzibel über $\mathbb{K}$ ist \parencite[vgl. ][S. 130]{Teschl}.
 \end{theorem}
 Ein Galois-Körper $\mathbb{F}_p$ kann auf diese Weise zu einem Körper $\mathbb{F}_{p^k}$ erweitert werden, in dem aus dem Polynomring $\mathbb{F}_{p}[x]$ ein irreduzibles Polynom $m(x)$ vom Grad $k$ ausgewählt wird. Dann ist 
 \[\mathbb{F}_{p^k} \quad \Leftrightarrow \quad \mathbb{F}_{p}[x]/({m(x)})\]
