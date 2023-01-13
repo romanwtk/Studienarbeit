@@ -20,7 +20,7 @@ heißt \textbf{$K$-Vektorraum}, sofern
 \end{itemize}
 \parencite[vgl.][S. 95]{Fischer2020LA}
 \end{definition}
-Vektorräume beinhalten folglich Vektoren beliebiger Dimension, deren Komponenten addiert und mit Skalaren multipliziert werden können. Für die Definition linearer Codes ist es erforderlich, Primzahlkörper $\mathbb{F}_{q^n}$ als Vektorräume aufzufassen.
+Vektorräume beinhalten folglich Vektoren beliebiger Dimension, deren Komponenten addiert und mit Skalaren multipliziert werden können. Für die Definition linearer Codes ist es erforderlich, Primzahlkörper $\mathbb{F}_{q}^{n}$ als Vektorräume aufzufassen.
 \begin{theorem}
 Endliche Körper $\mathbb{F}_{q}^{n}$ bilden $\mathbb{F}_{q}$-Vektorräume.
 \end{theorem}
@@ -54,14 +54,41 @@ Sei $\mathbb{F}_q$ ein endlicher Körper, $\lvert K \rvert = q$. Dann ist ein Bl
 Folglich beschreibt ein linearer Code Tupel der Länge $n$ mit Komponenten aus $\mathbb{F}_q$. Ferner stellt die Untervektorraum-Eigenschaft sicher, dass die Addition von Codeworten und die Multiplikation eines Codewortes mit einem Skalar aus dem übergeordneten endlichen Körper $\mathbb{F}_q$ weiterhin valide Codeworte erzeugt. Dies ist eine elementare Eigenschaft linearer Codes.
 \\\\
 Eine Subklasse der linearen Codes sind die \textbf{zyklischen Codes}. 
+\section{Zyklische Codes}
 \begin{definition}
 Ein $k$-dimensionaler Untervektorraum $C$ von $\mathbb{F}_{q}^{n}$ ist dann ein \textbf{zyklischer Code}, wenn
 \[\forall \, \langle a_0, a_1, ..., a_{n-1} \rangle \in C: \quad \langle a_{n-1}, a_0, a_1, ..., a_{n-2} \rangle \in C\] gilt \parencite[vgl. ][S. 42]{vanLint1973}.
 \end{definition}
-Ein linearer Code ist folglich dann zyklisch, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{Reed-Colomon-Code}, der Gegenstand des nächsten Abschnitts ist. Zyklische Codes ermöglichen es, durch ein \textbf{Generatorpolynom} definiert zu werden. Dies ist bei vielen aktuellen Anwendungen von \textit{Reed-Solomon-Codes} der Fall \parencite[vgl. ][S. 6]{WBC11994}.
-\\\\
-Ein Codewort (beziehungsweise ein Codewortpolynom) $c(x)$ eines linearen, zyklischen Codes mit Generatorpolynom $g(x)$ kann als Produkt von Nachrichtpolynom $m(x)$ und Generatorpolynom aufgefasst werden.
+Ein linearer Code ist folglich dann zyklisch, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{Reed-Colomon-Code}, der Gegenstand des nächsten Abschnitts ist.
+\begin{theorem}
+Zyklische Codes der Länge $n$ sind Ideale des Rings $R = \mathbb{F}_{q}[x]/(x^n -1)$.
+\end{theorem}
+Das Polynom $x^n - 1$ fungiert hierbei als Modul, sodass der Ring $R$ folglich die Restklassen bezüglich dieser modularen Reduktion von $\mathbb{F}_{q}$ enthält.
+\begin{note}
+Sei $C$ ein linearer zyklischer Code der Länge $n$ über einem Körper $F_{q}$ und $a = a(x) = a_0 + a_{1}\cdot x + ... + a_{n-1}\cdot x^{n-1} \in C$. Dann ist 
+\begin{align*}
+&x \cdot a \\
+& = x \cdot (a_0 + a_{1} \cdot x + ... + a_{n-1}\cdot x^{n-1}) \\
+& = a_0 \cdot x + a_{1} \cdot x^2 + ... + a_{n-1} \cdot x^n  \\
+& = a_{n-1} + a_{0}\cdot x + ... + a_{n-2} \cdot x^{n-1}
+\end{align*}
+genau das zyklisch verschobene Codewort $a' \in C$. \\
+Dies folgt aus $x^n \equiv 1 \mod x^n - 1$ \parencite[vgl. ][S. 149f.]{Biggs08}.
+\end{note}
+Da durch die Linearität des Codes $C$ lässt sich ein $a \in C$ nicht nur beliebig oft zyklisch verschieben, also mit $x$ multiplizieren, sondern auch lineare Kombinationen (also Summen) gültiger Codeworte ergeben wiederum ein gültiges Codewort in $C$. Somit ergibt auch das Produkt eines Codewortes mit einem Polynom, also 
+\[a(x) \cdot c(x) \in C, \, c(x) \in C,\, a \in \mathbb{F}_{q}[x]/(x^n - 1)\] 
+ein gültiges Codewort \parencite[vgl. ][S. 121]{Moon05}. \\\\
+Da Ideale erzeugende Polynome besitzen, ist die Angabe eines \textbf{Generatorpolynoms} $g(x)$ möglich, für das gilt:
+\begin{itemize}
+\item $\deg g(x) = n - k$
+\item $g(x) \mid (x^n - 1)$
+\end{itemize} 
+\begin{theorem}
+Sei $C$ ein linearer zyklischer Code über einem endlichen Körper $\mathbb{F}_{q}$. Dann gibt es ein Polynom $g(x)$, für das $C = \langle g(x) \rangle$ gilt.
+\end{theorem}
+Ein Codewort beziehungsweise ein Codewortpolynom $c(x)$ eines linearen, zyklischen Codes mit Generatorpolynom $g(x)$ kann nun als Produkt von Nachrichtpolynom $m(x)$ und Generatorpolynom aufgefasst werden \parencite[vgl. ][S. 121]{Moon05}.
 \[c(x) = m(x) \cdot g(x)\]
+Bei vielen aktuellen Anwendungen von \textit{Reed-Solomon-Codes} werden Generatorpolynome angegeben und genutzt \parencite[vgl. ][S. 6]{WBC11994}.
 \section{Reed-Solomon-Codes}
 Die grundlegende Idee von linearen zyklischen Codes über Polynomen besteht darin, Fehler über Interpolation zu korrigieren. Bildlich gesehen soll also ein Codewort konstruiert werden, dessen einzelnen Komponenten entlang einer interpolierbaren Abbildung aufgereiht sind. Sollte nun ein Übertragungsfehler die Lage eines Punktes (also einer Komponente) verändern, so ist die korrekte Lage durch die anderen Punkte jedoch hinreichend bestimmt und kann korrigiert werden.
 \paragraph{Idee}
@@ -118,11 +145,11 @@ Ferner sei $\big( \langle h_{11}, h_{12}, ..., h_{1n} \rangle, \langle h_{21}, .
 
 Der Zusammenhang zwischen Generator- und Kontrollmatrix ergibt sich daraus, dass über die Generatormatrix des dualen Codes $C^{\perp}$ zu $C$ überprüft werden kann, ob für ein $x \in\mathbb{F}_{q}$ auch $x \in C$ gilt, indem die Skalarprodukte $x \cdot h_i, \forall i \in \lbrace 1, ..., n-k \rbrace$ gebildet werden. Sollte für mindestens eines dieser Produkte $x \cdot h_i \neq 0$ gelten, so ist $x \notin C$ \parencite[vgl. ][S. 37]{Manz2017}. So ließe sich beispielsweise eine Identitätsabbildung $1_{C}(x)$ auf $C$ bilden.
 
-\subsection{Anwendung}
+\section{Anwendungen von Reed-Solomon-Codes}
 Für den Aufbau eines kryptographischen Verfahrens auf Basis von \textit{Reed-Solomon-Codes} ist neben der Angabe der Codeklasse in Mengenkonstruktionsschreibweise auch die algorithmische Betrachtung des Kodierens und Dekodierens samt Fehlerkorrektur notwendig. Dies wird zunächst exemplarisch anhand von \textit{QR-Codes} und anschließend in allgemeiner Form dargestellt.
-\subsubsection{QR-Codes \footnote{Aufgrund des fehlenden Zugriffs auf die spezifizierende ISO-Norm in der aktuellen Fassung bezieht sich diese Arbeit auf den Stand von 2000.}}
-\paragraph{Hintergrund}
-\textit{\ac{QR}-Codes} sind zweidimensionale Matrix-Codes, die 1994 von einer Tochterfirma des Automobilherstellers Toyota entwickelt wurden, ursprünglich, um die Nachverfolgung von Fahrzeugkomponenten zu gewährleisten \parencite[vgl. ][S. 1]{QROverview2016}. Ziel der Entwicklung war es, ein Barcode-Format zu entwickeln, dass hochperformant und einfach zu scannen ist \parencite[vgl. ][S. 1]{QROverview2016}. Kodierbare Daten sind beispielsweise alphanumerische Zeichenketten, URLs oder Bytedata.
+\subsection{QR-Codes}
+\subsubsection{Hintergrund und Konzept}
+\textit{\ac{QR}-Codes\footnote{Aufgrund des fehlenden Zugriffs auf die spezifizierende ISO-Norm in der aktuellen Fassung bezieht sich diese Arbeit auf den Stand von 2000.}} sind zweidimensionale Matrix-Codes, die 1994 von einer Tochterfirma des Automobilherstellers Toyota entwickelt wurden, ursprünglich, um die Nachverfolgung von Fahrzeugkomponenten zu gewährleisten \parencite[vgl. ][S. 1]{QROverview2016}. Ziel der Entwicklung war es, ein Barcode-Format zu entwickeln, dass hochperformant und einfach zu scannen ist \parencite[vgl. ][S. 1]{QROverview2016}. Kodierbare Daten sind beispielsweise alphanumerische Zeichenketten, URLs oder Bytedata.
 \paragraph{Fehlerkorrektur}
 Zwei Arten von Fehlern sind möglich:
 \begin{itemize}
@@ -131,18 +158,18 @@ Zwei Arten von Fehlern sind möglich:
 \end{itemize}
 Durch die Matrixform des Codes führt ein irrtümlich als hell oder dunkel erkanntes Symbol weiterhin zu einem gültigen, wenn auch falschen Codewort. Zur Korrektur dieses falschen Codewortes sind zwei Korrekturworte erforderlich \parencite[vgl. ][S. 33]{ISO18004}. \\\\
 Je nach gewählter Qualitätsstufe ist eine verschiedene Anzahl von Korrekturworten erforderlich, die den Tabellen der ISO-Norm 18004 in der jeweils gültigen Fassung entnommen werden können \parencite[vgl. ][S. 35-44]{ISO18004}. Zu jedem Datenwort (bei Bedarf mit Padding-Worten) wird ein Fehlerkorrekturwort berechnet und an die Daten angefügt.
-\paragraph{Konstruktion von Fehlerkorrekturworten}
+\subsubsection{Konstruktion von Fehlerkorrekturworten}
 Verwendet wird der Galois-Körper $\mathbb{F}_{2^8}$ mit dem definierenden und auf diesem Körper irreduziblen Polynom $x^8 + x^4 + x^3 + x^2 + 1$. \\\\
 Die \textbf{Datencodeworte} bilden nun die Koeffizienten eines Polynoms, wobei das erste Datencodewort die Koeffizienten des Terms mit dem höchsten Grad repräsentieren und das letzte Datencodewort entsprechend die Koeffizienten des Terms mit dem niedrigsten Grad \parencite[vgl. ][S. 45]{ISO18004}. 
 \\\\
-Dieses Polynom wird nun durch ein für jede QR-Code-Konfiguration in \cite{ISO18004} definiertes \textbf{Generatorpolynom} dividiert. Der dabei entstehende Rest bildet nun die \textbf{Fehlerkorrekturworte}, indem der Koeffizienten des Terms mit dem höchsten Grad das erste Fehlerkorrekturwort und der Koeffizient des Terms mit Grad $0$ das letzte Fehlerkorrekturwort definiert \parencite[vgl. ][S. 45]{ISO18004}. \\\\
+Dieses Polynom wird nun durch ein für jede QR-Code-Konfiguration in \cite{ISO18004} definiertes \textbf{Generatorpolynom} dividiert. Der dabei entstehende Rest bildet nun die \textbf{Fehlerkorrekturworte}, indem der Koeffizient des Terms mit dem höchsten Grad das erste Fehlerkorrekturwort und der Koeffizient des Terms mit Grad $0$ das letzte Fehlerkorrekturwort definiert \parencite[vgl. ][S. 45]{ISO18004}. \\\\
 Die nun generierten Datencodeworte und Fehlerkorrekturworte ergeben nach einer spezifizierten Anordnung nun die grafische Repräsentation des QR-Codes:
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.7]{img/QR-arrangement.PNG}
 \caption{Anordnung einzelner Datencodeworte und Fehlerkorrekturcodeworte in einem QR-Code \parencite[][S. 48]{ISO18004}}
 \end{figure}
-\paragraph{Dekodierung}
+\subsubsection{Dekodierung}
 
 
 
