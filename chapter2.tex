@@ -115,6 +115,32 @@ Ferner sei $\big( \langle h_{11}, h_{12}, ..., h_{1n} \rangle, \langle h_{21}, .
 
 Der Zusammenhang zwischen Generator- und Kontrollmatrix ergibt sich daraus, dass über die Generatormatrix des dualen Codes $C^{\perp}$ zu $C$ überprüft werden kann, ob für ein $x \in\mathbb{F}_{q}$ auch $x \in C$ gilt, indem die Skalarprodukte $x \cdot h_i, \forall i \in \lbrace 1, ..., n-k \rbrace$ gebildet werden. Sollte für mindestens eines dieser Produkte $x \cdot h_i \neq 0$ gelten, so ist $x \notin C$ \parencite[vgl. ][S. 37]{Manz2017}. So ließe sich beispielsweise eine Identitätsabbildung $1_{C}(x)$ auf $C$ bilden.
 
+\subsection{Anwendung}
+Für den Aufbau eines kryptographischen Verfahrens auf Basis von \textit{Reed-Solomon-Codes} ist neben der Angabe der Codeklasse in Mengenkonstruktionsschreibweise auch die algorithmische Betrachtung des Kodierens und Dekodierens samt Fehlerkorrektur notwendig. Dies wird zunächst exemplarisch anhand von \textit{QR-Codes} und anschließend in allgemeiner Form dargestellt.
+\subsubsection{QR-Codes \footnote{Aufgrund des fehlenden Zugriffs auf die spezifizierende ISO-Norm in der aktuellen Fassung bezieht sich diese Arbeit auf den Stand von 2000.}}
+\paragraph{Hintergrund}
+\textit{\ac{QR}-Codes} sind zweidimensionale Matrix-Codes, die 1994 von einer Tochterfirma des Automobilherstellers Toyota entwickelt wurden, ursprünglich, um die Nachverfolgung von Fahrzeugkomponenten zu gewährleisten \parencite[vgl. ][S. 1]{QROverview2016}. Ziel der Entwicklung war es, ein Barcode-Format zu entwickeln, dass hochperformant und einfach zu scannen ist \parencite[vgl. ][S. 1]{QROverview2016}. Kodierbare Daten sind beispielsweise alphanumerische Zeichenketten, URLs oder Bytedata.
+\paragraph{Fehlerkorrektur}
+Zwei Arten von Fehlern sind möglich:
+\begin{itemize}
+\item \textbf{Erasure} -- Ein Symbol, das nicht gescannt oder dekodiert werden kann
+\item \textbf{Error} -- Ein Symbol, das falsch dekodiert wurde
+\end{itemize}
+Durch die Matrixform des Codes führt ein irrtümlich als hell oder dunkel erkanntes Symbol weiterhin zu einem gültigen, wenn auch falschen Codewort. Zur Korrektur dieses falschen Codewortes sind zwei Korrekturworte erforderlich \parencite[vgl. ][S. 33]{ISO18004}. \\\\
+Je nach gewählter Qualitätsstufe ist eine verschiedene Anzahl von Korrekturworten erforderlich, die den Tabellen der ISO-Norm 18004 in der jeweils gültigen Fassung entnommen werden können \parencite[vgl. ][S. 35-44]{ISO18004}. Zu jedem Datenwort (bei Bedarf mit Padding-Worten) wird ein Fehlerkorrekturwort berechnet und an die Daten angefügt.
+\paragraph{Konstruktion von Fehlerkorrekturworten}
+Verwendet wird der Galois-Körper $\mathbb{F}_{2^8}$ mit dem definierenden und auf diesem Körper irreduziblen Polynom $x^8 + x^4 + x^3 + x^2 + 1$. \\\\
+Die \textbf{Datencodeworte} bilden nun die Koeffizienten eines Polynoms, wobei das erste Datencodewort die Koeffizienten des Terms mit dem höchsten Grad repräsentieren und das letzte Datencodewort entsprechend die Koeffizienten des Terms mit dem niedrigsten Grad \parencite[vgl. ][S. 45]{ISO18004}. 
+\\\\
+Dieses Polynom wird nun durch ein für jede QR-Code-Konfiguration in \cite{ISO18004} definiertes \textbf{Generatorpolynom} dividiert. Der dabei entstehende Rest bildet nun die \textbf{Fehlerkorrekturworte}, indem der Koeffizienten des Terms mit dem höchsten Grad das erste Fehlerkorrekturwort und der Koeffizient des Terms mit Grad $0$ das letzte Fehlerkorrekturwort definiert \parencite[vgl. ][S. 45]{ISO18004}. \\\\
+Die nun generierten Datencodeworte und Fehlerkorrekturworte ergeben nach einer spezifizierten Anordnung nun die grafische Repräsentation des QR-Codes:
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{img/QR-arrangement.PNG}
+\caption{Anordnung einzelner Datencodeworte und Fehlerkorrekturcodeworte in einem QR-Code \parencite[][S. 48]{ISO18004}}
+\end{figure}
+
+
 
 
  
