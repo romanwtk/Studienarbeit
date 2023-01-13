@@ -58,7 +58,10 @@ Eine Subklasse der linearen Codes sind die \textbf{zyklischen Codes}.
 Ein $k$-dimensionaler Untervektorraum $C$ von $\mathbb{F}_{q}^{n}$ ist dann ein \textbf{zyklischer Code}, wenn
 \[\forall \, \langle a_0, a_1, ..., a_{n-1} \rangle \in C: \quad \langle a_{n-1}, a_0, a_1, ..., a_{n-2} \rangle \in C\] gilt \parencite[vgl. ][S. 42]{vanLint1973}.
 \end{definition}
-Ein linearer Code ist folglich dann zyklisch, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{Reed-Colomon-Code}, der Gegenstand des nächsten Abschnitts ist.
+Ein linearer Code ist folglich dann zyklisch, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{Reed-Colomon-Code}, der Gegenstand des nächsten Abschnitts ist. Zyklische Codes ermöglichen es, durch ein \textbf{Generatorpolynom} definiert zu werden. Dies ist bei vielen aktuellen Anwendungen von \textit{Reed-Solomon-Codes} der Fall \parencite[vgl. ][S. 6]{WBC11994}.
+\\\\
+Ein Codewort (beziehungsweise ein Codewortpolynom) $c(x)$ eines linearen, zyklischen Codes mit Generatorpolynom $g(x)$ kann als Produkt von Nachrichtpolynom $m(x)$ und Generatorpolynom aufgefasst werden.
+\[c(x) = m(x) \cdot g(x)\]
 \section{Reed-Solomon-Codes}
 Die grundlegende Idee von linearen zyklischen Codes über Polynomen besteht darin, Fehler über Interpolation zu korrigieren. Bildlich gesehen soll also ein Codewort konstruiert werden, dessen einzelnen Komponenten entlang einer interpolierbaren Abbildung aufgereiht sind. Sollte nun ein Übertragungsfehler die Lage eines Punktes (also einer Komponente) verändern, so ist die korrekte Lage durch die anderen Punkte jedoch hinreichend bestimmt und kann korrigiert werden.
 \paragraph{Idee}
@@ -139,6 +142,8 @@ Die nun generierten Datencodeworte und Fehlerkorrekturworte ergeben nach einer s
 \includegraphics[scale=0.7]{img/QR-arrangement.PNG}
 \caption{Anordnung einzelner Datencodeworte und Fehlerkorrekturcodeworte in einem QR-Code \parencite[][S. 48]{ISO18004}}
 \end{figure}
+\paragraph{Dekodierung}
+
 
 
 
