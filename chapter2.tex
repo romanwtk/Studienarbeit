@@ -93,7 +93,7 @@ Bei vielen aktuellen Anwendungen von \textit{Reed-Solomon-Codes} werden Generato
 Die grundlegende Idee von linearen zyklischen Codes über Polynomen besteht darin, Fehler über Interpolation zu korrigieren. Bildlich gesehen soll also ein Codewort konstruiert werden, dessen einzelnen Komponenten entlang einer interpolierbaren Abbildung aufgereiht sind. Sollte nun ein Übertragungsfehler die Lage eines Punktes (also einer Komponente) verändern, so ist die korrekte Lage durch die anderen Punkte jedoch hinreichend bestimmt und kann korrigiert werden.
 \paragraph{Idee}
 Eine Nachricht der Länge $k$ in Form eines Elementes eines endlichen Körpers $\mathbb{F}_{q}^{k}$ kann als Polynom aufgefasst werden, indem die entsprechenden Komponenten der Nachricht die Koeffizienten des Polynoms bilden. Werden nun $n$ paarweise verschiedene Stützstellen aus dem dem Code zugrundeliegenden Körper $\mathbb{F}_{q}^{n}$ ausgewählt, so ergibt die Auswertung des Polynoms an den jeweiligen Stützstellen die Komponenten eines betrachteten Codewortes. \\\\
-Durch bereits $k$ Komponenten des Codewortes ist das Polynom hinreichend bestimmt, sodass $n-k$ Punkte, die nicht auf dem Polynom liegen, als Fehler erkannt und korrigiert werden können.
+Durch bereits $k$ Komponenten des Codewortes ist das Polynom hinreichend bestimmt, sodass $n-k$ Punkte, die während der Übertragung ausgelöscht wurden, und $(n-k)/2$ verfläscht übertragene Punkte als Fehler erkannt und korrigiert werden können.
 \begin{definition}
 Sei $u = \langle u_1, u_2, ..., u_n \rangle \in \mathbb{F}_{q}^{n}$, wobei $\forall i, j \in \lbrace 1, ..., n \rbrace : u_i \neq u_j$. Dann ist $a = \langle a_1, a_2, ..., a_n \rangle \in \mathbb{F}_{q}^{n}$ ein Codewort eines \textbf{Reed-Solomon-Codes} $C$ mit Länge $n$, Dimension $k$ und Minimaldistanz $d$, falls gilt:
 \[C = \lbrace a \mid a_i = f(u_i), \deg f(x) < k, f \in \mathbb{F}_{q}^{n}[x] \rbrace\]
@@ -116,6 +116,11 @@ Auswertung $f(u_i)$& 0 & 4 & 4 & 6 & 2 & 5 & 0 \\
 \item Folglich ergibt sich das Codewort $c = \langle 0, 4, 4, 6, 2, 5, 0 \rangle \in \mathbb{F}_{7}^{7}$.
 \end{itemize}
 \end{example}
+\begin{note}
+Das Generatorpolynom zu einem \textit{Reed-Solomon-Code} ist definiert durch
+\[g(x) = \prod_{j = 1}^{2t} (x - a^{j})\]
+wobei $t$ die Anzahl der durch diesen Code korrigierbaren Fehler repräsentiert, es gilt $n - k = 2t$ \parencite[vgl. ][S. 17]{Zivic2013}.
+\end{note}
 Nun wird in der Literatur gelegentlich auch der zu einem \textit{Reed-Solomon-Code} \textbf{duale Code} verwendet:
 \subsection{Duale Codes}
 \begin{definition}
@@ -170,6 +175,27 @@ Die nun generierten Datencodeworte und Fehlerkorrekturworte ergeben nach einer s
 \caption{Anordnung einzelner Datencodeworte und Fehlerkorrekturcodeworte in einem QR-Code \parencite[][S. 48]{ISO18004}}
 \end{figure}
 \subsubsection{Dekodierung}
+Für die folgenden Schritte wird ein \textit{\ac{QR}-Code} in der Version 1-M betrachtet. Gemäß der Norm wird für diese Version der $[26, 16, 4]_{2^8}$-Reed-Solomon-Code verwendet.\begin{enumerate}
+\item \textbf{Demaskierung} -- Die Daten des QR-Codes sind zum Zweck einer besseren Scan-Qualität maskiert worden, diese Maskierung wird als erstes entfernt, es ergibt sich das empfangene Codewort (mit potenziellen Fehlern) \[R(x) = r_0 + r_{1}x^{1} + ... + r_{25}x^{25}\]
+wobei $\forall i \in \lbrace 1, ..., 25 \rbrace\colon r_i \in \mathbb{F}_{2^8}$.
+\item \textbf{Syndrombildung} -- Ausgehend von der Annahme, dass die Daten als Summe $c(x) + e(x)$ von Codewortpolynom und einem Fehlerpolynom vorliegen, soll nun bestimmt werden, ob Fehler vorliegen. Dafür werden alle \textbf{Syndrome} $S_{i} = R(\alpha^{j}),\, \forall j \in \lbrace 1, ..., 2t \rbrace \land i \in \lbrace 0, ..., 8 \rbrace$ wobei $\alpha$ primitives Element des Körpers $\mathbb{F}_{q}$ ist, gebildet, da das Codewortpolynom für alle Wurzeln des Generatorpolynoms (also die Nullstellen) gemäß dem Nullproduktsatz $0$ ergibt und somit lediglich die Fehlerpolynome verbleiben.
+\item \textbf{Fehlerpositionsermittlung} -- Für die Ermittlung der Fehlerpositionen wird folgendes Gleichungssystem aus den Syndromen gebildet:
+\begin{align*}
+S_0 Y_4 - S_1 Y_3 + S_2 Y_2 - S_3 Y_1 + S_4 = 0 \\
+S_1 Y_4 - S_2 Y_3 + S_3 Y_2 - S_4 Y_1 + S_5 = 0 \\
+S_2 Y_4 - S_3 Y_3 + S_4 Y_2 - S_5 Y_1 + S_6 = 0 \\
+S_3 Y_4 - S_4 Y_3 + S_5 Y_2 - S_6 Y_1 + S_7 = 0
+\end{align*}
+Da Addition und Subtraktion in einem endlichen Körper der Primcharakteristik $2$ gleichbedeutend sind, führen die alternierenden Vorzeichen nicht zu einer Abweichung vom später dargestellten Allgemeinfall. \\\\
+Dieses Gleichungssystem hat mindestens eine nicht-triviale Lösung, sofern die tatsächliche Fehleranzahl $w(e) \leq t$ ist. Mit dieser Lösung ergibt sich das \textbf{Fehlerlokalisiationspolynom}
+\[\sigma(x) = Y_4 + Y_3x + Y_2x^2 + Y_1x^3 + x^4\]
+\item Falls $\sigma(\alpha^j) = 0, \, j \in \lbrace 0, ..., n-1 \rbrace$, so liegt an dieser Stelle $j$ ein Fehler vor.
+\item \textbf{Fehlerwertbestimmung} -- Nun werden die einzelnen Fehlerwerte durch folgendes Gleichungssystem berechnet:
+ \begin{align*}
+...
+\end{align*}
+\end{enumerate}
+
 
 
 
