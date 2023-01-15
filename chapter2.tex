@@ -189,12 +189,19 @@ S_3 Y_4 - S_4 Y_3 + S_5 Y_2 - S_6 Y_1 + S_7 = 0
 Da Addition und Subtraktion in einem endlichen Körper der Primcharakteristik $2$ gleichbedeutend sind, führen die alternierenden Vorzeichen nicht zu einer Abweichung vom später dargestellten Allgemeinfall. \\\\
 Dieses Gleichungssystem hat mindestens eine nicht-triviale Lösung, sofern die tatsächliche Fehleranzahl $w(e) \leq t$ ist. Mit dieser Lösung ergibt sich das \textbf{Fehlerlokalisiationspolynom}
 \[\sigma(x) = Y_4 + Y_3x + Y_2x^2 + Y_1x^3 + x^4\]
-\item Falls $\sigma(\alpha^j) = 0, \, j \in \lbrace 0, ..., n-1 \rbrace$, so liegt an dieser Stelle $j$ ein Fehler vor.
+\item Falls $\sigma(\alpha^j) = 0, \, j \in \lbrace 0, ..., n-1 \rbrace$, so liegt an dieser Stelle $j$ ein Fehler vor. Die Menge aller Fehlerstellen $N(\sigma)$ sei definiert als $\lbrace i= \lbrace 1, ..., n \rbrace \mid \sigma(\alpha^{i}) = 0 \rbrace$.
 \item \textbf{Fehlerwertbestimmung} -- Nun werden die einzelnen Fehlerwerte durch folgendes Gleichungssystem berechnet:
- \begin{align*}
-...
+\begin{align*}
+E_{i_1}\cdot \alpha^{1j_1} + E_{i_2}\cdot \alpha^{1j_2} + ... + E_{i_{w(e)}}\cdot \alpha^{1j_{w(e)}} &= S_0 \\
+E_{i_1}\cdot \alpha^{2j_1} + E_{i_2}\cdot \alpha^{2j_2} + ... + E_{i_{w(e)}}\cdot \alpha^{2j_{w(e)}} &= S_1 \\
+... \\
+E_{i_1}\cdot \alpha^{(n-k-1)j_1} + E_{i_2}\cdot \alpha^{(n-k-1)j_2} + ... + E_{i_{w(e)}}\cdot \alpha^{(n-k-1)j_{w(e)}} &= S_{(n-k-1)} \\
 \end{align*}
+\item \textbf{Fehlerkorrektur} -- Sollte das obige Gleichungssystem eine nicht-triviale Lösung haben, so lassen sich die Fehler korrigieren. Sei $(\epsilon_{i_1}, \epsilon_{i_2}, ..., \epsilon_{i_{w(e)}})$ diese Lösung. Sie wird nun zu einem alle Stellen umfassenden Tupel $(\epsilon_1, ..., \epsilon_n)$ erweitert, wobei für alle Stellen $i \notin N(\sigma)\colon \epsilon_i = 0$ gilt. Die eigentliche Korrektur wird nun über 
+\[C = R - (\epsilon_1, ..., \epsilon_n)\]
+ausgeführt, wobei $C$ nun das korrigierte Codewort darstellt.
 \end{enumerate}
+\parencite[vgl. ][S. 74f.]{ISO18004}
 
 
 
