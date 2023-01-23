@@ -77,7 +77,7 @@ Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codiere
 Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise codiert, sondern über Schieberegister in Abhängigkeit zueinander, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergibt \parencite[vgl. ][S. 752]{Viterbi1971}. Der Ansatz, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weist Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Bedeutung auf Blockcodes liegen. \\\\
 Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codeworte, bietet sich die \textbf{Hamming-Distanz} an.
 \begin{definition}
-Seien $a = \langle a_1, a_2, ..., a_n \rangle$, $b = \langle b_1, b_2, ..., b_n \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{Hamming-Distanz} $d$ von zwei Codeworten $a$ und $b$ definiert als die Anzahl der abweichenden Stellen in $a$ und $b$:
+Seien $a = \langle a_1, a_2, ..., a_n \rangle$, $b = \langle b_1, b_2, ..., b_n \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{Hamming-Distanz} $d$ eine Metrik auf $A^n$. Sie ist definiert als die Anzahl der abweichenden Stellen in zwei Codeworten $a$ und $b$:
 \[d(a, b) = \lvert \lbrace i \mid 1 \leq i \leq n, a_i \neq b_i \rbrace \rvert\]
 Des Weiteren sei die \textbf{Minimaldistanz} eines Blockcodes $C$ mit $\lvert C \rvert > 1$ definiert als 
 \[d(C) = \min \lbrace d(x, y) \mid x, y \in C, x \neq y \rbrace\] \parencite[vgl. ][S. 11]{Manz2017} \parencite[vgl. ][S. 105]{Roman1992} \parencite[vgl. ][S. 155]{Hamming1950}.
@@ -187,7 +187,7 @@ $\forall\, x \in \mathbb{Z}, \: \exists \, -x \in \mathbb{Z}: \quad x + (-x) = 0
 $\forall\, a, b \in \mathbb{Z}: \quad a + b \Leftrightarrow b + a$
 \end{enumerate}
 \item $(\mathbb{Z}, \cdot)$, wobei $\cdot$ die Multiplikation bezeichne, ist keine Gruppe, da die inversen Elemente zu Elementen von $\mathbb{Z}$ nicht Teil von $\mathbb{Z}$ sind.
-\[\forall\, x \in \mathbb{Z}: \quad x \cdot \frac{1}{x} = 1 \text{, aber } \frac{1}{x} \notin \mathbb{Z}\]
+\[\forall\, x \in \mathbb{Z}\setminus \lbrace 1, -1\rbrace : \quad x \cdot \frac{1}{x} = 1 \text{, aber } \frac{1}{x} \notin \mathbb{Z}\]
 \end{itemize}
 \end{example}
 \begin{definition}
@@ -251,7 +251,7 @@ Der Restklassenring $\mathbb{Z} / (3)$ enthält die Elemente $[0], [1] \text{ un
 \end{example} 
 Nun ist die Definition der \textit{Galois-Körper} unmittelbar möglich:
 \begin{definition}
-Sei $p \in \mathbb{P}$. Dann sei $\mathbb{F}_{p}$ der Körper, der durch den Restklassenring $\mathbb{Z} / (p) = \mathbb{Z} / p \mathbb{Z} $ beschrieben wird und folglich die Struktur $\mathbb{F}_{p} = \lbrace 0, 1, ..., p-1 \rbrace$ aufweist. 
+Sei $p \in \mathbb{P}$. Dann sei $\mathbb{F}_{p}$ der Körper, der durch den Restklassenring $\mathbb{Z} / (p) = \mathbb{Z} / p \mathbb{Z} $ beschrieben wird und folglich die Struktur $\mathbb{F}_{p} = \lbrace [0], [1], ..., [p-1] \rbrace$ aufweist. 
 $\mathbb{F}_{p}$ wird dann als \textbf{Galois-Körper} der Ordnung $p$ bezeichnet \parencite[vgl. ][S. 15]{Niederreiter97}\parencite[vgl. ][S. 75]{Fischer2020LA}.
 \end{definition}
 \begin{example}
