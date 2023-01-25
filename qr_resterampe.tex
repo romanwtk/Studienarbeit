@@ -1,0 +1,154 @@
+\section{QR-Codes als Anwendungsbeispiel}
+\textit{Reed-Solomon-Codes} finden aufgrund ihrer vergleichsweise einfachen Codierbarkeit Anwendung in einer Vielzahl von Problemstellungen des Alltags: Neben der Raumfahrt oder der korrekten Wiedergabe von CDs sind sie auch Teil von \textit{QR-Codes}, die im Folgenden als Anwendungsbeispiel betrachtet werden.
+\subsection{Hintergrund und Konzept}
+\textit{\ac{QR}-Codes\footnote{Aufgrund des fehlenden Zugriffs auf die spezifizierende ISO-Norm in der aktuellen Fassung bezieht sich diese Arbeit auf den Stand von 2000.}} sind zweidimensionale Matrix-Codes, die 1994 von einer Tochterfirma des Automobilherstellers Toyota entwickelt wurden, ursprünglich, um die Nachverfolgung von Fahrzeugkomponenten zu gewährleisten \parencite[vgl. ][S. 1]{QROverview2016}. Ziel der Entwicklung war es, ein Barcode-Format zu entwickeln, dass hochperformant und einfach zu scannen ist \parencite[vgl. ][S. 1]{QROverview2016}. Kodierbare Daten sind beispielsweise alphanumerische Zeichenketten, URLs oder Bytedata.
+\subsubsection{Fehlerkorrektur}
+Zwei Arten von Fehlern sind möglich:
+\begin{itemize}
+\item \textbf{Erasure} -- Ein Symbol, das nicht gescannt oder dekodiert werden kann
+\item \textbf{Error} -- Ein Symbol, das falsch dekodiert wurde
+\end{itemize}
+Durch die Matrixform des Codes führt ein irrtümlich als hell oder dunkel erkanntes Symbol weiterhin zu einem gültigen, wenn auch falschen Codewort. Zur Korrektur dieses falschen Codewortes sind zwei Korrekturworte erforderlich \parencite[vgl. ][S. 33]{ISO18004}. \\\\
+Je nach gewählter Qualitätsstufe ist eine verschiedene Anzahl von Korrekturworten erforderlich, die den Tabellen der ISO-Norm 18004 in der jeweils gültigen Fassung entnommen werden können \parencite[vgl. ][S. 35-44]{ISO18004}. Zu jedem Datenwort (bei Bedarf mit Padding-Worten) wird ein Fehlerkorrekturwort berechnet und an die Daten angefügt.
+\subsection{Konstruktion von Fehlerkorrekturworten}
+Verwendet wird der Galois-Körper $\mathbb{F}_{2^8}$ mit dem definierenden und auf diesem Körper irreduziblen Polynom $x^8 + x^4 + x^3 + x^2 + 1$. \\\\
+Die \textbf{Datencodeworte} bilden nun die Koeffizienten eines Polynoms, wobei das erste Datencodewort die Koeffizienten des Terms mit dem höchsten Grad repräsentieren und das letzte Datencodewort entsprechend die Koeffizienten des Terms mit dem niedrigsten Grad \parencite[vgl. ][S. 45]{ISO18004}. 
+\\\\
+Dieses Polynom wird nun durch ein für jede QR-Code-Konfiguration in \cite{ISO18004} definiertes \textbf{Generatorpolynom} dividiert. Der dabei entstehende Rest bildet nun die \textbf{Fehlerkorrekturworte}, indem der Koeffizient des Terms mit dem höchsten Grad das erste Fehlerkorrekturwort und der Koeffizient des Terms mit Grad $0$ das letzte Fehlerkorrekturwort definiert \parencite[vgl. ][S. 45]{ISO18004}. \\\\
+Die nun generierten Datencodeworte und Fehlerkorrekturworte ergeben nach einer spezifizierten Anordnung nun die grafische Repräsentation des QR-Codes:
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{img/QR-arrangement.PNG}
+\caption{Anordnung einzelner Datencodeworte und Fehlerkorrekturcodeworte in einem QR-Code \parencite[][S. 48]{ISO18004}}
+\end{figure}
+\subsection{Dekodierung}
+Für die folgenden Schritte wird ein \textit{\ac{QR}-Code} in der Version 1-M betrachtet. Gemäß der Norm wird für diese Version der $[26, 16, 4]_{2^8}$-Reed-Solomon-Code verwendet.\begin{enumerate}
+\item \textbf{Demaskierung} -- Die Daten des QR-Codes sind zum Zweck einer besseren Scan-Qualität maskiert worden, diese Maskierung wird als erstes entfernt, es ergibt sich das empfangene Codewort (mit potenziellen Fehlern) \[R(x) = r_0 + r_{1}x^{1} + ... + r_{25}x^{25}\]
+wobei $\forall i \in \lbrace 1, ..., 25 \rbrace\colon r_i \in \mathbb{F}_{2^8}$.
+\item \textbf{Syndrombildung} -- Ausgehend von der Annahme, dass die Daten als Summe $c(x) + e(x)$ von Codewortpolynom und einem Fehlerpolynom vorliegen, soll nun bestimmt werden, ob Fehler vorliegen. Dafür werden alle \textbf{Syndrome} $S_{i} = R(\alpha^{j}),\, \forall j \in \lbrace 1, ..., 2t \rbrace \land i \in \lbrace 0, ..., 8 \rbrace$ wobei $\alpha$ primitives Element des Körpers $\mathbb{F}_{q}$ ist, gebildet, da das Codewortpolynom für alle Wurzeln des Generatorpolynoms (also die Nullstellen) gemäß dem Nullproduktsatz $0$ ergibt und somit lediglich die Fehlerpolynome verbleiben.
+\item \textbf{Fehlerpositionsermittlung} -- Für die Ermittlung der Fehlerpositionen wird folgendes Gleichungssystem aus den Syndromen gebildet:
+\begin{align*}
+S_0 Y_4 - S_1 Y_3 + S_2 Y_2 - S_3 Y_1 + S_4 = 0 \\
+S_1 Y_4 - S_2 Y_3 + S_3 Y_2 - S_4 Y_1 + S_5 = 0 \\
+S_2 Y_4 - S_3 Y_3 + S_4 Y_2 - S_5 Y_1 + S_6 = 0 \\
+S_3 Y_4 - S_4 Y_3 + S_5 Y_2 - S_6 Y_1 + S_7 = 0
+\end{align*}
+Da Addition und Subtraktion in einem endlichen Körper der Primcharakteristik $2$ gleichbedeutend sind, führen die alternierenden Vorzeichen nicht zu einer Abweichung vom später dargestellten Allgemeinfall. \\\\
+Dieses Gleichungssystem hat mindestens eine nicht-triviale Lösung, sofern die tatsächliche Fehleranzahl $w(e) \leq t$ ist. Mit dieser Lösung ergibt sich das \textbf{Fehlerlokalisiationspolynom}
+\[\sigma(x) = Y_4 + Y_3x + Y_2x^2 + Y_1x^3 + x^4\]
+\item Falls $\sigma(\alpha^j) = 0, \, j \in \lbrace 0, ..., n-1 \rbrace$, so liegt an dieser Stelle $j$ ein Fehler vor. Die Menge aller Fehlerstellen $N(\sigma)$ sei definiert als $\lbrace i= \lbrace 1, ..., n \rbrace \mid \sigma(\alpha^{i}) = 0 \rbrace$.
+\item \textbf{Fehlerwertbestimmung} -- Nun werden die einzelnen Fehlerwerte durch folgendes Gleichungssystem berechnet:
+\begin{align*}
+E_{i_1}\cdot \alpha^{1j_1} + E_{i_2}\cdot \alpha^{1j_2} + ... + E_{i_{w(e)}}\cdot \alpha^{1j_{w(e)}} &= S_0 \\
+E_{i_1}\cdot \alpha^{2j_1} + E_{i_2}\cdot \alpha^{2j_2} + ... + E_{i_{w(e)}}\cdot \alpha^{2j_{w(e)}} &= S_1 \\
+... \\
+E_{i_1}\cdot \alpha^{(n-k-1)j_1} + E_{i_2}\cdot \alpha^{(n-k-1)j_2} + ... + E_{i_{w(e)}}\cdot \alpha^{(n-k-1)j_{w(e)}} &= S_{(n-k-1)} \\
+\end{align*}
+\item \textbf{Fehlerkorrektur} -- Sollte das obige Gleichungssystem eine nicht-triviale Lösung haben, so lassen sich die Fehler korrigieren. Sei $(\epsilon_{i_1}, \epsilon_{i_2}, ..., \epsilon_{i_{w(e)}})$ diese Lösung. Sie wird nun zu einem alle Stellen umfassenden Tupel $(\epsilon_1, ..., \epsilon_n)$ erweitert, wobei für alle Stellen $i \notin N(\sigma)\colon \epsilon_i = 0$ gilt. Die eigentliche Korrektur wird nun über 
+\[C = R - (\epsilon_1, ..., \epsilon_n)\]
+ausgeführt, wobei $C$ nun das korrigierte Codewort darstellt.
+\end{enumerate}
+\parencite[vgl. ][S. 74f.]{ISO18004}
+\section{Algorithmische Betrachtung}
+Ziel dieses Abschnittes ist es, die Kodierung und Dekodierung von \textit{Reed-Solomon-Codes} als implementierbare Algorithmen zu zeigen, um anschließend darauf aufbauend ein kryptographisches Verfahren entwickeln zu können.
+\subsection{Kodierung von Reed-Solomon-Codes}
+Eine Nachricht $m$ soll ergänzt um ein Fehlerkorrekturcodewort $c$ über einen Kanal übertragen werden. Sender und Empfänger haben sich vor Datenübermittlung auf die Parameter $n, k, d$ und $q$ eines $[n, k, d]_{q}$-\textit{Reed-Solomon-Codes} geeinigt. 
+\begin{enumerate}
+\item Bilden des \textbf{Generatorpolynoms} mit $\alpha$ als primitivem Element
+\[g(x) = (x - \alpha^1) \cdot (x - \alpha^2) \cdot (x - \alpha^3) \cdot ... \cdot (x - \alpha^{2t})\]
+\item Bildung des Polynoms der Nachricht ($m \to m(x)$)
+\[m(x) = m_0 + m_{1}x + m_{2}x^2 + ... + m_{k-1}x^{k-1}, \, \forall i \in \lbrace0, ..., k-1 \rbrace \colon m_i \in \mathbb{F}_{q}\]
+\item Berechnen des \textbf{Fehlerkorrekturwortes}
+\[r(x) = m(x) \cdot x^{n-k} \mod g(x)\]
+Es ist bekannt, dass $c(x) = m(x)g(x)$ gilt. Diese Vorgehensweise hat jedoch den Nachteil, dass sich die zur Fehlerkorrektur zusätzlich eingebrachten Prüfbits an Stellen des Polynoms befinden, die im Codewort eine saubere Trennung in Informations- und Prüfbits unmöglich machen. Daher wird ein anderer Ansatz gewählt, bei dem die zusätzlichen Prüfbits an die Nachricht angehängt werden, während die Nachricht selbst unverändert übernommen wird \parencite[vgl. ][S. 127f.]{Manz2017}
+\item \textbf{Zusammensetzen}
+\[c(x) = m(x) \cdot x^{n-k} + r(x) \]
+Würde hier bloß $c(x) = m(x) + r(x)$ angegeben sein, so könnte nicht ausgeschlossen werden, das sich Terme gleichen Grades gegenseitig aufheben. Daher wird der Informationsteil des Codewortes mittels Multiplikation um $x^{n-k}$ an höhere Potenzen verschoben. In einer technischen Realisierung werden zu diesem Zweck Schieberegister eingesetzt \parencite[vgl. ][S. 126f.]{Manz2017}. Es ergibt sich folglich ein Codewort \[c = \langle r_0, ..., r_{n-k-1}, m_{n-k}, m_{n-k+1}, ..., m_{n-1} \rangle\]
+\parencite[vgl. ][S. 17]{Zivic2013}
+\end{enumerate}
+\subsubsection{Implementierung}
+Das folgende Listing zeigt den systematischen Kodieralgorithmus nach \parencite{Zivic2013} und \parencite{Manz2017} in einer Implementierung im Mathematiksoftwaresystem \textit{SageMath} \parencite{SageMath}.
+\begin{lstlisting}[language=Python, caption={SageMath-Implementierung des Kodieralgorithmus}]
+#!/usr/bin/env sage
+# ...
+
+# Basic Code properties
+q = input("Please type in q, e.g. 2^2: \t")
+n = int(input("Please type in length n: \t"))
+k = int(input("Please type in dimension k: \t"))
+
+# Generate Galois field
+F_q = None
+if len(q.split("^")) < 2:
+  F_q.<a> = GF(int(q))
+elif len(q.split("^")) == 2:
+  F_q.<a> = GF(pow(int(q.split("^")[0]), int(q.split("^")[1])))
+else:
+  print(f"Sorry, unable to work with this q={q}!")
+
+# Generate RS-Code
+R.<x> = PolynomialRing(F_q)
+g = prod(x - a**i for i in range(1, n-k+1))
+print(f"\nGenerator Polynomial: \t\t{g}")	
+
+# Convert Message m=(m_0, m_1, ..., m_{k-1}) to polynomial
+m = input(f"\nPlease type in message tupel\n
+  (m0,m1,...,m{k-1}) of F_({q})^{k}: \t")
+m = [F_q(x) for x in m[1:-1].split(",")]
+
+if len(m) != k:
+  print("\nERROR: The provided message has not exactly k digits!")
+  exit()
+
+m_poly = 0
+i = 0
+while i < len(m):
+  m_poly += (m[i])*(x**i)
+  i += 1
+
+print(f"\nMessage Polynomial: \t\t{m_poly}")
+
+# Coding steps
+(_, r) = (m_poly * x**(n-k)).quo_rem(g)
+print(f"\nRemainder Polynomial: \t\t{r}")
+
+m_shifted = (m_poly * x**(n-k))
+print(f"\nShifted Message Polynomial: \t{m_shifted}")
+
+c = m_shifted + r
+print(f"Concatenated Codeword: \t\t{c}")
+
+coefficients = c.coefficients(sparse=False)
+
+while len(coefficients) < n:
+  coefficients = [0]+coefficients
+
+print(f"\nCodeword Coefficients: \t\t{coefficients}")
+\end{lstlisting}
+\subsection{Fehlerkorrektur und Dekodierung}
+Das im Vergleich zur Kodierung schwierigere Problem, auf dem später auch die kryptographische Sicherheit aufgebaut wird, ist das der Dekodierung und der darin enthaltenen Fehlerkorrektur. Ziel dieses Abschnittes ist es, den syndrombasierten Dekodieralgorithmus nach Peterson, Gorenstein und Zierler darzustellen. Performantere Algorithmen, die an praktischer Bedeutung gewinnen, werden erwähnt, jedoch nicht im Detail dargestellt. 
+\paragraph{Definitionen} Im Folgenden werden die folgenden Definitionen implizit verwendet:
+\begin{itemize}
+\item $R$ bezeichne die möglicherweise \textbf{verfälschte Nachricht}, die nach einer Datenübertragung über einen unsicheren Kanal empfangen wurde.
+\item $C$ bezeichne das dazugehörige fehlerfreie bzw. korrigierte \textbf{Codewort}
+\item $E$ bezeichne das \textbf{Fehlerwort}, das ebenfalls die Länge $n$ von $R$ und $C$ hat, aber nur in $e$ Komponenten ungleich $0$ ist
+\item \textbf{Fehlerkoordinaten} bezeichnen die Stellen von $R$, an denen eine Abweichung im Vergleich zu $C$ feststellbar ist
+\item Die \textbf{Fehlstellennummer} ist definiert als $\alpha^j$, sofern an der $j$-ten Komponente ein Fehler aufgetreten ist und $\alpha$ primitives Element des betrachteten endlichen Körpers $\mathbb{F}_q$ ist. Eine solche Fehlstellennummer wird mit $a_k$ bezeichnet, wobei $\lbrace a_1, ..., a_e \rbrace$ folglich alle Fehlstellen identifiziert.
+\item Die \textbf{Fehlergröße} ist definiert als das Element aus $\mathbb{F}_q$, dass in der Fehlerkoordinate $j$ auftritt. Zu einer Fehlstelle $a_k$ bezeichnet $b_k$ deren Fehlergröße. $\lbrace b_1, ..., b_e \rbrace$ identifiziert folglich alle Fehlergrößen.
+\end{itemize} \parencite[vgl. ][S. 147f.]{Hoffman1991}
+\begin{align*}
+R = C + E &\Leftrightarrow (r_0, r_1, ..., r_n) = (c_0, c_1, ..., c_n) + (e_0, e_1, ..., e_n) \\
+r(x) = c(x) + e(x) &\Leftrightarrow r_0 + r_1 x + ... + r_{n} x^{n} = c_0 + c_1 x + ... + c_{n} x^{n} + e_0 + e_1 x + ... + e_{n} x^{n}
+\end{align*}
+Sei $\alpha$ ein primitives Element des Körpers $\mathbb{F}_{q}$, wobei $q = p^{m}, m \geq 1 \in \mathbb{N}$ gilt. Ferner sei $g(x)$ das Generatorpolynom eines $[n, k, d]_{q}$-\textit{Reed-Solomon-Codes} mit Fehlerkorrekturkapazität $t = \lfloor \frac{n-k}{2} \rfloor$. Dann gilt:
+\[\forall i \in \lbrace 0, ..., 2t \rbrace\colon \, g(\alpha^{i}) = 0\]
+Da $c(x) = m(x)g(x)$ gilt damit sofort $r(\alpha^{i}) = e(\alpha^{i})$.
+Dies ist der Einstieg in den Fehlerkorrekturalgorithmus:
+\begin{enumerate}
+\item Bilden der \textbf{Syndrome} $S_j$ für jede Wurzel $\alpha^{j}$ von $g(x)$:
+\[S_j = r(\alpha^j) = e(\alpha^j) = \sum\limits_{i = 1}^{t} b_i a_{i}^{j}\]
+Die Summe ergibt sich aus der Polynomdarstellung des Fehlerwortes, wobei $\forall a^j = \alpha^{h \cdot j}$ für ein $h$. Alle $a_i$ und $b_i$ sind zu diesem Zeitpunkt jedoch unbekannt und durch das Potenzieren von $a_i$ mit $j$ auch nicht mehr linear. Dadurch wird das Hauptproblem des Dekodierens beschrieben \parencite[vgl. ][S. 148]{Hoffman1991}.
+\item Zum weiteren Vorgehen werde ein \textbf{Fehlerlokalisationspolynom} $\sigma(x)$ konstruiert, dessen Wurzeln alle $a_i \in \lbrace a_1, ..., a_e \rbrace$ sind:
+\[\sigma (x) = (x - a_1)(x - a_2)...(x - a_e)\] und für den in der Praxis häufigen Fall $p = 2$ auch \[\sigma (x) = (a_1 + x)(a_2 + x)...(a_e + x)\]
+
+\end{enumerate}
