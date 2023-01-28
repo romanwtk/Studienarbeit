@@ -49,7 +49,7 @@ Ein \textbf{Untervektorraum} $W$ eines Vektorraums $V$ ist eine Teilmenge $W \su
 \parencite[vgl. ][S. 96]{Fischer2020LA}
 \end{definition}
 \begin{definition}
-Sei $\mathbb{F}_q$ ein endlicher Körper, $\lvert K \rvert = q$. Dann ist ein Blockcode $C$ ein \textbf{linearer Code} mit dem Alphabet $\mathbb{F}_q$ und Länge $n$, falls die Menge $C$ ein \textbf{Untervektorraum} von $\mathbb{F}_{q^n}$ ist \parencite[vgl. ][S. 29]{Manz2017}. 
+Sei $\mathbb{F}_q$ ein endlicher Körper, $\lvert K \rvert = q$. Dann ist ein Blockcode $C$ ein \textbf{linearer Code} mit dem Alphabet $\mathbb{F}_q$ und Länge $n$, falls die Menge $C$ ein \textbf{Untervektorraum} von $\mathbb{F}_{q}^{n}$ ist \parencite[vgl. ][S. 29]{Manz2017}. 
 \end{definition}
 Folglich beschreibt ein linearer Code Tupel der Länge $n$ mit Komponenten aus $\mathbb{F}_q$. Ferner stellt die Untervektorraum-Eigenschaft sicher, dass die Addition von Codeworten und die Multiplikation eines Codewortes mit einem Skalar aus dem übergeordneten endlichen Körper $\mathbb{F}_q$ weiterhin valide Codeworte erzeugt. Dies ist eine elementare Eigenschaft linearer Codes.
 \\\\
@@ -247,12 +247,4 @@ h_0 & h_1 & \cdots & h_{k-1} &
 &= \langle h_0, h_1, \ldots, h_{k-1}, c_k, c_{k+1}, \ldots, c_{n-1}\rangle
 \end{align*}
 \subsubsection{Implementierung}
-Im Anhang \ref{CodingLst} ist die Implementierung des Kodiervorgangs eines verallgemeinerten Reed-Solomon-Codes über endlichen Körpern in \textit{SageMath} dargestellt. Das Skript generiert aus den Stützstellen und Gewichten eine Generatormatrix für die nicht-systematische Kodierung. Die \textit{SageMath}-Funktion \texttt{rref()} führt die Zeilenreduktion anhand des Gauß-Jordan-Algorithmus aus und bildet die reduzierte Stufenform, die für die ersten $k$ Spalten die gewünschte Identitätsmatrix darstellt \parencite[vgl. ][]{SageMath}, \parencite[vgl. ][S. 56f]{Ling2004}.
-
-
-
-
-
-
- 
-
+Im Anhang \ref{CodingLst} ist die Implementierung des Kodiervorgangs eines verallgemeinerten Reed-Solomon-Codes über endlichen Körpern in \textit{SageMath} dargestellt. Das Skript generiert aus den Stützstellen und Gewichten eine Generatormatrix für die nicht-systematische Kodierung. Die Generatormatrix für die systematische Kodierung wird dadurch erzeugt, dass die $k \times k$-Untermatrix der ersten $k$ Spalten invertiert und mit $G$ multipliziert wird. Dadurch wird die systematische Form erreicht. Referenzen und alternative Algorithmen sind dem Anhang \ref{MatrixConversion} zu entnehmen. 

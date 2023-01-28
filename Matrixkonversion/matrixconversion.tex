@@ -1,0 +1,116 @@
+\documentclass[11pt,a4paper,twocolumn, abstract]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[misc]{ifsym}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2cm]{geometry}
+\usepackage[backend=biber, style=IEEE]{biblatex}
+\addbibresource{literature.bib}
+
+\newtheorem{definition}{Definition}
+\newtheorem{note}{Bemerkung}
+\newtheorem{proposition}{Satz}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Beispiel}
+\newtheorem{lemma}{Lemma}
+
+\title{On transforming Generator Matrices of \\$GRS_k$ Codes for Systematic Encoding}
+\subtitle{A Literature Review}
+\author{Roman Wetenkamp\footnote{{\Letter} \href{mailto:s200376@student.dhbw-mannheim.de}{s200376@student.dhbw-mannheim.de}}\\\\\includegraphics[scale=0.6]{../img/logo.jpg}}
+\date{\today}
+
+\begin{document}
+\maketitle
+\abstract{Linear codes like $GRS_k$ are frequently used for error-correction and even cryptographic purposes. Since the encoding is often required to be \textit{systematic}, the goal of this paper was to find algorithms that transform non-systematic generator matrices into systematic ones. The conducted literature review shows that most frequently the inverse of the $k \times k$-submatrix is computed and multiplied to the generator matrix to achieve the \textit{standard form}.}
+\section{Introduction}
+The encoding of information tupels with linear codes is done by matrix multiplication. Since several generator matrices for the same linear code exist, approaches like \textit{systematic encoding} make use of this in order to produce codewords with certain properties. This article deals with the question how existing generator matrices of a linear code can be transformed into systematic ones algorithmically.
+\section{Problem}
+\begin{definition}[\parencite{Huffman10}]
+A code $C$ with length $n$ over a finite field $\mathbb{F}_{q}$ with $q \in \mathbb{P} \text{ or } q = p^m, p \in \mathbb{P} \land m \in \mathbb{N}$ is said to be \textbf{linear} if $C$ forms a linear subspace of $\mathbb{F}_{q}^{n}$.
+\end{definition}
+Linear Codes can be represented by a generator matrix and a parity-check matrix which is the generator matrix of the dual code. \\\\
+An example for a linear code is the class of \textit{Generalized Reed Solomon} codes:
+\begin{definition}[\parencite{MacWilliams77}]
+Let $a = \langle a_0, a_1, \ldots, a_{n-1}\rangle$ be a tupel of pairwise distinct components from $\mathbb{F}_{q}$ and $v = \langle v_0, v_1, \ldots, v_{n-1}\rangle$ be a tupel of components from $\mathbb{F}_{q} \setminus \lbrace 0 \rbrace$. The \textbf{generalized Reed-Solomon code $GRS_k (a, v)$} is now defined by all codewords
+\[c = \langle v_0 f(a_0), v_1 f(a_1), \ldots, v_{n-1} f(a_{n-1}) \rangle\] for all polynomials $f \in \mathbb{F}_{q}[x]/(x^n - 1)$ with $\deg f < k$.
+\end{definition}
+The generator matrix for this class of codes as in \parencite{MacWilliams77} is given by 
+\[G_{GRS} = 
+\left( \begin{array}{cccc}
+v_0 & v_1 & \cdots & v_{n-1} \\
+v_0 a_0 & v_1 a_1 & \cdots & v_{n-1} a_{n-1} \\
+\vdots & \vdots &  & \vdots \\
+v_0 a_{0}^{k-1} & v_1 a_{1}^{k-1} & \cdots & v_{n-1} a_{n-1}^{k-1}
+\end{array}\right)
+\]
+\begin{definition}[\parencite{Huffman10}]
+A generator matrix $G$ is called to be \textbf{systematic} if it has the form $G = [ I_k \mid P_{n-k}]$ with $I_k$ being the $k \times k$-identity matrix and $P_{n-k}$ being the $k \times (n-k)$ matrix for generating parity-check bits.
+\end{definition}
+Since the matrix $G_{GRS}$ is in \textit{non-systematic} form, an algorithm for transforming this matrix into a \textit{systematic} form is required.
+\section{Method}
+A literature review is conducted.
+\begin{itemize}
+\item \textit{Question of Research:} Which algorithms generate systematic generator matrices for linear codes like Generalized Reed Solomon?
+\item \textit{Derived search terms:} "Generalized Reed Solomon" $\land$ ("Systematic Encoding" $\lor$ "Generator Matrix"); "Generator Matrix" $\land$ ("Standard Form" $\lor$ "Systematic Form");
+\item \textit{Catalogues / Databases:} IEEE Xplore; Google Scholar; JSTOR; KIT KVK;
+\item \textit{Scope:} Titles and other metadata
+\item \textit{Criteria for Selection:} Implementability; Efficiency; Applicability;
+\end{itemize}
+Since a variety of different shaped and constructed generator matrices is found among linear codes in general, it seems to be ineffective to search for terms like "Linear codes systematic encoding" containing no information on specific code classes. To be able to find general algorithms that work for several types of linear codes, the second search term was introduced.
+\section{Results}
+Using the first search term "Generalized Reed Solomon systematic encoding", the following results was gathered:
+\begin{itemize}
+\item \citeauthor{Brauchle11} points out that matrices of Generalized Reed Solomon codes are \textit{Vandermonde} matrices and proposes a new algorithm for the recovery of erased symbols \parencite{Brauchle11}. The search term "Vandermonde matrix Systematic conversion" will be added to this papers scope. \parencite{Brauchle11} references \parencite{Brauchle09}.
+\item In \parencite{Brauchle09} an algorithm for a systematic encoding of Reed-Solomon codes with arbitrary parity positions (neither pre- or postponed to the information bits) is proposed. \citeauthor{Brauchle09} show that for a given parity-check \textit{Vandermonde} matrix $H = $
+\hspace{-0.5cm}\[\left( 
+\begin{array}{cccc}
+1 & 1 & \cdots & 1 \\
+\alpha^0 & \alpha^1 & \cdots & \alpha^{n-1} \\
+\vdots & \vdots & & \vdots \\
+\alpha^{0\cdot (2t - 1)} & \alpha^{1\cdot (2t - 1)} & \cdots & \alpha^{(n-1)\cdot (2t - 1)}
+\end{array}\right)\] a systematic form can be derived by multiplying the original matrix with the inverse of the $2t \times 2t$-submatrix $B_{2t}$:
+\[H = [ A \mid B_{2t}] \; \Rightarrow \; H_{sys} = B_{2t}^{-1} H = [P \mid I_{2t}]\]
+\item \citeauthor{Mattoussi12} compare in their paper \parencite{Mattoussi12} the construction of systematic generator matrices using \textit{Vandermonde} and \textit{Hankel} matrices. Their Hankel-based approach has no need for matrix inversions and is therefore considered to be faster and simpler \parencite{Mattoussi12}.
+\end{itemize}
+The second search term "Generalized Reed Solomon Generator Matrix" delivers one additional result:
+\begin{itemize}
+\item \citeauthor{Roth85} proofed in \parencite{Roth85} that a $GRS_k(\alpha, v)$ code with length $n$ has a systematic generator matrix $G = [I \mid A]$ where $A$ is a $k \times (n-k)$ \textit{Generalized Cauchy matrix}. Their proof is constructive, hence a systematic generator matrix can be constructed for a given non-systematic generator matrix using the formulas in \parencite{Roth85}.
+\end{itemize}
+The term "Generator Matrix Standard Form" gives related procedures:
+\begin{itemize}
+\item \citeauthor{Nakkiran16} describe in \parencite{Nakkiran16} the "systematic remapping" operation in order to generate systematic codewords from non-systematic generator matrices: Let $G$ be a $k \times n$-generator matrix. $G_k$ denotes the $k \times k$-submatrix consisting of the first $k$ columns of $G$. Since encoding is done by $c = G \cdot m$ for an information tuple $m$ of length $k$, the \textit{remapping step} and systematic encoding is defined by
+\[\overline{m} = G_{k}^{-1} \cdot m \; \Rightarrow \; c_{sys} = G \cdot \overline{m}\]
+\end{itemize}
+Several papers described here reference \parencite{Hill86}. \citeauthor{Hill86} proposes an algorithm for transforming a generator matrix $G$ to \textit{standard form} using elementar operations like row/column permutation, row multiplications with scalars or adding multiples of a row to another.
+\begin{algorithm}
+\caption{Algorithm for generating a standard form matrix after \parencite{Hill86}}
+\begin{algorithmic}
+\Require $G = (g_{ij})_{1\leq i \leq k, \, 1 \leq j \leq n}$ 
+\For{$j \in \lbrace 1, \ldots, k \rbrace$}
+	\If{$g_{jj} = 0$}
+		\If{$i \in \lbrace j+1, \ldots, k \rbrace\colon g_{ji} \neq 0$}
+			\State row($g_{jj}$) $\gets$ row($g_{ij}$))
+		\Else 
+			\State col($g_{jj}$) $\gets$ col($g_{jh} \neq 0$)
+		\EndIf
+	\EndIf
+	\State row($g_{jj}$) $\gets$ row($g_{jj}$) $\cdot g_{jj}^{-1}$
+	\For{$i \in \lbrace 1, 2, \ldots, k\rbrace\colon i \neq j$}
+		\State row($g_{i0}$) $\gets$ row($g_{i1}$) $- g_{ij} \cdot$ row($g_{1j}$)   
+	\EndFor
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+\section{Conclusion}
+The research has shown that the default approach for systematic encoding of linear codes is given by \textit{Vandermonde} matrices. For a given non-systematic generator matrix, the $k \times k$-submatrix is inverted and multiplied with $G$ to achieve the systematic form $G_{sys} = [I_k \mid P]$. Since matrix inversion can be a exhaustive task for large matrices, alternative approaches using \textit{Hankel} or \textit{Cauchy} matrices could be taken into consideration. Even row and column operations could be used algorithmically to achieve a systematic generator matrix, but it should be pointed out that this algorithm  does not seem to be more efficient than matrix inversion since matrix inversion is performance engineered in many programming libraries. \\\\
+Specific solutions for $GRS_k$ codes were not discovered during the conducted literature review. Since this literature review was not done systematically and a comparison of results did not take place, further investigation is required to find and verify the most efficient algorithm for the underlying question.
+\printbibliography
+\end{document}

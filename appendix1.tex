@@ -69,8 +69,9 @@ G = matrix(F_q, rows)
 print(f"\nGenerator matrix: \n{G}")
 
 # Generate systematic Generator Matrix G_S of GRS_k(a, v)
-G_S = G.rref()
-print(f"\nEnchelon form matrix: \n{G_S}")
+A = G.submatrix(0,0,k,k)
+G_S = A.inverse() * G
+print(f"\nSystematic form matrix: \n{G_S}")
 
 # Perform Encoding
 h = input(f"\nPlease type in message tupel \nh = (h_0, ..., h_{k-1}): \t\t\t")
@@ -88,3 +89,23 @@ C_S = h_v * G_S
 print(f"\nCodeword non-systematic approach:\t{C.rows()[0]}")
 print(f"Codeword systematic approach:\t\t{C_S.rows()[0]}")
 \end{lstlisting}
+\section{Transformieren der Generatormatrix in die systematische Form}
+\label{MatrixConversion}
+Die folgende Ausarbeitung stellt die Ergebnisse einer Recherche zu Algorithmen dar, die es ermöglichen, aus nicht-systematischen Generatormatrizen systematische zu konstruieren. Sie entstand als Nebenprodukt zu dieser Studienarbeit und ist hier in Gänze dargestellt, da sie weder publiziert noch zitierfähig ist.
+\begin{figure}[h!]
+\noindent
+\centering
+\includegraphics[scale=0.75, page=1]{Matrixkonversion/matrixconversion.pdf}
+\end{figure}
+\pagebreak
+\begin{figure}[h!]
+\noindent
+\centering
+\includegraphics[scale=0.75, page=2]{Matrixkonversion/matrixconversion.pdf}
+\end{figure}
+\pagebreak
+\begin{figure}[h!]
+\noindent
+\centering
+\includegraphics[scale=0.75, page=3]{Matrixkonversion/matrixconversion.pdf}
+\end{figure}
