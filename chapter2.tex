@@ -247,4 +247,17 @@ h_0 & h_1 & \cdots & h_{k-1} &
 &= \langle h_0, h_1, \ldots, h_{k-1}, c_k, c_{k+1}, \ldots, c_{n-1}\rangle
 \end{align*}
 \subsubsection{Implementierung}
-Im Anhang \ref{CodingLst} ist die Implementierung des Kodiervorgangs eines verallgemeinerten Reed-Solomon-Codes über endlichen Körpern in \textit{SageMath} dargestellt. Das Skript generiert aus den Stützstellen und Gewichten eine Generatormatrix für die nicht-systematische Kodierung. Die Generatormatrix für die systematische Kodierung wird dadurch erzeugt, dass die $k \times k$-Untermatrix der ersten $k$ Spalten invertiert und mit $G$ multipliziert wird. Dadurch wird die systematische Form erreicht. Referenzen und alternative Algorithmen sind dem Anhang \ref{MatrixConversion} zu entnehmen. 
+Im Anhang \ref{CodingLst} ist die Implementierung des Kodiervorgangs eines verallgemeinerten Reed-Solomon-Codes über endlichen Körpern in \textit{SageMath} dargestellt. Das Skript generiert aus den Stützstellen und Gewichten eine Generatormatrix für die nicht-systematische Kodierung. Die Generatormatrix für die systematische Kodierung wird dadurch erzeugt, dass die $k \times k$-Untermatrix der ersten $k$ Spalten invertiert und mit $G$ multipliziert wird. Dadurch wird die systematische Form erreicht. Referenzen und alternative Algorithmen sind dem Anhang \ref{MatrixConversion} zu entnehmen.
+\subsection{Dekodierung}
+Nachdem (nicht-)systematisch erzeugte Codeworte nun über einen unzuverlässigen Kanal übertragen wurden, werden Fehlerkorrektur- und Dekodieralgorithmen angewandt, um die übertragenen Informationen zu erhalten. \\\\
+Im Folgenden wird der \textbf{syndrombasierte} Dekodieralgorithmus für eine maximale Fehleranzahl von $\lfloor\frac{n-k}{2}\rfloor$ dargestellt. Der alternative Ansatz des \textbf{listen-basierten} Dekodierens, der die Korrektur von einer größeren Anzahl an Fehlern ermöglicht, wird ohne vertiefte Darstellung erwähnt.
+\subsubsection{Syndrombasierter Dekodieralgorithmus}
+Gegeben sei ein verallgemeinerter Reed-Solomon-Code $GRS_k (a, v)$ mit Auswertungsstellen $a = \langle a_0, ..., a_{n-1}\rangle$, $\forall i, j \in \lbrace 0, ..., n-1 \rbrace\colon a_i, a_j \in \mathbb{F}_q \land a_i \neq a_j$ und Gewichten $v = \langle v_0, ..., v_{n-1} \rangle$, $\forall i \in \lbrace 0, ..., n-1 \rbrace\colon v_i \in \mathbb{F}_{q}\setminus \lbrace 0 \rbrace$. Ferner sei $\alpha$ primitives Element des zugrundeliegenden Körpers $\mathbb{F}_{q}$. \\
+Nach einem Datenübertragungsvorgang wurde ein Tupel $r = \langle r_0, r_1, ..., r_{n-1}\rangle$ empfangen, das sich aus dem korrekten Codeworttupel $c = \langle c_0, c_1, ..., c_{n-1}\rangle$ und einem Fehlertupel $e = \langle e_0, e_1, ..., e_{n-1}\rangle$ zusammensetzt, wobei die Anzahl der Komponenten von $e$, die nicht null sind, nicht größer als $\lfloor\frac{n-k}{2}\rfloor$ sein darf, andernfalls ist es nicht möglich, mit diesem Dekodieralgorithmus das korrekte Codewort aus $r$ zu ermitteln. \\
+Basis des Dekodierens bilden nun $n-k-1$ Syndrome, die sich aus der Multiplikation der Paritätsprüfmatrix $H$ mit dem empfangenen Wort $r$ ergeben:
+\begin{definition}
+Das $l$-te \textbf{Syndrom} eines Wortes $r$ sei definiert als
+\[S_l = \sum\limits_{j=0}^{n-1}r_{j}v_{j}\alpha_{j}^{l}\]
+\parencite[vgl. ][S. 184]{Roth06}
+\end{definition}
+Aus der Definition der Paritätsprüfmatrix folgt, dass $r$ genau dann ein gültiges Codewort des betrachteten $GRS_k(a, v)$-Codes ist, falls alle Syndrome gleich null sind. Da zweifelsfrei für jedes Codewort-Syndrom $\sum\limits_{j=0}^{n-1}c_j v_j \alpha_{j}^{l} = 0$ gilt, gibt die Betrachtung der Fehlerwortsyndrome Aufschluss darüber, 
