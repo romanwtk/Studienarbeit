@@ -253,11 +253,22 @@ Nachdem (nicht-)systematisch erzeugte Codeworte nun über einen unzuverlässigen
 Im Folgenden wird der \textbf{syndrombasierte} Dekodieralgorithmus für eine maximale Fehleranzahl von $\lfloor\frac{n-k}{2}\rfloor$ dargestellt. Der alternative Ansatz des \textbf{listen-basierten} Dekodierens, der die Korrektur von einer größeren Anzahl an Fehlern ermöglicht, wird ohne vertiefte Darstellung erwähnt.
 \subsubsection{Syndrombasierter Dekodieralgorithmus}
 Gegeben sei ein verallgemeinerter Reed-Solomon-Code $GRS_k (a, v)$ mit Auswertungsstellen $a = \langle a_0, ..., a_{n-1}\rangle$, $\forall i, j \in \lbrace 0, ..., n-1 \rbrace\colon a_i, a_j \in \mathbb{F}_q \land a_i \neq a_j$ und Gewichten $v = \langle v_0, ..., v_{n-1} \rangle$, $\forall i \in \lbrace 0, ..., n-1 \rbrace\colon v_i \in \mathbb{F}_{q}\setminus \lbrace 0 \rbrace$. Ferner sei $\alpha$ primitives Element des zugrundeliegenden Körpers $\mathbb{F}_{q}$. \\
-Nach einem Datenübertragungsvorgang wurde ein Tupel $r = \langle r_0, r_1, ..., r_{n-1}\rangle$ empfangen, das sich aus dem korrekten Codeworttupel $c = \langle c_0, c_1, ..., c_{n-1}\rangle$ und einem Fehlertupel $e = \langle e_0, e_1, ..., e_{n-1}\rangle$ zusammensetzt, wobei die Anzahl der Komponenten von $e$, die nicht null sind, nicht größer als $\lfloor\frac{n-k}{2}\rfloor$ sein darf, andernfalls ist es nicht möglich, mit diesem Dekodieralgorithmus das korrekte Codewort aus $r$ zu ermitteln. \\
+Nach einem Datenübertragungsvorgang wurde ein Tupel $r = \langle r_0, r_1, ..., r_{n-1}\rangle$ empfangen, das sich aus dem korrekten \textbf{Codeworttupel} $c = \langle c_0, c_1, ..., c_{n-1}\rangle$ und einem \textbf{Fehlertupel} $e = \langle e_0, e_1, ..., e_{n-1}\rangle$ zusammensetzt, wobei die Anzahl der Komponenten von $e$, die nicht null sind, nicht größer als $\lfloor\frac{n-k}{2}\rfloor$ sein darf, andernfalls ist es nicht möglich, mit diesem Dekodieralgorithmus das korrekte Codewort aus $r$ zu ermitteln. Im Folgenden bezeichne $k_1, ..., k_e$ die \textbf{Fehlerstellen} im empfangenen Wort, wobei $e < t$ gelten muss. $\alpha^{k_j}$ bezeichne die \textbf{Fehlstellennummer} und $e_{k_{j}}$ die \textbf{Fehlergröße} an der Stelle $k_j$. \\
 Basis des Dekodierens bilden nun $n-k-1$ Syndrome, die sich aus der Multiplikation der Paritätsprüfmatrix $H$ mit dem empfangenen Wort $r$ ergeben:
 \begin{definition}
 Das $l$-te \textbf{Syndrom} eines Wortes $r$ sei definiert als
 \[S_l = \sum\limits_{j=0}^{n-1}r_{j}v_{j}\alpha_{j}^{l}\]
 \parencite[vgl. ][S. 184]{Roth06}
 \end{definition}
-Aus der Definition der Paritätsprüfmatrix folgt, dass $r$ genau dann ein gültiges Codewort des betrachteten $GRS_k(a, v)$-Codes ist, falls alle Syndrome gleich null sind. Da zweifelsfrei für jedes Codewort-Syndrom $\sum\limits_{j=0}^{n-1}c_j v_j \alpha_{j}^{l} = 0$ gilt, sind die Fehlerwortsyndrome äquivalent zu den Syndromen obiger Definition. Die Betrachtung dieser Syndrome gibt Aufschluss darüber, an welchen Stellen Fehler während der Übertragung aufgetreten sind.
+Aus der Definition der Paritätsprüfmatrix folgt, dass $r$ genau dann ein gültiges Codewort des betrachteten $GRS_k(a, v)$-Codes ist, falls alle Syndrome gleich null sind. Da zweifelsfrei für jedes Codewort-Syndrom $\sum\limits_{j=0}^{n-1}c_j v_j \alpha_{j}^{l} = 0$ gilt, sind die Fehlerwortsyndrome äquivalent zu den Syndromen obiger Definition. Die Betrachtung dieser Syndrome gibt Aufschluss darüber, an welchen Stellen Fehler während der Übertragung aufgetreten sind.\\\\
+Durch die Syndrome ergibt sich folgendes Gleichungssystem:
+\begin{align*}
+S_1 &= e_0 v_0 \alpha_0 + e_1 v_1 \alpha_1 + \ldots + e_{n-1} v_{n-1} \alpha_{n-1} \\
+S_2 &= e_0 v_0 \alpha_{0}^{2} + e_1 v_1 \alpha_{1}^{2} + \ldots + e_{n-1} v_{n-1} \alpha_{n-1}^{2} \\
+\vdots \\
+S_{n-k-1} &= e_0 v_0 \alpha_{0}^{n-k-1} + e_1 v_1 \alpha_{1}^{n-k-1} + \ldots + e_{n-1} v_{n-1} \alpha_{n-1}^{n-k-1} 
+\end{align*}
+Da dieses Gleichungssystem jedoch angesichts der Exponenten nicht linear ist, lässt sich ohne großen Rechenaufwand keine triviale Lösung bestimmen, die jedoch für die Berechnung der Fehlerpositionen und Fehlergrößen notwendig wäre \parencite[vgl. ][S. 248]{Moon05} \parencite[vgl. ][S. 180f]{Huffman10} und \parencite[vgl. ][S. 148]{Hoffman1991}. \\\\
+Stattdessen wird ein \textbf{Fehlerlokalisationspolynom} definiert:
+\[\sigma(x) = \prod\limits_{j = 1}^{e}(1 - x \cdot \alpha_{k_{j}})\]
+Jede inverse Fehlerstellennummer $\alpha_{k_{j}}^{-1}$ ist Wurzel dieses Polynoms \parencite[vgl. ][S. 185]{Roth06} \parencite[vgl. ][S. 180f]{Huffman10}.
