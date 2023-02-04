@@ -250,17 +250,17 @@ h_0 & h_1 & \cdots & h_{k-1} &
 Im Anhang \ref{CodingLst} ist die Implementierung des Kodiervorgangs eines verallgemeinerten Reed-Solomon-Codes über endlichen Körpern in \textit{SageMath} dargestellt. Das Skript generiert aus den Stützstellen und Gewichten eine Generatormatrix für die nicht-systematische Kodierung. Die Generatormatrix für die systematische Kodierung wird dadurch erzeugt, dass die $k \times k$-Untermatrix der ersten $k$ Spalten invertiert und mit $G$ multipliziert wird. Dadurch wird die systematische Form erreicht. Referenzen und alternative Algorithmen sind dem Anhang \ref{MatrixConversion} zu entnehmen.
 \subsection{Dekodierung}
 Nachdem (nicht-)systematisch erzeugte Codeworte nun über einen unzuverlässigen Kanal übertragen wurden, werden Fehlerkorrektur- und Dekodieralgorithmen angewandt, um die übertragenen Informationen zu erhalten. \\\\
-Im Folgenden wird der \textbf{syndrombasierte} Dekodieralgorithmus für eine maximale Fehleranzahl von $\lfloor\frac{n-k}{2}\rfloor$ dargestellt. Der alternative Ansatz des \textbf{listen-basierten} Dekodierens, der die Korrektur von einer größeren Anzahl an Fehlern ermöglicht, wird ohne vertiefte Darstellung erwähnt.
+Im Folgenden wird der \textbf{syndrombasierte} Dekodieralgorithmus für eine maximale Fehleranzahl von $t = \lfloor\frac{n-k}{2}\rfloor$ dargestellt. Der alternative Ansatz des \textbf{listen-basierten} Dekodierens, der die Korrektur von einer größeren Anzahl an Fehlern ermöglicht, wird ohne vertiefte Darstellung erwähnt.
 \subsubsection{Syndrombasierter Dekodieralgorithmus}
 Gegeben sei ein verallgemeinerter Reed-Solomon-Code $GRS_k (a, v)$ mit Auswertungsstellen $a = \langle a_0, ..., a_{n-1}\rangle$, $\forall i, j \in \lbrace 0, ..., n-1 \rbrace\colon a_i, a_j \in \mathbb{F}_q \land a_i \neq a_j$ und Gewichten $v = \langle v_0, ..., v_{n-1} \rangle$, $\forall i \in \lbrace 0, ..., n-1 \rbrace\colon v_i \in \mathbb{F}_{q}\setminus \lbrace 0 \rbrace$. Ferner sei $\alpha$ primitives Element des zugrundeliegenden Körpers $\mathbb{F}_{q}$. \\
-Nach einem Datenübertragungsvorgang wurde ein Tupel $r = \langle r_0, r_1, ..., r_{n-1}\rangle$ empfangen, das sich aus dem korrekten \textbf{Codeworttupel} $c = \langle c_0, c_1, ..., c_{n-1}\rangle$ und einem \textbf{Fehlertupel} $e = \langle e_0, e_1, ..., e_{n-1}\rangle$ zusammensetzt, wobei die Anzahl der Komponenten von $e$, die nicht null sind, nicht größer als $\lfloor\frac{n-k}{2}\rfloor$ sein darf, andernfalls ist es nicht möglich, mit diesem Dekodieralgorithmus das korrekte Codewort aus $r$ zu ermitteln. Im Folgenden bezeichne $k_1, ..., k_e$ die \textbf{Fehlerstellen} im empfangenen Wort, wobei $e < t$ gelten muss. $\alpha^{k_j}$ bezeichne die \textbf{Fehlstellennummer} und $e_{k_{j}}$ die \textbf{Fehlergröße} an der Stelle $k_j$. \\
+Nach einem Datenübertragungsvorgang wurde ein Tupel $r = \langle r_0, r_1, ..., r_{n-1}\rangle$ empfangen, das sich aus dem korrekten \textbf{Codeworttupel} $c = \langle c_0, c_1, ..., c_{n-1}\rangle$ und einem \textbf{Fehlertupel} $e = \langle e_0, e_1, ..., e_{n-1}\rangle$ zusammensetzt, wobei die Anzahl der Komponenten von $e$, die nicht null sind, nicht größer als $t = \lfloor\frac{n-k}{2}\rfloor$ sein darf, andernfalls ist es nicht möglich, mit diesem Dekodieralgorithmus das korrekte Codewort aus $r$ zu ermitteln. Im Folgenden bezeichne $k_1, ..., k_{\epsilon}$ die \textbf{Fehlerstellen} im empfangenen Wort, wobei $\epsilon < t$ gelten muss. $\alpha^{k_j}$ bezeichne die \textbf{Fehlstellennummer} und $e_{k_{j}}$ die \textbf{Fehlergröße} an der Stelle $k_j$. \\
 Basis des Dekodierens bilden nun $n-k-1$ Syndrome, die sich aus der Multiplikation der Paritätsprüfmatrix $H$ mit dem empfangenen Wort $r$ ergeben:
 \begin{definition}
 Das $l$-te \textbf{Syndrom} eines Wortes $r$ sei definiert als
 \[S_l = \sum\limits_{j=0}^{n-1}r_{j}v_{j}\alpha_{j}^{l}\]
 \parencite[vgl. ][S. 184]{Roth06}
 \end{definition}
-Aus der Definition der Paritätsprüfmatrix folgt, dass $r$ genau dann ein gültiges Codewort des betrachteten $GRS_k(a, v)$-Codes ist, falls alle Syndrome gleich null sind. Da zweifelsfrei für jedes Codewort-Syndrom $\sum\limits_{j=0}^{n-1}c_j v_j \alpha_{j}^{l} = 0$ gilt, sind die Fehlerwortsyndrome äquivalent zu den Syndromen obiger Definition. Die Betrachtung dieser Syndrome gibt Aufschluss darüber, an welchen Stellen Fehler während der Übertragung aufgetreten sind.\\\\
+Aus der Definition der Paritätsprüfmatrix folgt, dass $r$ genau dann ein gültiges Codewort des betrachteten $GRS_k(a, v)$-Codes ist, falls alle Syndrome gleich null sind. Da zweifelsfrei für jedes Codewort-Syndrom $\sum\limits_{j=0}^{n-1}c_j v_j \alpha_{j}^{l} = 0$ gilt, sind die Fehlerwortsyndrome äquivalent zu den Syndromen obiger Definition. Ferner gilt sogar $S_l = \sum\limits_{j=1}^{\epsilon} e_{k_{j}}v_{j}\alpha_{j}^{l}$, da die Fehlergröße $e_j$ an nicht fehlerhaften Stellen gleich $0$ sein muss. Die Betrachtung dieser Syndrome gibt Aufschluss darüber, an welchen Stellen Fehler während der Übertragung aufgetreten sind.\\\\
 Durch die Syndrome ergibt sich folgendes Gleichungssystem:
 \begin{align*}
 S_1 &= e_0 v_0 \alpha_0 + e_1 v_1 \alpha_1 + \ldots + e_{n-1} v_{n-1} \alpha_{n-1} \\
@@ -268,7 +268,43 @@ S_2 &= e_0 v_0 \alpha_{0}^{2} + e_1 v_1 \alpha_{1}^{2} + \ldots + e_{n-1} v_{n-1
 \vdots \\
 S_{n-k-1} &= e_0 v_0 \alpha_{0}^{n-k-1} + e_1 v_1 \alpha_{1}^{n-k-1} + \ldots + e_{n-1} v_{n-1} \alpha_{n-1}^{n-k-1} 
 \end{align*}
-Da dieses Gleichungssystem jedoch angesichts der Exponenten nicht linear ist, lässt sich ohne großen Rechenaufwand keine triviale Lösung bestimmen, die jedoch für die Berechnung der Fehlerpositionen und Fehlergrößen notwendig wäre \parencite[vgl. ][S. 248]{Moon05} \parencite[vgl. ][S. 180f]{Huffman10} und \parencite[vgl. ][S. 148]{Hoffman1991}. \\\\
+Da dieses Gleichungssystem jedoch angesichts der Exponenten nicht linear ist, lässt sich ohne großen Rechenaufwand keine triviale Lösung bestimmen, die jedoch für die Berechnung der Fehlerpositionen und Fehlergrößen notwendig wäre \parencite[vgl. ][S. 248]{Moon05} \parencite[vgl. ][S. 180f]{Huffman10} \parencite[vgl. ][S. 148]{Hoffman1991}. \\\\
 Stattdessen wird ein \textbf{Fehlerlokalisationspolynom} definiert:
-\[\sigma(x) = \prod\limits_{j = 1}^{e}(1 - x \cdot \alpha_{k_{j}})\]
-Jede inverse Fehlerstellennummer $\alpha_{k_{j}}^{-1}$ ist Wurzel dieses Polynoms \parencite[vgl. ][S. 185]{Roth06} \parencite[vgl. ][S. 180f]{Huffman10}.
+\[\sigma(x) = \prod\limits_{j = 1}^{e}(1 - x \cdot \alpha_{k_{j}}) = 1 + \sum\limits_{i=1}^{e} \sigma_{i} x^{i}\]
+Jede inverse Fehlerstellennummer $\alpha_{k_{j}}^{-1}$ ist Wurzel dieses Polynoms \parencite[vgl. ][S. 180f]{Huffman10} \parencite[vgl. ][S. 185]{Roth06}. Ziel ist es nun, die Unbekannten $\sigma_j$ zu bestimmen, um damit die Fehlerstellennummern ermitteln zu können. \\\\
+Gemäß obiger Definition folgt
+\[\sigma (\alpha_{k_{j}}^{-1}) = 1 + \sigma_1 \alpha_{k_{j}}^{-1} + \sigma_2 \alpha_{k_{j}}^{-2} + \ldots + \sigma_\epsilon \alpha_{k_{j}}^{-\epsilon} = 0\]
+Um nun ein lineares Gleichungssystem zu erhalten, dessen Lösung die Fehlerstellennummern angibt, ist es erforderlich, das durch die Syndrome erzeugte Gleichungssystem mit dem Fehlerlokalisationspolynom in Verbindung zu setzen \parencite[vgl. ][S. 181f.]{Huffman10}\parencite[vgl. ][S. 148f.]{Hoffman1991}. Zunächst wird obige Gleichung dafür mit $e_{j}v_{j}\alpha_{j}^{l+\epsilon}$ multipliziert:
+\[e_{j}v_{j}\alpha_{j}^{l+\epsilon} + \sigma_1 e_{j}v_{j}\alpha_{j}^{l+\epsilon-1} + \ldots + \sigma_v e_{j}v_{j}\alpha_{j}^{l} = 0\]
+Um so nun zu den Syndromen zu gelangen, ist die Summenbildung für $j = 1, \ldots, e$ erforderlich:
+\[\sum\limits_{j=1}^{\epsilon}e_{j}v_{j}\alpha_{j}^{l+\epsilon} + \sigma_1 \sum\limits_{j=1}^{\epsilon}e_{j}v_{j}\alpha_{j}^{l+\epsilon-1} + \ldots + \sigma_\epsilon \sum\limits_{j=1}^{\epsilon}e_{j}v_{j}\alpha_{j}^{l} = 0\]
+Gemäß der Definition der Syndrome ergibt sich
+\[S_{l+e} + \sigma_1 S_{l+e-1} + \ldots + \sigma_\epsilon S_l = 0\] und damit ein lineares Gleichungssystem
+\begin{align*}
+S_1 \sigma_\epsilon + S_2 \sigma_{\epsilon-1} + \ldots + S_\epsilon \sigma_1 = 0 \\
+S_2 \sigma_\epsilon + S_3 \sigma_{\epsilon-1} + \ldots + S_{\epsilon+1} \sigma_1 = 0 \\
+\vdots \\
+S_\epsilon \sigma_\epsilon + S_{\epsilon + 1} \sigma_{\epsilon-1} + \ldots + S_{2\epsilon - 1} \sigma_1 = 0
+\end{align*}
+Dieses Gleichungssystem wird lösbar, sobald die korrekte Fehleranzahl $\epsilon$ bestimmt wurde. Dafür wird die in \parencite{Huffman10} beschriebene Eigenschaft ausgenutzt, dass die größte nicht-singuläre durch Syndrome beschriebene Matrix der Form
+\[M_\mu = \left(\begin{array}{cccc}
+S_1 & S_2 & \cdots & S_\mu \\
+S_2 & S_3 & \cdots & S_{\mu+1} \\
+\vdots &&& \\
+S_{\mu} & S_{\mu + 1} & \cdots & S_{2\mu - 1}
+\end{array}\right)
+\] die Anzahl der Fehler angibt. Zunächst wird geprüft, ob die Matrix $\mu \gets t \colon M_t$ singulär ist. Falls ja, so wird $\mu$ iterativ um $1$ reduziert, bis $M_\mu$ nicht-singulär ist \parencite[vgl. ][S. 181f.]{Huffman10}. \\\\
+Um nun die Fehlerstellennummern $\alpha^{k_{j}}$ bestimmen zu können, müssen die Wurzeln des Fehlerlokalisationspolynoms durch Berechnen von $\sigma(\alpha^{i})$ für alle $i \in \lbrace 0, \ldots, n-1\rbrace$ ermittelt und anschließend invertiert werden. \\\\
+Der finale Schritt des hier betrachteten Algorithmus besteht darin, die Fehlergrößen aus den Syndromen zu ermitteln. Dafür wird das Gleichungssystem
+\begin{align*}
+S_1 &= e_{k_{1}} v_{k_{1}} \alpha^{k_{1}} + e_{k_{2}} v_{k_{2}} \alpha^{k_{2}} + \ldots + e_{k_{\epsilon}} v_{k_{\epsilon}} \alpha^{k_{\epsilon}} \\
+S_2 &= e_{k_{1}} v_{k_{1}} \alpha^{2k_{1}} + e_{k_{2}} v_{k_{2}} \alpha^{2k_{2}} + \ldots + e_{k_{\epsilon}} v_{k_{\epsilon}} \alpha^{2k_{\epsilon}} \\
+\vdots \\
+S_\epsilon &= e_{k_{1}} v_{k_{1}} \alpha^{\epsilon k_{1}} + e_{k_{2}} v_{k_{2}} \alpha^{\epsilon k_{2}} + \ldots + e_{k_{\epsilon}} v_{k_{\epsilon}} \alpha^{\epsilon k_{\epsilon}}
+\end{align*}
+für die Fehlergrößen $e_{k_{j}}$ gelöst. Daraus ergibt sich das Fehlerstellentupel $e = \langle e_0, e_1, \ldots, e_{n-1} \rangle$, das nun vom empfangenen Wort abgezogen wird,
+um das korrekte Codewort zu erhalten \parencite[vgl. ][S. 182f.]{Huffman10} \parencite[vgl. ][S. 150]{Hoffman1991}:
+\[\langle c_0, c_1, \ldots, c_{n-1}\rangle = \langle r_0, r_1, \ldots, r_{n-1}\rangle - \langle e_0, e_1, \ldots, e_{n-1}\rangle\]
+Der hier vorgestellte Algorithmus folgt den in \parencite{Huffman10} beschriebenen Schritten und wird als \textit{Peterson-Gorenstein-Zierler}-Algorithmus bezeichnet.
+\subsubsection{Implementierung}
+\subsubsection{Weitere Algorithmen und Ansätze}
