@@ -263,6 +263,7 @@ Das $l$-te \textbf{Syndrom} eines Wortes $r$ sei definiert als
 Aus der Definition der Paritätsprüfmatrix folgt, dass $r$ genau dann ein gültiges Codewort des betrachteten $GRS_k(a, v)$-Codes ist, falls alle Syndrome gleich null sind. Da zweifelsfrei für jedes Codewort-Syndrom $\sum\limits_{j=0}^{n-1}c_j v_j \alpha_{j}^{l} = 0$ gilt, sind die Fehlerwortsyndrome äquivalent zu den Syndromen obiger Definition. Ferner gilt sogar $S_l = \sum\limits_{j=1}^{\epsilon} e_{k_{j}}v_{j}\alpha_{j}^{l}$, da die Fehlergröße $e_j$ an nicht fehlerhaften Stellen gleich $0$ sein muss. Die Betrachtung dieser Syndrome gibt Aufschluss darüber, an welchen Stellen Fehler während der Übertragung aufgetreten sind.\\\\
 Durch die Syndrome ergibt sich folgendes Gleichungssystem:
 \begin{align*}
+S_0 &= e_0 v_0 + e_1 v_1 + \ldots + e_{n-1} v_{n-1} \\
 S_1 &= e_0 v_0 \alpha_0 + e_1 v_1 \alpha_1 + \ldots + e_{n-1} v_{n-1} \alpha_{n-1} \\
 S_2 &= e_0 v_0 \alpha_{0}^{2} + e_1 v_1 \alpha_{1}^{2} + \ldots + e_{n-1} v_{n-1} \alpha_{n-1}^{2} \\
 \vdots \\
@@ -281,6 +282,7 @@ Um so nun zu den Syndromen zu gelangen, ist die Summenbildung für $j = 1, \ldot
 Gemäß der Definition der Syndrome ergibt sich
 \[S_{l+e} + \sigma_1 S_{l+e-1} + \ldots + \sigma_\epsilon S_l = 0\] und damit ein lineares Gleichungssystem
 \begin{align*}
+S_0 \sigma_\epsilon + S_1 \sigma_{\epsilon-1} + \ldots + S_\epsilon \sigma_1 = 0 \\
 S_1 \sigma_\epsilon + S_2 \sigma_{\epsilon-1} + \ldots + S_\epsilon \sigma_1 = 0 \\
 S_2 \sigma_\epsilon + S_3 \sigma_{\epsilon-1} + \ldots + S_{\epsilon+1} \sigma_1 = 0 \\
 \vdots \\
@@ -288,8 +290,8 @@ S_\epsilon \sigma_\epsilon + S_{\epsilon + 1} \sigma_{\epsilon-1} + \ldots + S_{
 \end{align*}
 Dieses Gleichungssystem wird lösbar, sobald die korrekte Fehleranzahl $\epsilon$ bestimmt wurde. Dafür wird die in \parencite{Huffman10} beschriebene Eigenschaft ausgenutzt, dass die größte nicht-singuläre durch Syndrome beschriebene Matrix der Form
 \[M_\mu = \left(\begin{array}{cccc}
-S_1 & S_2 & \cdots & S_\mu \\
-S_2 & S_3 & \cdots & S_{\mu+1} \\
+S_0 & S_1 & \cdots & S_\mu \\
+S_1 & S_2 & \cdots & S_{\mu+1} \\
 \vdots &&& \\
 S_{\mu} & S_{\mu + 1} & \cdots & S_{2\mu - 1}
 \end{array}\right)
@@ -297,6 +299,7 @@ S_{\mu} & S_{\mu + 1} & \cdots & S_{2\mu - 1}
 Um nun die Fehlerstellennummern $\alpha^{k_{j}}$ bestimmen zu können, müssen die Wurzeln des Fehlerlokalisationspolynoms durch Berechnen von $\sigma(\alpha^{i})$ für alle $i \in \lbrace 0, \ldots, n-1\rbrace$ ermittelt und anschließend invertiert werden. \\\\
 Der finale Schritt des hier betrachteten Algorithmus besteht darin, die Fehlergrößen aus den Syndromen zu ermitteln. Dafür wird das Gleichungssystem
 \begin{align*}
+S_0 &= e_{k_{1}} v_{k_{1}} + e_{k_{2}} v_{k_{2}} + \ldots + e_{k_{\epsilon}} v_{k_{\epsilon}} \\
 S_1 &= e_{k_{1}} v_{k_{1}} \alpha^{k_{1}} + e_{k_{2}} v_{k_{2}} \alpha^{k_{2}} + \ldots + e_{k_{\epsilon}} v_{k_{\epsilon}} \alpha^{k_{\epsilon}} \\
 S_2 &= e_{k_{1}} v_{k_{1}} \alpha^{2k_{1}} + e_{k_{2}} v_{k_{2}} \alpha^{2k_{2}} + \ldots + e_{k_{\epsilon}} v_{k_{\epsilon}} \alpha^{2k_{\epsilon}} \\
 \vdots \\
