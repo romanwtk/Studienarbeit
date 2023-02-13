@@ -14,21 +14,20 @@ Diese Arbeit stellt zunächst die theoretischen Hintergründe der Codierungstheo
 \centering
 \begin{tikzpicture}[mindmap, every node/.style={concept, execute at begin node=\hskip0pt}, concept color=blue!40, grow cyclic, level 1/.append style={level distance=4.5cm,sibling angle=90}, level 2/.append style={level distance=3cm,sibling angle=45}]
 \node [root concept, concept color=orange!70] {Informations-theorie} % root
-child { node {Quellencodierung} 
-	child { node {Kompression} }
-	child { node {Huffman / Fano} }	
-}
 child { node[concept color=orange!70] {Kanal-codierung} 
 	child { node[concept color=orange!70] {Blockcodes} 
-		child { node[concept color=orange!70] {Fehlerkorrektur} }
-		child { node[concept color=orange!70] {Linearität} }	
+		child { node[concept color=orange!70] {Lineare Codes} }
+		child { node[concept color=orange!70] {BCH-Codes} }	
 	}
 	child { node {Faltungscodes} }
 }
 child { node[concept color=orange!70] {Kryptographie} 
 	child { node {Blockchiffren} }
 	child { node {Stromchiffren} }
-	child { node[concept color=orange!70] {Quantenresistenz} }
+	child { node[concept color=orange!70] {Code-based} 
+		child { node[concept color=orange!70] {McEliece} }
+		child { node[concept color=orange!70] {Knapsack} }	
+	}
 };
 \end{tikzpicture}
 \caption{Fortlaufend ergänzte Übersicht über relevante und abgegrenzte Teilgebiete der Informationstheorie}
