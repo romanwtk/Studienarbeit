@@ -6,4 +6,86 @@ Dass fehlerkorrigierende Codes wie $GRS_k$-Codes für kryptographische Zwecke ge
 \end{displayquote}
 Die Sicherheit dieser Verfahren liegt folglich darin begründet, dass es unter bestimmten Bedingungen bzw. bei der Wahl entsprechender Parameter, hinreichend schwierig ist, das Dekodierproblem linearer fehlerkorrigierender Codes zu lösen. \\\\
 In diesem Kapitel werden die Ansätze dieser Verfahren zunächst allgemein dargestellt, bevor die Arbeit von \textsc{Niederreiter} genutzt wird, um ein Kryptosystem auf Basis von $GRS_k$-Codes zu konstruieren.
-\section{Allgemeines}
+\section{Grundlagen und Hintergründe}
+\begin{figure}[h!]
+\startchronology[startyear=1975, stopyear=2005]
+\chronoevent[markdepth=34pt]{1978}{\textsc{\citeauthor{McEliece1978}} \parencite{McEliece1978}}
+\chronoevent[markdepth=74pt, colorbox=white, ifcolorbox]{1992}{\textsc{\citeauthor{Sidelnikov1992}} \parencite{Sidelnikov1992}}
+\chronoevent[markdepth=42pt, colorbox=white, ifcolorbox]{1988}{\textsc{\citeauthor{Rivest1988}} \parencite{Rivest1988}}
+\chronoevent[colorbox=white, ifcolorbox]{1986}{\textsc{\citeauthor{Niederreiter1986}} \parencite{Niederreiter1986}}
+\chronoevent[markdepth=42pt, colorbox=white, ifcolorbox]{2003}{\textsc{\citeauthor{Kobara2003}} \parencite{Kobara2003}}
+\chronoevent[colorbox=white, ifcolorbox]{2001}{\textsc{\citeauthor{Sendrier2001}} \parencite{Sendrier2001}}
+\stopchronology
+\caption{Einordnung ausgewählter Beiträge der code-basierten Kryptographie}
+\label{Timeline}
+\end{figure}
+In Abbildung \ref{Timeline} sind einige für den Kontext dieser Arbeit relevante Publikationen zu code-basierten Kryptosystemen in zeitlicher Abfolge dargestellt. Die Auswahl orientiert sich einerseits an der Themeneingrenzung dieser Arbeit und andererseits am thematischen Überblick in \parencite{Overbeck2009}. Ebenda wird das durch \textsc{\citeauthor{McEliece1978}} vorgeschlagene Kryptosystem \parencite{McEliece1978} als das erste code-basierte Kryptosystem bezeichnet \parencite[vgl. ][S. 96]{Overbeck2009}. Dieses Verfahren basiert nicht wie zuvor publizierte Verfahren primär auf dem \textit{Rucksackproblem}, sondern auf algebraischen Codes \parencite[vgl. ][S. 114]{McEliece1978} und deren Dekodierproblem \parencite[vgl. ][S. 98]{Overbeck2009}.
+
+\subsection{\acl{PKC}}
+Grundlage aller im Folgenden betrachteten Verfahren sind \textit{Public-Key-Cryptosystems}, wie sie von \textsc{\citeauthor{DiffieHellman1976}} vorgestellt wurden:
+\begin{definition}
+Sei $M$ eine endliche Menge an Nachrichten, $C$ eine endliche Menge dazugehöriger Chiffrate und $K$ die Bildmenge eines Schlüsselpaarerzeugungsalgorithmus. Dann ist ein \textbf{Public-Key-Kryptosystem} ein Paar zweier invertierbarer Algorithmen
+\begin{align*}
+E_k\colon M \to C \\
+D_k\colon C \to M 
+\end{align*}
+für das die folgenden Bedingungen gelten muss:
+\begin{itemize}
+\item Für jedes $k \in K$ gilt: $(E_{k})^{-1} = D_k$.
+\item Für jedes $k \in K$ und jede Nachricht $m \in M$ respektive jedes Chiffrat $c \in C$ gilt: $E_k$ und $D_k$ sind einfach zu berechnen.
+\item Für nahezu jedes $k \in K$ muss es (unter verhältnismäßigem Ressourceneinsatz) unmöglich sein, $D_k$ zu einem gegebenen $E_k$ zu berechnen.
+\item Für ein gegebenes $k \in K$ muss es möglich sein, das inverse Paar $E_k$ und $D_k$ zu bestimmen.
+\end{itemize} \parencite[vgl. ][S. 647f.]{DiffieHellman1976}
+\end{definition}
+Im Vergleich zu \textbf{symmetrischen Verfahren}, bei denen zur Ver- und Entschlüsselung jeweils derselbe Schlüssel verwendet werden muss, liegt der große Vorteil von \ac{PKC}s darin, dass der Verschlüsselungsschlüssel $E_k$ veröffentlicht werden kann, ohne die Sicherheit des Kryptosystems zu gefährden. Zu beachten ist jedoch, dass die Integrität öffentlicher Schlüssel gewährleistet werden muss \parencite[vgl. ][S. 648]{DiffieHellman1976}.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+[node distance = 1cm, label={ITS}]
+\node[ellipse, fill=green!20, draw, text width=4em, text centered, minimum height=3em] (S) {Alice};
+\node[draw, rectangle, right = of S] (C) {$E_{k} = k_{pub}$};
+\node[draw, circle, right= of C] (K) {Kanal};
+\node[draw, rectangle, right = of K] (D) {$D_{k} = k_{priv}$};
+\node[right= of D, fill=green!20, ellipse, draw, text width=4em, text centered, minimum height=3em] (E) {Bob};
+\node[ellipse, draw, fill=red!20, text width=4em, text centered, minimum height=3em, above= of K] (N) {Catherine};
+\draw[->] (S) -- node[midway, above] {$m$} (C);
+\draw[->] (C) -- node[midway, above] {$c$} (K);
+\draw[->] (K) -- node[midway, above] {$c$} (D);
+\draw[->] (D) -- node[midway, above] {$m$} (E);
+\draw[<-, dashed] (N) -- node[midway, left] {$c$} (K);
+\end{tikzpicture}
+
+\caption{Schematische Darstellung eines \ac{PKC} (nach \parencite[][S. 647]{DiffieHellman1976})}
+\end{figure}
+\textit{Public-Key-Cryptosystems} lassen sich nach ihrem zugrundeliegenden Problem klassifizieren, wobei \textsc{\citeauthor{Rivest1988}} in \parencite{Rivest1988} folgende Klassen unterscheiden:
+\begin{itemize}
+\item \ac{PKC}s auf Basis schwerer zahlentheoretischer Probleme (beispielsweise das RSA-Verfahren, das auf der Primfaktorzerlegung basiert)
+\item \ac{PKC}s, deren Sicherheit auf dem \textit{Rucksackproblem} basiert
+\end{itemize}
+Das \textsc{McEliece}-Kryptosystem lässt sich keiner der beiden Kategorien zuordnen, da es auf dem Dekodierproblem fehlerkorrigierender Codes basiert \parencite[vgl. ][S. 901]{Rivest1988}.
+
+\subsection{Rucksackproblem}
+Das Rucksackproblem (im Englischen \textit{knapsack problem}) beschreibt ein NP-vollständiges Entscheidungsproblem, das darauf basiert, zu einer endlichen Menge von Elementen die größtmögliche Summe von (binär) gewichteten Elementen dieser Menge zu finden, die nicht größer als ein vorher definierter Wert ist \parencite[vgl. ][S. 902]{Rivest1988} \parencite[vgl. ][S. 127]{Knapsack1975}. Anwendungen dieses Problems ergeben sich beispielsweise bei der Beladung eines Containers: Das Volumen des Containers ist der nicht zu überschreitende Wert und gesucht wird eine Auswahl an (auch mehrfach wählbaren) Gütern, die den Stauraum des Containers maximal ausnutzt \parencite[vgl. ][S. 127]{Knapsack1975}. \\\\
+Im Kontext kryptographischer Anwendungen wird folgende Definition genutzt:
+\begin{definition}
+Sei $A = \lbrace a_0, a_1, \ldots, a_{n-1} \rbrace$ eine Menge mit $\forall j \in \lbrace 0, \ldots, n-1 \rbrace\colon a_j \in \mathbb{N}$ und $S \in \mathbb{N}$. 
+Das \textbf{0-1-Rucksackproblem} bezeichnet die Frage, ob eine ganzzahlige Lösung der Form \[\sum\limits_{i = 0}^{n-1} x_i a_i = S \quad\quad (x_i \in \lbrace 0, 1 \rbrace)\] existiert \parencite[vgl. ][S. 902]{Rivest1988}. \\\\
+Eine verallgemeinerte Variante dieses Problems ergibt sich, wenn anstelle der Restriktion $x_i \in \lbrace 0, 1 \rbrace$ ein \textbf{Gewicht} $h$ definiert wird, sodass $\sum x_i \leq h$ gelten muss, damit das Problem als gelöst gilt \parencite[vgl. ][S. 902]{Rivest1988}.
+\end{definition}
+\textsc{\citeauthor{Rivest1988}} konstruieren ein kryptographisches Verfahren darauf nun wie in Algorithmus \ref{crypt}.
+\begin{algorithm}[h!]
+\caption{Verschlüsselungsalgorithmus eines Rucksack-Typ-\ac{PKC}s (nach \parencite[][S. 902]{Rivest1988})}
+\label{crypt}
+\begin{algorithmic}
+\Require $a = \langle a_0, a_1, \ldots, a_{n-1}\rangle, \; h, \;m = \langle m_0, m_1, \ldots, m_{n-1}\rangle$ mit $\sum\limits_{i = 0}^{n-1} m_i \leq h$
+\State $c \gets 0$
+\For{$j \in \lbrace 0, \ldots, n-1 \rbrace$}
+	\State $c \gets c + (m[j] * a[j])$
+\EndFor \\
+\Return $c$
+\end{algorithmic}
+\end{algorithm}
+Die Komponenten $a_i$ werden je nach Kryptosystem so ausgewählt, dass in Kenntnis gewisser geheimer Zusatzinformationen (auch genannt \textit{Hintertür} bzw. \textit{trapdoor}) die Gleichung leicht gelöst, respektive das Codewort $c$ dekodiert, werden kann \parencite[vgl. ][S. 902]{Rivest1988}. \\\\
+Die Arbeit von \textsc{\citeauthor{Rivest1988}} bildet die Grundlage für das \textsc{\citeauthor{Niederreiter1986}}-Schema\footnote{Dies ist möglich, da die Arbeit \parencite{Rivest1988} bereits vier Jahre zuvor im Rahmen der \textit{CRYPTO '84} präsentiert wurde. \textsc{\citeauthor{Niederreiter1986}} referenziert in \parencite{Niederreiter1986} eine Preprint-Fassung.} \parencite[vgl. ][S. 159]{Niederreiter1986}.
+
