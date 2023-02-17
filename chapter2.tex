@@ -266,7 +266,7 @@ Nach einem Datenübertragungsvorgang wurde ein Tupel $r = \langle r_0, r_1, ...,
 \end{itemize}
 Aus diesen Angaben lässt sich gemäß Abschnitt \ref{GenParMatrix} eine Generatormatrix bestimmen. Für dieses Dekodierverfahren ist jedoch die passende Paritätsprüfmatrix erforderlich, da mit ihr ermittelt werden kann, ob ein gegebenes Wort ein gültiges Wort des betrachteten Codes ist \parencite[vgl. ][S. 180]{Huffman10} \parencite[vgl. ][S. 184]{Roth06}:
 \[H_{C_{GRS}} \cdot r^{T} = 0 \;\Rightarrow\; r \in C_{GRS}\]
-\paragraph{Verfahren zur Ermittlung der Paritätsprüfmatrix}
+\paragraph{Verfahren zur Ermittlung der Paritätsprüfmatrix}\label{ParausGenMatrix}
 Ist eine Generatormatrix in systematischer Form gegeben, so kann dazu eine Paritätsprüfmatrix wie folgt ermittelt werden \parencite[vgl. ][S. 5]{MacWilliams77C1}:
 \[G = [I_{k} \mid A] \; \Rightarrow \; H = [-A \mid I_{n-k}]\]
 Hier bezeichne $I_{j}$ eine $j \times j$-Identitätsmatrix. Wie eine Generatormatrix in systematische Form gebracht werden kann, ist in Anhang \ref{MatrixConversion} dargestellt. \\\\

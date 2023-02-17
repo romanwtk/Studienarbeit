@@ -94,7 +94,7 @@ Sei $p \in \mathbb{P}$ und $h \in \mathbb{N}$ so, dass $GF(p^h)$ einen endlichen
 y &= \alpha^{x} \\
 x &= \log_{\alpha}(y)
 \end{align}
-in $GF(p^h)$ invers zueinander. (4.1) bezeichnet die Exponentialfunktion und (4.2) die Logarithmusfunktion zur Basis $\alpha$. Während für die Exponentiation maximal $2 \cdot \lceil \log_2 p\rceil$ Multiplikationen\footnote{Die Aussage in \parencite{Pohlig1978} bezieht sich auf einen Körper $GF(p)$, wobei für Erweiterungskörper $GF(p^h)$ von einer ähnlichen Komplexitätsklasse ausgegangen werden kann \parencite[vgl. ][]{Gao2000}.} erforderlich sind \parencite[vgl. ][S. 106]{Pohlig1978}, sind es für das Logarithmieren wesentlich mehr, wodurch sich das \textbf{diskrete Logarithmusproblem} über endlichen Körpern ergibt, dass die Schwierigkeit beschreibt, Logarithmen in endlichen Körpern großer Charakteristik zu lösen \parencite[vgl. ][S. 106f.]{Pohlig1978}.
+in $GF(p^h)$ invers zueinander. (4.1) bezeichnet die Exponentialfunktion und (4.2) die Logarithmusfunktion zur Basis $\alpha$. Während für die Exponentiation maximal $2 \cdot \lceil \log_2 p\rceil$ Multiplikationen\footnote{Die Aussage in \parencite{Pohlig1978} bezieht sich auf einen Körper $GF(p)$, wobei für Erweiterungskörper $GF(p^h)$ von einer ähnlichen Komplexitätsklasse ausgegangen werden kann \parencite[vgl. ][]{Gao2000}.} erforderlich sind \parencite[vgl. ][S. 106]{Pohlig1978}, sind es für das Logarithmieren wesentlich mehr, wodurch sich das \textbf{diskrete Logarithmusproblem} über endlichen Körpern ergibt, das die Schwierigkeit beschreibt, Logarithmen in endlichen Körpern großer Charakteristik zu lösen \parencite[vgl. ][S. 106f.]{Pohlig1978}.
 \end{note}
 Dieses Problem wird in vielen kryptographischen Verfahren wie dem \textit{Diffie-Hellman-Schlüssel{\-}austausch} oder dem \textit{RSA-Kryptosystem} ausgenutzt, da es nach wie vor keine effizienten Algorithmen für dieses Problem in Körpern großer Charakteristik bekannt sind \parencite[vgl. ][S. 904]{Rivest1988}. Solange die Parameter der Kryptosysteme an die gegenwärtig zur Verfügung stehende Rechenleistung angepasst wird, ist die Sicherheit der Verfahren gewährleistet \parencite[vgl. ][]{Gura2004}.
 \section{McEliece-Kryptosystem}
@@ -103,4 +103,34 @@ Grundlage des \textsc{\citeauthor{McEliece1978}}-Kryptosystems sind \textit{Gopp
 Sei $p \in \mathbb{P}$ und $m \in \mathbb{N}$ so, dass $GF(p^m)$ einen endlichen Körper der Charakteristik $p$ bezeichne. Ferner sei $g(z)$ ein Polynom mit Koeffizienten aus $GF(q^m)$ und $L$ eine (meist unechte) Teilmenge aller Elemente aus $GF(p^m)$, die nicht Wurzel von $g(z)$ sind. Dann existiert ein \textbf{Goppa-Code} mit Eingabemenge $GF(q)$, Wertemenge $GF(q^m)$, Goppapolynom $g(z)$ und Länge $\lvert L \rvert$. Der Code ist nun definiert durch die Menge aller Vektoren $C$, deren Komponenten -- indiziert durch die Elemente der Menge $L$ -- folgende Bedingung erfüllen \parencite[vgl. ][S. 590]{Berlekamp1973}:
 \[\sum\limits_{\gamma \in L} \frac{C_{\gamma}}{z - \gamma} \equiv 0 \mod g(z)\]
 \end{definition}
-Verwendet werden im Folgenden binäre \textit{Goppa}-Codes mit Körper $GF(2^m)$, Länge $\lvert L \rvert = 2^m$ und Goppapolynom $g(z)$ mit Grad $t$, wobei $t$ die maximale Fehlerkorrekturkapazität angibt. Die Dimension des Codes ist definiert durch $k \geq n - t \cdot m$.
+Verwendet werden im Folgenden binäre \textit{Goppa}-Codes mit Körper $GF(2^m)$, $L = \lbrace \epsilon_1, \epsilon_2, \ldots, \epsilon_N \rbrace$, Länge $\lvert L \rvert = 2^m$ und über $GF(2^m)$ irreduziblem Goppapolynom $g(z)$ mit Grad $t$, wobei $t$ die maximale Fehlerkorrekturkapazität angibt. Die Dimension des Codes ist definiert durch $k \geq n - t \cdot m$ \parencite[vgl. ][S. 114]{McEliece1978}. \\\\
+Wurden passende Parameter $n, t$ gewählt und ein irreduzibles Polynom gefunden -- die Wahrscheinlichkeit dafür, dass ein zufällig gewähltes Polynom irreduzibel ist, beträgt $\frac{1}{t}$ \parencite[vgl. ][S. 114]{McEliece1978} -- kann eine $k \times n$-Generatormatrix $G$ erzeugt werden. Hierfür wird zunächst eine Paritätsprüfmatrix
+\[
+H = \left[ 
+	\begin{array}{cccc}
+		\frac{1}{g(\epsilon_1)} & \frac{1}{g(\epsilon_2)} & \cdots & \frac{1}{g(\epsilon_N)} \\
+		\frac{\epsilon_1}{g(\epsilon_1)} & \frac{\epsilon_2}{g(\epsilon_2)} & \cdots & \frac{\epsilon_N}{g(\epsilon_N)}  \\
+		\frac{\epsilon_{1}^{t-1}}{g(\epsilon_1)} & \frac{\epsilon_{2}^{t-1}}{g(\epsilon_2)} & \cdots & \frac{\epsilon_{N}^{t-1}}{g(\epsilon_N)}  \\
+	\end{array}
+\right]
+\]
+gebildet \parencite[vgl. ][S. 3]{Volta2008} und anschließend invers zum in \ref{ParausGenMatrix} genannten Vorgehen eine Generatormatrix ermittelt.
+\paragraph{Schlüsselerzeugung} Zur Erzeugung des öffentlichen Schlüssels des \textsc{\citeauthor{McEliece1978}} werden folgende Schritte ausgeführt \parencite[vgl. ][S. 114]{McEliece1978}
+\begin{enumerate}
+\item Wahl einer nicht-singulären und dichten (das heißt, für die Mehrzahl ihrer Komponenten $s_{ij}$ gilt: $s_{ij} \neq 0$) $k \times k$-Matrix $S$
+\item Wahl einer $n \times n$-Permutationsmatrix $P$, wobei eine Matrix dann eine Permutationsmatrix ist, wenn in jeder Zeile und jeder Spalte nur genau eine Komponente $p_{ij}$ mit $p_{ij} = 1$ vorhanden ist und alle übrigen Komponenten $0$ sind.
+\item Der öffentliche Schlüssel $k_{pub}$ ist nun gegeben durch $k_{pub} = G' = S \times G \times P$.
+\end{enumerate}
+Der Verschlüsselungsalgorithmus folgt damit nun unmittelbar:
+\begin{algorithm}[h!]
+\caption{Verschlüsselungsalgorithmus des \textsc{McEliece}-Kryptosystems (nach \parencite{McEliece1978})}
+\begin{algorithmic}[1]
+\Require $G'$, Eingabedaten $m$ mit $l$ Komponenten aus $GF(2^m)$
+\State Teile $m$ in Blöcke der Länge $k$ (ggf. mit Nullen auffüllen)
+\State Wähle zufälligen Störvektor $z$ mit Länge $n$ und Gewicht $t$.
+\For{$u$ in $m[]$}
+	\State $x_u \gets u \cdot G' + z$
+\EndFor \\
+\Return $x$
+\end{algorithmic}
+\end{algorithm}
