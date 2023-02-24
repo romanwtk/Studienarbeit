@@ -268,7 +268,7 @@ Aus diesen Angaben lässt sich gemäß Abschnitt \ref{GenParMatrix} eine Generat
 \[H_{C_{GRS}} \cdot r^{T} = 0 \;\Rightarrow\; r \in C_{GRS}\]
 \paragraph{Verfahren zur Ermittlung der Paritätsprüfmatrix}\label{ParausGenMatrix}
 Ist eine Generatormatrix in systematischer Form gegeben, so kann dazu eine Paritätsprüfmatrix wie folgt ermittelt werden \parencite[vgl. ][S. 5]{MacWilliams77C1}:
-\[G = [I_{k} \mid A] \; \Rightarrow \; H = [-A \mid I_{n-k}]\]
+\[G = [I_{k} \mid A] \; \Rightarrow \; H = [-A^{T} \mid I_{n-k}]\]
 Hier bezeichne $I_{j}$ eine $j \times j$-Identitätsmatrix. Wie eine Generatormatrix in systematische Form gebracht werden kann, ist in Anhang \ref{MatrixConversion} dargestellt. \\\\
 Eine explizite Formel zur Berechnung der Koeffizienten der Paritätsprüfmatrix (und damit der Gewichte $d_i$ des zum betrachteten dualen Codes) folgt aus diesem Zusammenhang \parencite[vgl. ][S. 14]{Mahr88} \parencite[vgl. ][S. 9f]{Weger2017}:
 \[d_i = v_i^{-1} \cdot \prod\limits_{j=1, \, j \neq i}^{n} (a_i - a_j)^{-1}\]
