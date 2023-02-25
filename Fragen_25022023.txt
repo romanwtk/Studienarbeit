@@ -1,0 +1,5 @@
+# Fragekatalog für den XX.03.2023 (R. Hübl)
+
+- Matrixeigenschaften (singulär / diagonal / Permutationsmatrix / dense / sparse) - voraussetzen oder eingangs definieren?
+- Deutscher Begriff für "Alternant Codes"
+- 
