@@ -33,7 +33,7 @@ für das die folgenden Bedingungen gelten muss:
 \begin{itemize}
 \item Für jedes $k \in K$ gilt: $(E_{k})^{-1} = D_k$.
 \item Für jedes $k \in K$ und jede Nachricht $m \in M$ respektive jedes Chiffrat $c \in C$ gilt: $E_k$ und $D_k$ sind einfach zu berechnen.
-\item Für nahezu jedes $k \in K$ muss es (unter verhältnismäßigem Ressourceneinsatz) unmöglich sein, $D_k$ zu einem gegebenen $E_k$ zu berechnen.
+\item Für nahezu jedes $k \in K$ muss es (unter verhältnismäßigem Ressourceneinsatz) unmöglich sein, $D_k$ aus einem gegebenen $E_k$ zu berechnen.
 \item Für ein gegebenes $k \in K$ muss es möglich sein, das inverse Paar $E_k$ und $D_k$ zu bestimmen.
 \end{itemize} \parencite[vgl. ][S. 647f.]{DiffieHellman1976}
 \end{definition}
@@ -147,7 +147,8 @@ Für ein übertragenes Wort $x$ erfolgt die Dechiffrierung nun wie folgt:
 \end{algorithm} \\
 Die Sicherheit dieses Verfahrens basiert nun einerseits auf der Schwierigkeit, aus dem öffentlichen Schlüssel die Generatormatrix $G$ des Goppacodes abzuleiten, da die Anzahl der Möglichkeiten bei entsprechend geeigneten Werten für $n$ und $k$ nicht zuletzt durch die Anzahl möglicher $P$ und $S$ schnell zu groß wird, um die korrekte Matrix unter realistischem Ressourceneinsatz enumerativ abzuleiten \parencite[vgl. ][S. 115]{McEliece1978}. Ein weiterer Angriff, den \textsc{\citeauthor{McEliece1978}} selbst beschreibt, läge darin, ohne Kenntnis von $G$ zu versuchen, $u$ aus $x$ abzuleiten. Dieser Ansatz lässt sich auf folgendes Problem zuückführen:
 \begin{note}\label{NPHart}
-Sei $x$ ein empfangenes Wort mit $\epsilon \leq t$ fehlerbehafteten Stellen und $H$ die $n \times (n-k)$-Paritätsprüfmatrix des zugrundeliegenden Codes. Dann ist $s = y H$ das Syndrom von $y$ zu $C$ mit $H$. Da $y$ bekanntlich fehlerhaft sein kann, wird das Codewort $x$ mit der geringsten Hamming-Distanz zu $y$ gesucht, dass das Syndrom $s$ bildet, um anschließend das Differenztupel $z_0$ abziehen zu können \parencite[vgl. ][S. 384]{Berlekamp1978}. Folglich soll gelten: \[s = x H = (y - z_0) H\]. Das Problem, genau dieses $z_0$ zu finden, wird als \textbf{generelles Dekodierproblem} bezeichnet. \textsc{\citeauthor{Berlekamp1978}} weisen in \parencite{Berlekamp1978} nach, dass dieses Problem auf $\mathcal{NP}$-harte Probleme zurückführbar ist und damit ebenfalls $\mathcal{NP}$-hart sein muss. Die Klasse der $\mathcal{NP}$-harten Probleme beschreibt Probleme, die über Backtracking-Algorithmen gelöst werden können, deren Suchtiefe durch ein durch die Eingabelänge parametrisiertes Polynom begrenzt ist \parencite[vgl. ][S. 384]{Berlekamp1978}.
+Sei $x$ ein empfangenes Wort mit $\epsilon \leq t$ fehlerbehafteten Stellen und $H$ die $n \times (n-k)$-Paritätsprüfmatrix des zugrundeliegenden Codes. Dann ist $s = y H$ das Syndrom von $y$ zu $C$ mit $H$. Da $y$ bekanntlich fehlerhaft sein kann, wird das Codewort $x$ mit der geringsten Hamming-Distanz zu $y$ gesucht, dass das Syndrom $s$ bildet, um anschließend das Differenztupel $z_0$ abziehen zu können \parencite[vgl. ][S. 384]{Berlekamp1978}. Folglich soll gelten: \[s = x H = (y - z_0) H\] 
+Das Problem, genau dieses $z_0$ zu finden, wird als \textbf{generelles Dekodierproblem} bezeichnet. \textsc{\citeauthor{Berlekamp1978}} weisen in \parencite{Berlekamp1978} nach, dass dieses Problem auf $\mathcal{NP}$-harte Probleme zurückführbar ist und damit ebenfalls $\mathcal{NP}$-hart sein muss. Die Klasse der $\mathcal{NP}$-harten Probleme beschreibt Probleme, die über Backtracking-Algorithmen gelöst werden können, deren Suchtiefe durch ein durch die Eingabelänge parametrisiertes Polynom begrenzt ist \parencite[vgl. ][S. 384]{Berlekamp1978}.
 \end{note}
 Daraus folgt, dass das auch dieser zweite Ansatz bei geeigneten Parametern unausführbar ist \parencite[vgl. ][S. 115]{McEliece1978}. In Kapitel \ref{PQC} dieser Arbeit wird die daraus begründete aktuelle Relevanz des dargestellten Kryptosystems -- insbesondere hinsichtlich der \textit{Post-Quanten-Kryptographie} -- diskutiert.
 \subsection{Implementierung}
@@ -172,7 +173,7 @@ Um nun ein \ac{PKC} auf diesem Verfahren aufzubauen, werden ähnlich zum in \par
 \begin{itemize}
 \item Wahl einer nicht-singulären $(n-k) \times (n-k)$-Matrix $S$
 \item Wahl einer $n \times n$-Matrix $P$, die aus der Permutation einer nicht-singulären Diagonalmatrix entsteht
-\item Der öffentliche Schlüssel ist nun $k_{pub} = S \times H \times P$
+\item Der öffentliche Schlüssel ist nun $k_{pub} = S \cdot H \cdot P$
 \end{itemize}
 Wichtig zu bemerken ist, dass die hier gewählte Matrix $P$ im Gegensatz zur Matrix $P$ des \textsc{McEliece}-Verfahrens auch Komponenten $x_{ij} \notin \lbrace 0, 1 \rbrace$ enthalten kann, über die sich so eine Gewichtung einzelner Spalten ergeben kann. \\\\Die Ver- und Entschlüsselung folgt nun wie in den Algorithmen \ref{NREnc} und \ref{NRDec} dargestellt.
 \begin{algorithm}[h!]
@@ -188,10 +189,10 @@ Wichtig zu bemerken ist, dass die hier gewählte Matrix $P$ im Gegensatz zur Mat
 \caption{Entschlüsselungsalgorithmus des \textsc{Niederreiter}-Schemas (nach \parencite{Niederreiter1986})}
 \label{NRDec}
 \begin{algorithmic}[1]
-\Require $S, H, P$, Geheimtextvektor $z = k_{pub} \times y^{T}$
-\State $s \gets S^{-1} \times z$
+\Require $S, H, P$, Geheimtextvektor $x = k_{pub} \cdot y^{T}$
+\State $s \gets S^{-1} \cdot z$
 \State $t \gets$ Ergebnis eines zum Code $C$ passenden Dekodierverfahrens auf $r$
-\State $y \gets t \times (P^{T})^{-1}$ \\
+\State $y \gets t \cdot (P^{T})^{-1}$ \\
 \Return $y$
 \end{algorithmic}
 \end{algorithm} 
