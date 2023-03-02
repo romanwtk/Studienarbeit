@@ -119,7 +119,7 @@ Sei $ u = \langle u_1, u_2, ..., u_n \rangle \in \mathbb{F}_{q}^{n}$, wobei $\fo
 Verallgemeinerte Reed-Solomon-Codes sind im Allgemeinen nicht zyklisch, folglich entfällt die Möglichkeit, ein Generatorpolynom anzugeben. Die Codierung basiert entsprechend auch nicht mehr auf einer Multiplikation des Informationstupels mit dem Generatorpolynom, sondern auf einer Multiplikation mit einer Generatormatrix, die im Folgenden betrachtet wird. Verallgemeinerte Reed-Solomon-Codes finden Verwendung im Ansatz von Niederreiter, da aufgrund der zusätzlich eingebrachten \textbf{Gewichte} die Anzahl der möglichen Codes signifikant steigt und die Codeklasse somit an kryptographischer Bedeutung gewinnt. \\\\
 Für den weiteren Verlauf der Arbeit ist die Betrachtung \textbf{dualer Codes} notwendig. Duale Codes können zu linearen Codes gebildet werden:
 \subsection{Duale Codes}
-\begin{definition}
+\begin{definition}\label{Dual}
 Sei $C$ ein linearer $[n, k, d]_q$-Code mit Länge $n$, Dimension $k$ und Minimaldistanz $d$ über einem Körper $\mathbb{F}_q$. Ferner bezeichne die Operation $\cdot$ die Paarung -- analog zum Skalarprodukt über reellen Vektorräumen -- über dem Vektorraum $\mathbb{F}_{q}^{n}$, das definiert ist durch
 \[\langle a_1, a_2, ..., a_n\rangle \cdot \langle b_1, b_2, ..., b_n \rangle = \sum\limits_{i=1}^{n}a_{i}b_{i}\] 
 Nun ist der zu $C$ \textbf{duale Code} $C^{\perp}$ definiert als
@@ -137,11 +137,47 @@ Wird der duale Code zu einem dualen Code eines linearen Codes $C$ gebildet, so i
 \[C^{\perp\perp} = C\]
 
 \begin{theorem}
-Der duale Code zu einem verallgemeinerten Reed-Solomon-Code ist ebenfalls ein verallgemeinerter Reed-Solomon-Code \parencite[vgl. ][S. 14]{Mahr88}.
-\end{theorem}
+Der duale Code zu einem verallgemeinerten Reed-Solomon-Code ist ebenfalls ein verallgemeinerter Reed-Solomon-Code \parencite[vgl. ][S. 14]{Mahr88}. \\\\
 So gilt $GRS_k (u, v)^{\perp} = GRS_{n-k} (u, v')$, wobei für die Komponenten des Vektors $v'$ gilt:
 \[v_i \cdot v_{i}' \prod\limits_{j=1, \; j \neq i}^{n} (u_j - u_i) = 1\]
 \parencite[vgl. ][S. 14]{Mahr88}
+\end{theorem}
+\begin{proof}
+Zunächst wird $k = n-1$ angenommen. Dann ist zu zeigen, dass $GRS_{n-1} (u, v)^{\perp} = GRS_{1} (u, v')$ gilt. Dafür genügt es, zu beweisen, dass $v_{i}' \neq 0$ gilt und $v$ damit ein gültiges Gewichtstupel ist, da für alle $u_i$ bereits bekannt ist, dass sie die Forderungen von $GRS$-Codes erfüllen. Die Codewortmenge von $GRS_{1}(u, v')$ ist dadurch, dass zulässige Polynome auf diesem Code nur Skalare sein können, durch alle skalaren Vielfachen von allen $v_{i}'$ bereits vollständig beschrieben. \\\\
+Aus Definition \ref{Dual} ergibt sich nun, dass zu zeigen ist, dass 
+\[(hG) \cdot (kv') = 0\] gelten muss, wobei $h$ eine beliebige Nachricht aus $\mathbb{F}_{q}$, $G$ die Generatormatrix des $GRS_{n-1}(u, v)$-Codes und $k$ eine beliebiges Element aus $\mathbb{F}_q$ ist. Da $h$ und $k$ Werte ungleich $0$ annehmen können, gilt nach dem Nullproduktsatz bereits, dass $G \cdot v' = 0$ gelten muss. Mit Vorausgriff auf Bemerkung \ref{GRSGen} lässt sich entsprechend das folgende Gleichungssystem konstruieren \parencite[vgl. ][S. 304]{MacWilliams77}:
+\begin{align*}
+v_0 v'_0 + v_1 v'_1 + \ldots + v_{n-1}v'_{n-1} &= 0 \\
+u_0 v_0 v'_0 + u_1 v_1 v'_0 + \ldots + u_{n-1} v_{n-1} v'_{n-1} &= 0 \\
+\vdots \\
+u_{0}^{n-2} v_0 v'_0 + u_{1}^{n-2} v_1 v'_0 + \ldots + u_{n-1}^{n-2} v_{n-1} v'_{n-1} &= 0
+\end{align*}
+Dies entspricht in Matrixschreibweise
+\begin{equation}
+\left[ 
+\begin{array}{cccc}
+1 & 1 & \cdots & 1 \\
+u_0 & u_1 & \cdots & u_{n-1} \\
+\vdots & & & \vdots \\
+u_{0}^{n-2} & u_{1}^{n-2} & \cdots & u_{n-1}^{n-2}
+\end{array}
+\right] 
+\left[
+\begin{array}{c}
+v_0 v'_0 \\
+v_1 v'_1 \\
+\vdots \\
+v_{n-1} v'_{n-1}
+\end{array}
+\right] 
+= 0
+\end{equation}
+Falls ein $v'_i = 0$ ist, so ergibt sich dadurch, dass keine Komponente der linken \textit{Vandermonde}-Matrix gemäß der Definition von $GRS$-Codes gleich $0$ sein kann, dass alle $v_i v'_i = 0$ und in der Folge alle $v'_i = 0$ sein müssten, was jedoch nicht möglich ist, zum Beispiel da die Dualisierung dieses Codes nicht wieder den $GRS_{n-1}(u, v)$-Code erzeugen kann. Damit ist gezeigt, dass $\forall i \in \lbrace 0, \ldots, n-1\rbrace\colon v_i \neq 0$ gilt und zugleich, dass $GRS_{n-1}(u, v)^{\perp}$ die Forderungen eines $GRS$-Codes erfüllt. Dass sich dieses Resultat nun auch auf $GRS$-Codes mit beliebigem $k < n-1$ übertragen lässt, ergibt sich nun aus folgender verallgemeinerten Form der obigen Gleichungen \parencite[vgl. ][S. 304]{MacWilliams77}:
+\begin{equation}
+\sum\limits_{i = 0}^{n-1} (u_{i}^{s} v_i) (u_{i}^{t} v'_i) = \sum\limits_{i=0}^{n-1} (u_{i}^{s+t} v_i v'_i) = 0
+\end{equation}
+Mit der gleichen Argumentation wie für $k = n-1$ ergibt sich unmittelbar, dass auch hier kein $v'_i$ gleich $0$ sein kann. Damit ist das Theorem gezeigt.
+\end{proof}
 
 \subsection{Kontroll- und Generatormatrizen}
 Da lineare Codes wie gezeigt Vektorräume bilden, ist die Angabe von \textbf{Basen} möglich. Durch die Definition der Dualität von Codes zueinander, können \textbf{Generator-} und \textbf{Kontrollmatrizen} angegeben werden.
@@ -155,7 +191,7 @@ Der Zusammenhang zwischen Generator- und Kontrollmatrix ergibt sich daraus, dass
 
 \subsubsection{Generatormatrizen des verallgemeinerten Reed-Solomon-Codes}\label{GenParMatrix}
 Zur Kodierung eines Informationstupels mittels des verallgemeinerten Reed-Solomon-Codes wird eine Generatormatrix des Codes benötigt.
-\begin{note}
+\begin{note}\label{GRSGen}
 Gegeben sei $GRS_k (u, v)$ und der dazu duale Code $GRS_{n-k}(u, y)$. Eine Paritätsprüfmatrix zu $GRS_k (u, v)$ ist dann genau eine Generatormatrix zu $GRS_{n-k}(u, y)$ und definiert durch 
 \[H = (y_{i} u_{i}^{j})_{0 \leq j \leq n-k-1, \, 1 \leq i \leq n} = 
 \left( \begin{array}{cccc}

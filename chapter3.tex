@@ -190,12 +190,29 @@ Wichtig zu bemerken ist, dass die hier gewählte Matrix $P$ im Gegensatz zur Mat
 \label{NRDec}
 \begin{algorithmic}[1]
 \Require $S, H, P$, Geheimtextvektor $x = k_{pub} \cdot y^{T}$
-\State $s \gets S^{-1} \cdot z$
-\State $t \gets$ Ergebnis eines zum Code $C$ passenden Dekodierverfahrens auf $r$
+\State $s \gets S^{-1} \cdot x$
+\State $t \gets$ Ergebnis eines zum Code $C$ passenden Dekodierverfahrens auf $s$
 \State $y \gets t \cdot (P^{T})^{-1}$ \\
 \Return $y$
 \end{algorithmic}
-\end{algorithm} 
+\end{algorithm}
+\subsection{Korrektheit des Verfahrens} 
+\begin{theorem}
+Das Produkt $H \cdot P$ ist eine Paritätsprüfmatrix eines linearen Codes.
+\end{theorem}
+\begin{proof}
+Nach \textsc{\citeauthor{Hill86}} erzeugen die folgenden Operationen auf einer Generatormatrix $G$ eines linearen $[n, k, d]$-Codes äquivalente Codes \parencite[vgl.][S. 50]{Hill86}:
+\begin{itemize}
+\item Zeilenvertauschungen
+\item Multiplikation einer Zeile mit einem Skalar ungleich $0$
+\item Addition eines skalaren Vielfachen einer Zeile auf eine andere
+\item Vertauschung von Spalten
+\item Multiplikation einer Spalte mit einem Skalar ungleich $0$.
+\end{itemize}
+Da die Matrix $P$ pro Spalte genau in einer Komponente einen Wert ungleich $0$ aufweist, 
+führt eine Multiplikation der Matrix $H$ mit $P$ lediglich zu Spaltenvertauschungen und skalaren Multiplikationen, weshalb das Produkt $HP$ einen äquivalenten Code bildet.
+\end{proof}
+Die Multiplikation dieses Produktes $HP$ mit der Matrix $S^{T}$ zerstört diese Eigenschaft der Äquivalenz nun, wodurch erst möglich wird, den öffentlichen Schlüssel zu veröffentlichen.
 \subsection{Wahl geeigneter Codes}
 Die Sicherheit eines solchen Kryptosystems ist stark an die Wahl eines geeigneten Codes gebunden. \textsc{\citeauthor{Niederreiter1986}} formuliert daher folgende Anforderungen an Codes \parencite[vgl. ][S. 161f.]{Niederreiter1986}:
 \begin{itemize}
