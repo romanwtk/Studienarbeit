@@ -198,6 +198,7 @@ Wichtig zu bemerken ist, dass die hier gewählte Matrix $P$ im Gegensatz zur Mat
 \end{algorithm}
 \subsection{Korrektheit des Verfahrens} 
 \begin{theorem}
+\label{CodeEq}
 Das Produkt $H \cdot P$ ist eine Paritätsprüfmatrix eines linearen Codes.
 \end{theorem}
 \begin{proof}
@@ -209,10 +210,23 @@ Nach \textsc{\citeauthor{Hill86}} erzeugen die folgenden Operationen auf einer G
 \item Vertauschung von Spalten
 \item Multiplikation einer Spalte mit einem Skalar ungleich $0$.
 \end{itemize}
-Da die Matrix $P$ pro Spalte genau in einer Komponente einen Wert ungleich $0$ aufweist, 
-führt eine Multiplikation der Matrix $H$ mit $P$ lediglich zu Spaltenvertauschungen und skalaren Multiplikationen, weshalb das Produkt $HP$ einen äquivalenten Code bildet.
+Da die Matrix $P$ eine (gewichtete) Permutationsmatrix ist, besitzt sie pro Zeile und Spalte genau in einer Komponente einen Wert ungleich $0$. Da nach Definition \ref{ParCheck} die Zeilen einer Generatormatrix eine Basis des durch den Code beschriebenen Vektorraums bilden und die Zeilen einer Paritätsprüfmatrix eine Basis des Kerns der Generatormatrix \parencite[vgl. ][S. 29f.]{Roth06}, besteht hinsichtlich der Zeilenvertauschungen und der Multiplikation einer Zeile mit einem Skalar bereits Äquivalenz, da dies aus der Definition einer Basis unmittelbar folgt und die lineare Unabhängigkeit erhalten bleibt. Bei der Multiplikation der Matrix $H$ mit der Matrix $P$ werden aufgrund der obig beschriebenen Beschaffenheit der Matrix $P$ die Spalten der Matrix $H$ mit Skalaren multipliziert und vertauscht. Hierbei bleibt die lineare Unabhängigkeit nicht zwangsläufig erhalten, jedoch erzeugen diese Operationen \textbf{äquivalente Codes}, die sich zwar in der Anordnung der Symbole unterscheiden, aber den gleichen Vektorraum aufspannen \parencite[vgl. ][S. 24]{MacWilliams77C1} \parencite[vgl. ][S. 1193f.]{Sendrier2000}. Somit ist gezeigt, dass die Aussage gilt.
 \end{proof}
-Die Multiplikation dieses Produktes $HP$ mit der Matrix $S^{T}$ zerstört diese Eigenschaft der Äquivalenz nun, wodurch erst möglich wird, den öffentlichen Schlüssel zu veröffentlichen.
+Die Multiplikation dieses Produktes $HP$ mit der Matrix $S^{T}$ zerstört diese Eigenschaft der Äquivalenz nun, wodurch erst möglich wird, den öffentlichen Schlüssel zu veröffentlichen. Das Produkt $SHP$ ist im Allgemeinen keine Paritätsprüfmatrix eines gültigen linearen Codes mehr, behindert die Dekodierbarkeit der Codeworte jedoch nicht:
+\begin{theorem}
+Das Produkt aus $k_{pub} = S\cdot H \cdot P$ und Klartextvektor $y$ lässt sich durch Algorithmus \ref{NRDec} dechiffrieren.
+\end{theorem}
+\begin{proof}
+Die Aussage folgt unmittelbar:
+\begin{align*}
+x &= H \cdot P \cdot S^{T} \cdot y^{T} \\
+s &= S^{-1} \cdot x \\
+  &\Leftrightarrow S^{-1} \cdot H \cdot P \cdot S^{T} \cdot y^{T} \\
+  &\Leftrightarrow H \cdot P \cdot S^{T} \cdot (S^{T})^{-1} \cdot y^{T} \\
+  &\Leftrightarrow H \cdot P \cdot y^{T}
+\end{align*}
+Da aus Theorem \ref{CodeEq} folgt, dass $HP$ eine gültige Paritätsprüfmatrix eines linearen Codes und damit zugleich eine Generatormatrix des dazu dualen Codes darstellt, ist durch $H\cdot P \cdot y^{T}$ ein gültiges Codewort von $y$ beschrieben, das im Folgenden dekodiert werden kann. Sei $t$ das dekodierte Klartextwort zum Code mit Generatormatrix $HP$. Die Operation \[y = t \cdot (P^{T})^{-1}\] ist die inverse Anwendung der Permutation und führt zum  Klartext $y$, da hier -- wie im Beweis zu Theorem \ref{CodeEq} beschrieben -- lediglich die Anordnung der Symbole permutiert wurde und nun rückgängig gemacht wird. Damit ist die Korrektheit des Verfahrens gezeigt.
+\end{proof}
 \subsection{Wahl geeigneter Codes}
 Die Sicherheit eines solchen Kryptosystems ist stark an die Wahl eines geeigneten Codes gebunden. \textsc{\citeauthor{Niederreiter1986}} formuliert daher folgende Anforderungen an Codes \parencite[vgl. ][S. 161f.]{Niederreiter1986}:
 \begin{itemize}
@@ -220,4 +234,61 @@ Die Sicherheit eines solchen Kryptosystems ist stark an die Wahl eines geeignete
 \item Für $C$ sollte es einen effizienten Dekodieralgorithmus geben, damit die Entschlüsselung in kurzen Rechenzeiten ausgeführt werden kann
 \item Die Dimension $k$ sollte im Verhältnis zu $n$ weder zu klein noch zu groß gewählt werden, da ein zu kleiner Wert die Anzahl geeigneter Codes einschränkt und ein zu großer Wert die Größe der Codeworte (im Verhältnis zum Nachrichtenwort) minimiert, wodurch sich die Sicherheit des Kryptosystems verringert.
 \end{itemize}
-Als geeignete Codes werden \textit{Goppa}-Codes als Teil der \textit{Alterant Codes}, algebraisch-geometrische Codes und \textit{Reed-Solomon-Codes} vorgestellt, da sie die \textit{Gilbert-Varshamov-Grenze} einhalten \parencite[vgl. ][S. 162]{Niederreiter1986}.
+Als geeignete Codes werden \textit{Goppa}-Codes als Teil der \textit{Alterant Codes}, algebraisch-geometrische Codes und \textit{Reed-Solomon-Codes} vorgestellt, da sie die \textit{Gilbert-Varshamov-Schranke} einhalten \parencite[vgl. ][S. 162]{Niederreiter1986}: \\\\
+Aus Definition \ref{DistSphere} geht eine Interpretation der Minimaldistanz als Kugel hervor. Das Volumen dieser Kugel ist nun wie folgt definiert:
+\begin{definition}
+Sei $\mathbb{F}_q$ ein endlicher Körper und $\mathbb{F}_{q}^{n}$ ein $n$-dimensionaler Vektorraum über diesem Körper. Dann ist eine Kugel mit Radius $t$ definiert als die Menge aller Wörter mit \textit{Hamming-Distanz} kleiner gleich $t$. Das \textbf{Volumen} dieser Kugel ist definiert als die Anzahl der Elemente der Kugel und wird berechnet durch \parencite[vgl. ][S. 95]{Roth06}
+\begin{equation}
+V_q (n, t) = \sum\limits_{i=0}^{t} \binom{n}{i} (q-1)^{i}
+\end{equation}
+Ferner sei die \textbf{Maximalkardinalität} definiert als die größtmögliche Anzahl an Codeworten eines $[n, k, d]$-Codes über $\mathbb{F}_{q}$ und wird so formuliert \parencite[vgl. ][S. 11]{Hill86}:
+\begin{equation}
+\mathcal{A}_q (n, d) = \max\lbrace \lvert C \rvert \mid C \subseteq \mathbb{F}_{q}^{n} \; \land \; d(C) = d \rbrace 
+\end{equation}
+\end{definition}
+Damit lässt sich die \textit{Gilbert-Varshamov-Schranke} wie folgt formulieren:
+\begin{theorem}
+Seien $\mathbb{F}_{q}$ ein endlicher Körper und $n, k, d \in \mathbb{N}$ so gewählt, dass gilt
+\begin{equation}
+V_q (n-1, d-2) < q^{n-k}
+\end{equation}
+Dann existiert ein linearer $[n, k]$-Code mit einer Minimaldistanz von mindestens $d$ \parencite[vgl. ][S. 97]{Roth06}. \\\\
+Eine alternative Formulierung liefert \textsc{\citeauthor{vanLint1973}} \parencite[vgl. ][S. 66]{vanLint1973}:
+\begin{equation}
+\mathcal{A}_q (n, d) \geq \frac{q^n}{V_q (n, d - 1)}
+\end{equation}
+\end{theorem}
+Die \textit{Gilbert-Varshamov-Schranke} liefert folglich eine Untergrenze für die maximal mögliche Codewortanzahl eines Codes, der die Bedingung erfüllt. In Bezug zur Kryptographie sind solche Codes von besonderer Bedeutung, da es nicht möglich sein soll, ein Kryptosystem durch bloßes Erraten möglicher Code- oder Klartextworte zu brechen. Dass sowohl \textit{Goppa}-Codes als auch verallgemeinerte \textit{Reed-Solomon-Codes} diese Schranke ab $q \geq 49$ erfüllen, stellen \textsc{\citeauthor{vanLint87}} dar \parencite[vgl. ][]{vanLint87}.
+
+\section{Vergleich zum McEliece-Kryptosystem}
+Die Frage, inwieweit sich beide dargestellten Vorschläge von \textsc{\citeauthor{McEliece1978}} und \textsc{\citeauthor{Niederreiter1986}} und insbesondere auch ihre Sicherheit unterscheiden, ist Gegenstand dieses Abschnittes.
+\begin{theorem}
+Sei $C$ ein linearer $[n, k, 2t+1]$-Code (wobei $t$ die Fehlerkorrekturschranke bezeichne). Dann sind die Kryptosysteme von \textsc{\citeauthor{McEliece1978}} und \textsc{\citeauthor{Niederreiter1986}} bezüglich dieses Codes äquivalent zueinander und weisen dieselbe Sicherheit auf.
+\end{theorem}
+\begin{proof}
+Die Aussage wird durch einen direkten Beweis gezeigt. Sei $G'$ der öffentliche Schlüssel des \textsc{McEliece}-Kryptosystems, bestehend aus den Matrixprodukt $SGP$, wobei $G$ eine Generatormatrix des betrachteten Codes ist. Gemäß Abschnitt \ref{ParausGenMatrix} kann aus $G'$ eine Paritätsprüfmatrix $H'$ abgeleitet werden (hierbei ist unerheblich, dass es sich bei $G'$ nicht um eine Generatormatrix des betrachteten Codes handelt). Die Verschlüsselungsoperation des \textsc{McEliece}-Kryptosystems ist definiert durch
+\begin{equation}
+x = u \cdot G' + z
+\end{equation}
+$u$ bezeichnet einen Klartextblock und $z$ einen Fehlervektor mit Länge $n$ und Gewicht $w(z) \leq t$. Wird diese Gleichung nun mit $H'^{T}$ multipliziert, ergibt sich durch $G' H'^{T} = 0$:
+\begin{equation}
+\label{156a}
+v = x \cdot H'^{T} = u \cdot G' H'^{T} + z H'^{T} \; \Leftrightarrow \; z H'^{T}
+\end{equation}
+Die Verschlüsselung im \textsc{Niederreiter}-Verfahren ist gegeben durch
+\begin{equation}\label{ab168}
+x = y \cdot H'^{T},
+\end{equation}
+wobei $H' = k_{pub} = SHP$. Da $z$ und $y$ strukturidentisch sind, also Vektoren der Länge $n$ mit Gewicht $w \leq t$, ist durch \ref{156a} auch die Verschlüsselung des \textsc{Niederreiter}-Kryptosystems beschrieben \parencite[vgl. ][S. 272]{LiDengWang}.
+Sollte es einer angreifenden Person bei bekanntem $x$ und $H'$ aus Gleichung \ref{ab168} möglich sein, $y$ zu finden, gilt das \textsc{Niederreiter}-Verfahren als gebrochen. Gleiches trifft jedoch nach \ref{156a} auch auf das \textsc{McEliece}-Verfahren zu, da auch hier das Finden von $z$ bei bekanntem $u$ und $H'$ zum Bruch des Systems führt. \\\\
+Auch ausgehend von der \textsc{Niederreiter}-Verschlüsselungsgleichung \ref{ab168} kann die Äquivalenz zur \textsc{McEliece}-Verschlüsselungsoperation gezeigt werden. Sei $c$ ein $n$-dimensionaler Vektor mit Gewicht $w \geq t$\footnote{Bei einem Gewicht größer als $t$ ist $c$ nicht mehr durch das \textsc{Niederreiter}-Verfahren dechiffrierbar. Hier ist das jedoch auch gar nicht das Ziel.}, der die Gleichung $x = c H'^{T}$ erfüllt. Dann kann $c$ analog zum obigen Vorgehen aufgefasst werden als 
+\begin{equation}
+c = mG' + y
+\end{equation} für einen $k$-dimensionalen Vektor $m$ und $y$ mit Gewicht $y$, denn
+\begin{align*}
+x &= c \cdot H'^{T} = (m G' + y) \cdot H'^{T} \\
+&\Leftrightarrow mG'H'^{T} + yH'^{T} \\
+&\Leftrightarrow yH'^{T},
+\end{align*}
+was wiederum genau Gleichung \ref{ab168} entspricht. Kann also das \textsc{McEliece}-Kryptosystem gebrochen werden, so kann es das \textsc{Niederreiter}-Kryptosystem ebenfalls \parencite[vgl. ][S. 272]{LiDengWang}.
+\end{proof}

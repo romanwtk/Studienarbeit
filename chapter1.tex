@@ -97,7 +97,7 @@ Eine \textbf{abgeschlossene Kugel} $B(a, r)$ um einen Punkt $a$ mit Radius $r$ i
 \[B(a, r) = \lbrace x \in X \mid d(a, x) \leq r\rbrace\] 
 \end{definition}
 Als Abstandsmaß $d$ kann hier beispielsweise die eingeführte \textit{Hamming}-Distanz verwendet werden.
-\begin{definition}
+\begin{definition}\label{DistSphere}
 Sei $B$ eine Kugel mit Radius $r \geq 2$ und Mittelpunkt $x \in A^n$. Dann liegen alle $a_i \in A^n$ mit $d(a_i, x) = r$ auf der Kugeloberfläche von $B$. Sei $C \subseteq A^n$ nun ein Blockcode mit $d(C) = r$ und $x \in C$. Dann liegen alle $c \in (C \setminus \lbrace x \rbrace )$ auf der Kugeloberfläche oder außerhalb der Kugel $B$. 
 \end{definition}
 \begin{note}Ein Punkt $a_j \neq x$ mit $d(a_i, x) < r$ (unterscheidet sich in in weniger als $r$ Stellen von $x$) liegt nicht auf der Kugeloberfläche und kann folglich kein fehlerfreies Codewort sein. Ein Code $C$ mit Minimaldistanz $2$ ist damit \textbf{fehlererkennend} für maximal ein falsch übertragenes Zeichen (notiert: {\glqq}1-fehlererkennend{\grqq}). \\\\

@@ -181,7 +181,7 @@ Mit der gleichen Argumentation wie für $k = n-1$ ergibt sich unmittelbar, dass 
 
 \subsection{Kontroll- und Generatormatrizen}
 Da lineare Codes wie gezeigt Vektorräume bilden, ist die Angabe von \textbf{Basen} möglich. Durch die Definition der Dualität von Codes zueinander, können \textbf{Generator-} und \textbf{Kontrollmatrizen} angegeben werden.
-\begin{definition}
+\begin{definition}\label{ParCheck}
 Sei $C$ ein linearer $[n, k, d]_{q}$-Code und $C^{\perp}$ der duale Code zu $C$. \\
 Ferner sei $\big( \langle h_{11}, h_{12}, ..., h_{1n} \rangle, \langle h_{21}, ..., h_{2n} \rangle, ..., \langle h_{(n-k)1}, ..., h_{(n-k)n} \rangle \big)$ eine Basis zu $C^{\perp}$. Dann ist die Matrix 
 \[H = \left( \begin{array}{cccc} h_{11} & h_{12} & ... & h_{1n} \\ h_{21} & h_{22} & ... & h_{2n} \\ ... & ... & ... & ... \\ h_{(n-k)1} & h_{(n-k)2} & ... & h_{(n-k)n}\end{array}\right) \] eine \textbf{Generatormatrix} von $C^{\perp}$ und \textbf{Kontrollmatrix} oder \textbf{Paritätsprüfmatrix} von $C$ \parencite[vgl. ][S. 37]{Manz2017}
