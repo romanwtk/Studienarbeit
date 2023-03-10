@@ -197,9 +197,10 @@ Wichtig zu bemerken ist, dass die hier gewählte Matrix $P$ im Gegensatz zur Mat
 \end{algorithmic}
 \end{algorithm}
 \subsection{Korrektheit des Verfahrens} 
+Dass das \textsc{Niederreiter}-Verfahren in Ver- und Entschlüsselung korrekt ist, kann anhand der folgenden Aussagen bewiesen werden.
 \begin{theorem}
 \label{CodeEq}
-Das Produkt $H \cdot P$ ist eine Paritätsprüfmatrix eines linearen Codes.
+Ist $y$ ein gültiges Codewort eines $GRS_{k}$-Codes, so ist es das Produkt dieses Codewortes und einer Permutationsmatrix $P$ ebenfalls.
 \end{theorem}
 \begin{proof}
 Nach \textsc{\citeauthor{Hill86}} erzeugen die folgenden Operationen auf einer Generatormatrix $G$ eines linearen $[n, k, d]$-Codes äquivalente Codes \parencite[vgl.][S. 50]{Hill86}:
@@ -210,22 +211,33 @@ Nach \textsc{\citeauthor{Hill86}} erzeugen die folgenden Operationen auf einer G
 \item Vertauschung von Spalten
 \item Multiplikation einer Spalte mit einem Skalar ungleich $0$.
 \end{itemize}
-Da die Matrix $P$ eine (gewichtete) Permutationsmatrix ist, besitzt sie pro Zeile und Spalte genau in einer Komponente einen Wert ungleich $0$. Da nach Definition \ref{ParCheck} die Zeilen einer Generatormatrix eine Basis des durch den Code beschriebenen Vektorraums bilden und die Zeilen einer Paritätsprüfmatrix eine Basis des Kerns der Generatormatrix \parencite[vgl. ][S. 29f.]{Roth06}, besteht hinsichtlich der Zeilenvertauschungen und der Multiplikation einer Zeile mit einem Skalar bereits Äquivalenz, da dies aus der Definition einer Basis unmittelbar folgt und die lineare Unabhängigkeit erhalten bleibt. Bei der Multiplikation der Matrix $H$ mit der Matrix $P$ werden aufgrund der obig beschriebenen Beschaffenheit der Matrix $P$ die Spalten der Matrix $H$ mit Skalaren multipliziert und vertauscht. Hierbei bleibt die lineare Unabhängigkeit nicht zwangsläufig erhalten, jedoch erzeugen diese Operationen \textbf{äquivalente Codes}, die sich zwar in der Anordnung der Symbole unterscheiden, aber den gleichen Vektorraum aufspannen \parencite[vgl. ][S. 24]{MacWilliams77C1} \parencite[vgl. ][S. 1193f.]{Sendrier2000}. Somit ist gezeigt, dass die Aussage gilt.
+Da die Matrix $P$ eine (gewichtete) Permutationsmatrix ist, besitzt sie pro Zeile und Spalte genau in einer Komponente einen Wert ungleich $0$. Da nach Definition \ref{ParCheck} die Zeilen einer Generatormatrix eine Basis des durch den Code beschriebenen Vektorraums bilden und die Zeilen einer Paritätsprüfmatrix eine Basis des Kerns der Generatormatrix \parencite[vgl. ][S. 29f.]{Roth06}, besteht hinsichtlich der Zeilenvertauschungen und der Multiplikation einer Zeile mit einem Skalar bereits Äquivalenz, da dies aus der Definition einer Basis unmittelbar folgt und die lineare Unabhängigkeit erhalten bleibt. Bei der Multiplikation der Matrix $H$ mit der Matrix $P$ werden aufgrund der obig beschriebenen Beschaffenheit der Matrix $P$ die Spalten der Matrix $H$ mit Skalaren multipliziert und vertauscht. Hierbei bleibt die lineare Unabhängigkeit nicht zwangsläufig erhalten, jedoch erzeugen diese Operationen \textbf{äquivalente Codes}, die sich zwar in der Anordnung der Symbole unterscheiden, aber den gleichen Vektorraum aufspannen \parencite[vgl. ][S. 24]{MacWilliams77C1} \parencite[vgl. ][S. 1193f.]{Sendrier2000}. 
+\begin{equation}
+(G \cdot y^{T}) \in GRS_k \; \Rightarrow \; (G \cdot P \cdot y^{T}) \in GRS_k
+\end{equation}
+Daraus, dass permutierte Generatormatrizen zu permutierten Codeworten führen, folgt durch Assoziativität, dass auch eine Permutation des Codewortes Teil des betrachteten Codes ist.
 \end{proof}
-Die Multiplikation dieses Produktes $HP$ mit der Matrix $S^{T}$ zerstört diese Eigenschaft der Äquivalenz nun, wodurch erst möglich wird, den öffentlichen Schlüssel zu veröffentlichen. Das Produkt $SHP$ ist im Allgemeinen keine Paritätsprüfmatrix eines gültigen linearen Codes mehr, behindert die Dekodierbarkeit der Codeworte jedoch nicht:
+Für die Korrektheit des Verfahrens nun noch zu zeigen, dass ein durch die Verschlüsselungsoperation des \textsc{Niederreiter}-Verfahrens erzeugtes Chiffrat mittels des korrespondierenden Entschlüsselungsverfahrens dechiffriert werden kann.
 \begin{theorem}
-Das Produkt aus $k_{pub} = S\cdot H \cdot P$ und Klartextvektor $y$ lässt sich durch Algorithmus \ref{NRDec} dechiffrieren.
+Sei $y$ ein Klartextvektor mit $w(y) \leq t$, $H$ eine Paritätsprüfmatrix eines linearen Codes, $S$ eine nicht-singuläre Matrix und $P$ eine Permutationsmatrix. Dann lässt sich das Produkt $y S H P$ mittels des Entschlüsselungsalgorithmus des \textsc{Niederreiter}-Verfahrens dechiffrieren. 
 \end{theorem}
 \begin{proof}
-Die Aussage folgt unmittelbar:
+Das Chiffrat bzw. das Geheimwort ist entsprechend des \textsc{Niederreiter}-Verschlüsselungs{\-}algorithmus definiert durch
 \begin{align*}
-x &= H \cdot P \cdot S^{T} \cdot y^{T} \\
-s &= S^{-1} \cdot x \\
-  &\Leftrightarrow S^{-1} \cdot H \cdot P \cdot S^{T} \cdot y^{T} \\
-  &\Leftrightarrow H \cdot P \cdot S^{T} \cdot (S^{T})^{-1} \cdot y^{T} \\
-  &\Leftrightarrow H \cdot P \cdot y^{T}
+x &= y S H P \\
+&\Leftrightarrow S H \cdot (y^{T} P)
 \end{align*}
-Da aus Theorem \ref{CodeEq} folgt, dass $HP$ eine gültige Paritätsprüfmatrix eines linearen Codes und damit zugleich eine Generatormatrix des dazu dualen Codes darstellt, ist durch $H\cdot P \cdot y^{T}$ ein gültiges Codewort von $y$ beschrieben, das im Folgenden dekodiert werden kann. Sei $t$ das dekodierte Klartextwort zum Code mit Generatormatrix $HP$. Die Operation \[y = t \cdot (P^{T})^{-1}\] ist die inverse Anwendung der Permutation und führt zum  Klartext $y$, da hier -- wie im Beweis zu Theorem \ref{CodeEq} beschrieben -- lediglich die Anordnung der Symbole permutiert wurde und nun rückgängig gemacht wird. Damit ist die Korrektheit des Verfahrens gezeigt.
+Für die Entschlüsselung wird nun zunächst die Störmatrix durch Multiplikation mit ihrem Inversen neutralisiert:
+\begin{align*}
+s &= x \cdot S^{-1} \\
+&\Leftrightarrow S H y^{T} P S^{-1} \\
+&\Leftrightarrow H y^{T} P
+\end{align*} 
+Im Folgenden bezeichne $y_{P} = y P$. Dann ist $H y_{P}^{T}$ nach Definition \ref{Syndrom} genau ein Syndromvektor \[S = \left( \begin{array}{c} S_0 \\S_1 \\ \vdots\\ S_{n-k-1}\end{array}\right)\] von $y$ bezüglich des $GRS_k$-Codes. Die Syndrome bilden nun gemeinsam mit der Paritätsprüfmatrix $H$ die Eingabewerte eines syndrombasierten Dekodieralgorithmus (siehe beispielsweise Kapitel \ref{SBD}). Da jedoch das Geheimwort nicht etwa aus der Kodierung von $y$ dieses Codes entstanden ist, liefert der syndrombasierte Dekodieralgorithmus als Resultat einen Null-Zeilenvektor $\mathbf{0}$. Der berechnete Fehlerterm entspricht dem Klartextwort $y$, da
+\begin{align*}
+x &= (G \cdot \mathbf{0} + y) \cdot S H P \\
+&\Leftrightarrow y \cdot S H P
+\end{align*}gilt, wobei $G$ eine Generatormatrix des Codes $GRS_k$ bezeichnet. Damit ist gezeigt, dass das \textsc{Niederreiter}-Verfahren korrekt ist. 
 \end{proof}
 \subsection{Wahl geeigneter Codes}
 Die Sicherheit eines solchen Kryptosystems ist stark an die Wahl eines geeigneten Codes gebunden. \textsc{\citeauthor{Niederreiter1986}} formuliert daher folgende Anforderungen an Codes \parencite[vgl. ][S. 161f.]{Niederreiter1986}:
@@ -279,7 +291,7 @@ Die Verschlüsselung im \textsc{Niederreiter}-Verfahren ist gegeben durch
 \begin{equation}\label{ab168}
 x = y \cdot H'^{T},
 \end{equation}
-wobei $H' = k_{pub} = SHP$. Da $z$ und $y$ strukturidentisch sind, also Vektoren der Länge $n$ mit Gewicht $w \leq t$, ist durch \ref{156a} auch die Verschlüsselung des \textsc{Niederreiter}-Kryptosystems beschrieben \parencite[vgl. ][S. 272]{LiDengWang}.
+wobei $H' = k_{pub} = SHP$. Da $z$ und $y$ strukturidentische Fehlervektoren der Länge $n$ mit Gewicht $w \leq t$, ist durch \ref{156a} auch die Verschlüsselung des \textsc{Niederreiter}-Kryptosystems beschrieben \parencite[vgl. ][S. 272]{LiDengWang}.
 Sollte es einer angreifenden Person bei bekanntem $x$ und $H'$ aus Gleichung \ref{ab168} möglich sein, $y$ zu finden, gilt das \textsc{Niederreiter}-Verfahren als gebrochen. Gleiches trifft jedoch nach \ref{156a} auch auf das \textsc{McEliece}-Verfahren zu, da auch hier das Finden von $z$ bei bekanntem $u$ und $H'$ zum Bruch des Systems führt. \\\\
 Auch ausgehend von der \textsc{Niederreiter}-Verschlüsselungsgleichung \ref{ab168} kann die Äquivalenz zur \textsc{McEliece}-Verschlüsselungsoperation gezeigt werden. Sei $c$ ein $n$-dimensionaler Vektor mit Gewicht $w \geq t$\footnote{Bei einem Gewicht größer als $t$ ist $c$ nicht mehr durch das \textsc{Niederreiter}-Verfahren dechiffrierbar. Hier ist das jedoch auch gar nicht das Ziel.}, der die Gleichung $x = c H'^{T}$ erfüllt. Dann kann $c$ analog zum obigen Vorgehen aufgefasst werden als 
 \begin{equation}

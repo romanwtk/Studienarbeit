@@ -137,10 +137,7 @@ Wird der duale Code zu einem dualen Code eines linearen Codes $C$ gebildet, so i
 \[C^{\perp\perp} = C\]
 
 \begin{theorem}
-Der duale Code zu einem verallgemeinerten Reed-Solomon-Code ist ebenfalls ein verallgemeinerter Reed-Solomon-Code \parencite[vgl. ][S. 14]{Mahr88}. \\\\
-So gilt $GRS_k (u, v)^{\perp} = GRS_{n-k} (u, v')$, wobei für die Komponenten des Vektors $v'$ gilt:
-\[v_i \cdot v_{i}' \prod\limits_{j=1, \; j \neq i}^{n} (u_j - u_i) = 1\]
-\parencite[vgl. ][S. 14]{Mahr88}
+Der duale Code zu einem verallgemeinerten Reed-Solomon-Code ist ebenfalls ein verallgemeinerter Reed-Solomon-Code \parencite[vgl. ][S. 14]{Mahr88}.
 \end{theorem}
 \begin{proof}
 Zunächst wird $k = n-1$ angenommen. Dann ist zu zeigen, dass $GRS_{n-1} (u, v)^{\perp} = GRS_{1} (u, v')$ gilt. Dafür genügt es, zu beweisen, dass $v_{i}' \neq 0$ gilt und $v$ damit ein gültiges Gewichtstupel ist, da für alle $u_i$ bereits bekannt ist, dass sie die Forderungen von $GRS$-Codes erfüllen. Die Codewortmenge von $GRS_{1}(u, v')$ ist dadurch, dass zulässige Polynome auf diesem Code nur Skalare sein können, durch alle skalaren Vielfachen von allen $v_{i}'$ bereits vollständig beschrieben. \\\\
@@ -178,6 +175,11 @@ Falls ein $v'_i = 0$ ist, so ergibt sich dadurch, dass keine Komponente der link
 \end{equation}
 Mit der gleichen Argumentation wie für $k = n-1$ ergibt sich unmittelbar, dass auch hier kein $v'_i$ gleich $0$ sein kann. Damit ist das Theorem gezeigt.
 \end{proof}
+\begin{note}
+Sei $GRS_k (u, v)^{\perp} = GRS_{n-k} (u, v')$. Dann gilt für die Komponenten des Vektors $v'$ \parencite[vgl. ][S. 14]{Mahr88}:
+\[v_i \cdot v_{i}' \prod\limits_{j=1, \; j \neq i}^{n} (u_j - u_i) = 1\]
+Ein Beweis dieser Formel ist in \parencite[vgl. ][S. 9f.]{Weger2017}
+\end{note}
 
 \subsection{Kontroll- und Generatormatrizen}
 Da lineare Codes wie gezeigt Vektorräume bilden, ist die Angabe von \textbf{Basen} möglich. Durch die Definition der Dualität von Codes zueinander, können \textbf{Generator-} und \textbf{Kontrollmatrizen} angegeben werden.
@@ -277,6 +279,7 @@ Im Anhang \ref{CodingLst} ist die Implementierung des Kodiervorgangs eines veral
 Nachdem (nicht-)systematisch erzeugte Codeworte nun über einen unzuverlässigen Kanal übertragen wurden, werden Fehlerkorrektur- und Dekodieralgorithmen angewandt, um die übertragenen Informationen zu erhalten. \\\\
 Im Folgenden wird der \textbf{syndrombasierte} Dekodieralgorithmus für eine maximale Fehleranzahl von $t = \lfloor\frac{n-k}{2}\rfloor$ dargestellt. Der alternative Ansatz des \textbf{listen-basierten} Dekodierens, der die Korrektur von einer größeren Anzahl an Fehlern ermöglicht, wird ohne vertiefte Darstellung erwähnt.
 \subsubsection{Syndrombasierter Dekodieralgorithmus}
+\label{SBD}
 Gegeben sei ein verallgemeinerter Reed-Solomon-Code $GRS_k (u, v)$ mit 
 \begin{itemize}
 \item Auswertungsstellen $u = \langle u_0, ..., u_{n-1}\rangle$, $\forall i, j \in \lbrace 0, ..., n-1 \rbrace\colon u_i, u_j \in \mathbb{F}_q \land ((u_i = u_j) \Rightarrow i = j)$
@@ -297,7 +300,7 @@ Eine explizite Formel zur Berechnung der Koeffizienten der Paritätsprüfmatrix 
 \[d_i = v_i^{-1} \cdot \prod\limits_{j=1, \, j \neq i}^{n} (u_i - u_j)^{-1}\]
 
 Basis des Dekodieralgorithmus bilden nun $n-k-1$ Syndrome, die die Komponenten des Produkts dieser Paritätsprüfmatrix $H$ mit dem empfangenen Wort $r$ ergeben:
-\begin{definition}
+\begin{definition}\label{Syndrom}
 Das $l$-te \textbf{Syndrom} eines Wortes $r$ sei definiert als
 \[S_l = \sum\limits_{j=0}^{n-1}r_{j} \, \cdot \, d_{j}\cdot u_{j}^{l}\]
 \parencite[vgl. ][S. 184]{Roth06}
