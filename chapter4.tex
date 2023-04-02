@@ -4,4 +4,21 @@ Ziel dieses Kapitels ist es, die Bedeutung der vorgestellten Verfahren nach \tex
 \section{Sicherheit}
 Da bereits gezeigt wurde, dass die Sicherheit der beiden Verfahren nach \textsc{Niederreiter} und \textsc{McEliece} die gleiche Sicherheitsklasse aufweisen, sofern dieselbe Klasse an Codes verwendet wird, liegt es nahe, die Sicherheit einzelner Codeklassen hinsichtlich ihrer Eignung für die Kryptographie zu beurteilen.
 \subsection{Strukturangriffe auf $GRS$-Codes}
-\textsc{\citeauthor{Sidelnikov1992}} zeigen in ihrem 1992 erschienenen Artikel \citetitle{Sidelnikov1992}, dass die insbesondere für das \textsc{Niederreiter}-Schema vorgesehenen $GRS$-Codes eine strukturelle Schwäche aufweisen: Sei $k_{pub} = H \cdot U$, wobei $U = S^{T} \cdot P$ und $H, S, P$ entsprechend der Definition des \textsc{Niederreiter}-Schemas eine Paritätsprüf-, Stör- und Permutationsmatrix darstellen. Die Autoren stellen nun in \parencite{Sidelnikov1992} einen Algorithmus vor, mit dem in einer Komplexität von $O((n-k-1)^4 + (n-k-1) \cdot n)$ die geheimen Matrizen $H$ und $U$ ermitteln werden können. Dies wird dadurch möglich, dass jeder Eintrag in einer Zeile $k_{{pub}_{i}}$ als Polynom mit einem Grad $\leq (n-k-1)$ aufgefasst werden kann. Es ergibt sich ein System polynomieller Gleichungen, dessen Lösung dem privaten Schlüssel $k_{priv} = \langle S, P\rangle$ entspricht \parencite[vgl. ][S. 120f.]{Overbeck2009}.
+\textsc{\citeauthor{Sidelnikov1992}} zeigen in ihrem 1992 erschienenen Artikel \citetitle{Sidelnikov1992}, dass die insbesondere für das \textsc{Niederreiter}-Schema vorgesehenen $GRS$-Codes eine strukturelle Schwäche aufweisen: Sei $k_{pub} = H \cdot U$, wobei $U = S^{T} \cdot P$ und $H, S, P$ entsprechend der Definition des \textsc{Niederreiter}-Schemas eine Paritätsprüf-, Stör- und Permutationsmatrix darstellen. Die Autoren stellen nun in \parencite{Sidelnikov1992} einen Algorithmus vor, mit dem in einer polynomiellen Komplexität von $O((n-k-1)^4 + (n-k-1) \cdot n)$ die geheimen Matrizen $H$ und $U$ ermitteln werden können. Dies wird dadurch möglich, dass jeder Eintrag in einer Zeile $k_{{pub}_{i}}$ als Polynom mit einem Grad $\leq (n-k-1)$ aufgefasst werden kann. Es ergibt sich ein System polynomieller Gleichungen, dessen Lösung dem privaten Schlüssel $k_{priv} = \langle S, P\rangle$ entspricht \parencite[vgl. ][S. 120f.]{Overbeck2009}. Dieser Angriff begründet den Ausschluss von verallgemeinerten \textit{Reed-Solomon}-Codes aus der Liste geeigneter Codeklassen. Eine algorithmische Darstellung dieses Algorithmus ist in \parencite[][S. 18]{Engelbert2006}.
+\subsection{\textit{Adaptive chosen ciphertext}-Angriffe}
+\begin{definition}[\parencite{Kiltz2003}]
+Sei $C$ ein \textbf{Public-Key-Kryptosystem} bestehend aus
+\begin{itemize}
+\item dem Schlüsselerzeugungsalgorithmus $K$,
+\item dem Verschlüsselungsalgorithmus $E$ und
+\item dem Entschlüsselungsalgorithmus $D$.
+\end{itemize}
+Ferner sei $A$ ein probabilistischer Angriff auf $C$, wobei $A$ aus zwei aufeinander folgenden Abläufen $A_1$ und $A_2$ mit folgenden Eigenschaften besteht:
+\begin{enumerate}
+\item $A_1$ erhält als Eingabe das öffentliche Ergebnis von $E$, also $k_{pub}$, und berechnet zwei Klartexte $m_0, m_1$ derselben Länge.
+\item Nun wird für den Angriff verborgen $m_b$ mittels $k_{pub}$ verschlüsselt, wobei $b \in \lbrace 0, 1 \rbrace$ zufällig gewählt wird. Das entstandene Chiffrat wird als $c^*$ bezeichnet.
+\item $A_2$ erhält dieses Chiffrat und versucht, $b$ zu ermitteln.
+\end{enumerate}
+Ein solcher Angriff $A$ wird als \textbf{\textit{Chosen plaintext}-Angriff (IND-CPA)} bezeichnet. Ein Kryptosystem ist dann \textbf{ununterscheidbar (IND)}, wenn der richtige Wert für $b$ mit einer von Wahrscheinlichkeit von maximal $\frac{1}{2}$ erraten werden kann \parencite[vgl. ][S. 7]{bogdanov2005ind}.\\\\
+Steht $A_1$ nur während des ersten Schritts ein Entschlüsselungsorakel, das eine beliebige Anzahl an Chiffraten entschlüsselt, ohne dabei Informationen über den privaten Schlüssel preiszugeben, zur Verfügung, handelt es sich um einen \textbf{Nicht-adaptiven \textit{Chosen ciphertext}-Angriff (IND-CCA1)}. Steht zusätzlich auch in Schritt 3 ein solches Orakel zur Verfügung, dass beliebige Chiffrate mit Ausnahme von $c^*$ entschlüsseln kann, so wird der Angriff $A$ als \textbf{Adaptiver \textit{Chosen ciphertext}-Angriff (IND-CCA2)} bezeichnet, da Angreifende durch die Orakel ihre Wahl der Klartexte $m_0$ und $m_1$ adaptieren können \parencite[vgl. ][S. 153f.]{Kiltz2003}.
+\end{definition}
