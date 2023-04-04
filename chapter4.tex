@@ -31,7 +31,39 @@ Diese Angriffe basieren darauf, über die Berechnung einer systematischen Form e
 
 \section{Quantensicherheit}
 Dass code-basierte Kryptosysteme geeignet sein könnten, um die Schutzziele der Vertraulichkeit und Integrität auch unter der Verfügbarkeit von Quantencomputern zu gewährleisten, zeigen diverse Arbeiten, Forschungsgruppen und nicht zuletzt auch, dass entsprechende Kryptosysteme Teil von Standardisierungsrunden des \ac{NIST} sind. \\\\
-In diesem Abschnitt wird kurz begründet, warum das \textsc{McEliece}-Kryptosystem als Kandidat für \textit{Post-Quantum Cryptography} gilt. Anschließend werden kurz Kryptosysteme aus dem Standardisierungsprozess des \ac{NIST} vorgestellt, die auf code-basierter Kryptographie und insbesondere auch auf den beiden vorgestellten Kryptosystemen basieren.
+In diesem Abschnitt wird begründet, warum das \textsc{McEliece}-Kryptosystem als Kandidat für \textit{Post-Quantum Cryptography} gilt. Anschließend werden drei Kryptosysteme aus dem Standardisierungsprozess des \ac{NIST} vorgestellt, die auf code-basierter Kryptographie und insbesondere auch auf den Kryptosystemen von \textsc{Niederreiter} und \textsc{McEliece} basieren.
 \subsection{Argumentation}
-Etablierte Verfahren wie \textit{RSA} oder \textit{ElGamal} basieren auf zahlentheoretischen Problemen wie dem diskreten Logarithmus oder der Primfaktorzerlegung \parencite{Dinh2011}. Während die Sicherheit auf konventionellen Computern durch die Abwesenheit effizienter Algorithmen zur Lösung dieser Probleme gewährleistet wird, zeigt sich durch Algorithmen wie jenem von \textsc{\citeauthor{Shor}} in \parencite{Shor}, der auf \textit{Quantum Fourier Sampling} basiert \parencite[vgl. ][S. 330]{QuantumFourier} \parencite[vgl. ][S. 763]{Dinh2011}, dass diese Verfahren mit Quantencomputern gebrochen werden können. \\\\\textsc{\citeauthor{Dinh2011}} zeigen in \parencite{Dinh2011}, dass \textit{Quantum Fourier Sampling}-Angriffe jedoch nicht die Sicherheit der Verfahren von \textsc{McEliece} und \textsc{Niederreiter} kompromittieren. Da diese Angriffe in einem Großteil der Quantenalgorithmen verwendet werden \parencite[vgl. ][S. 763]{Dinh2011}, entsteht die Einordnung dieser Kryptosysteme als potenziell quantensicher. Dass die beiden Kryptosysteme nicht resistent gegenüber anderen, möglicherweise noch nicht bekannten, Quantenalgorithmen sind, bleibt jedoch möglich. Daher ist ein Ziel des \ac{NIST}-Standardisierungsprozesses, die Sicherheit der Kryptosysteme gründlich und langfristig zu erforschen \parencite[vgl. ][]{NISTPQC3}.
+Etablierte Verfahren wie \textit{RSA} oder \textit{ElGamal} basieren auf zahlentheoretischen Problemen wie dem diskreten Logarithmus oder der Primfaktorzerlegung \parencite{Dinh2011}. Während die Sicherheit auf konventionellen Computern durch die Abwesenheit effizienter Algorithmen zur Lösung dieser Probleme gewährleistet wird, zeigt sich durch Algorithmen wie jenem von \textsc{\citeauthor{Shor}} in \parencite{Shor}, der auf \textit{Quantum Fourier Sampling} basiert \parencite[vgl. ][S. 763]{Dinh2011} \parencite[vgl. ][S. 330]{QuantumFourier}, dass diese Verfahren mit Quantencomputern gebrochen werden können. \\\\\textsc{\citeauthor{Dinh2011}} zeigen in \parencite{Dinh2011}, dass \textit{Quantum Fourier Sampling}-Angriffe jedoch nicht die Sicherheit der Verfahren von \textsc{McEliece} und \textsc{Niederreiter} kompromittieren. Da diese Angriffe in einem Großteil der Quantenalgorithmen verwendet werden \parencite[vgl. ][S. 763]{Dinh2011}, entsteht die Einordnung dieser Kryptosysteme als potenziell quantensicher. Dass die beiden Kryptosysteme nicht resistent gegenüber anderen, möglicherweise noch nicht bekannten, Quantenalgorithmen sind, bleibt jedoch möglich. Daher ist ein Ziel des \ac{NIST}-Standardisierungsprozesses, die Sicherheit der Kryptosysteme gründlich und langfristig zu erforschen \parencite[vgl. ][]{NISTPQC3}.
 \subsection{Aktuelle Kandidaten}
+Im \ac{NIST}-Standardisierungsprozess für Post-Quanten-Kryptographie werden in mehreren Runden Verfahren analysiert, hinsichtlich Design, Sicherheit und Performanz bewertet und bei entsprechender Eignung standardisiert \parencite[vgl. ][S. 27ff.]{NISTPQC3}. Eingereicht wurden und analysiert werden Verfahren, die auf fehlerkorrigierenden Codes, multivariaten Polynomen oder Gittern basieren. Ein ebenfalls eingereichtes Verfahren, das auf Isogenien aufgebaut ist, konnte total gebrochen werden \parencite[vgl. ][]{Decru} und ist daher nicht mehr Teil des Standardisierungsprozesses. Hingegen sind code-basierte Verfahren zwar noch nicht standardisiert, jedoch weiterhin Teil des Auswahlprozesses, zum Zeitpunkt der Abgabe dieser Arbeit in Runde vier. Im Folgenden werden die drei Verfahren \textit{BIKE}, \textit{Classic McEliece} und \textit{HQC} kurz beschrieben.
+\subsubsection{BIKE}
+\textit{BIKE} ist ein Akronym für \textit{Bit Flipping Key Encapsulation} und bezeichnet einen code-basierten \ac{KEM} auf Grundlage von quasi-zyklischen \ac{MDPC}-Codes. \parencite[vgl. ][S. 29]{NISTPQC3}. Die Verschlüsselung während des \ac{PKE} folgt dabei dem \textsc{Niederreiter}-Schema.
+\begin{definition}
+Sei $C$ ein linearer $[n, k]$-Code. Falls eine Zahl $n_0 \in \mathbb{N}$ existiert, sodass für alle Codeworte $c \in C$ gilt, dass die Verschiebung von $c$ um $n_0$ ebenfalls ein gültiges Codewort aus $C$ ist, so ist $C$ \textbf{quasi-zyklisch} \parencite[vgl. ][S. 2070]{Tillich2013}.
+\end{definition}
+\begin{definition}
+Ein $[n, k, d]$-\ac{MDPC}-Code ist ein linearer Code der Länge $n$, Dimension $k$, dessen  Paritätsprüfmatrizen in ihren Zeilen das konstante Gewicht $d$ aufweisen \parencite[vgl. ][S. 2070]{Tillich2013}.
+\end{definition}
+\textit{BIKE} sei seinen Autoren zufolge IND-CCA-sicher \parencite[vgl. ][S. 31]{NISTPQC3}. Die \ac{NIST} beabsichtigt, dass Verfahren aufgrund seiner günstigen Performanzeigenschaften zum Ende der vierten Runde ihres Verfahrens zu standardisieren \parencite[vgl. ][S. 31]{NISTPQC3}.
+\subsubsection{Classic McEliece}
+Wie der Name andeutet, bezeichnet \textit{Classic McEliece} ein code-basiertes Kryptosystem, dass in seinem Design nah an den klassischen Ansätzen von \textsc{Niederreiter} und \textsc{McEliece} bleibt. So wird ein binärer \textit{Goppa}-Code als Grundlage gewählt und die Verschlüsselung erfolgt wie im \textsc{Niederreiter}-Schema, wenn auch mit Modifikationen, um die Eigenschaft, IND-CCA-sicher zu sein, zu erreichen \parencite[vgl. ][S. 31f.]{NISTPQC3}. \\\\
+Im Gegensatz zu \textit{BIKE} ist die Schlüssellänge und der daher benötigte Rechenaufwand nach Auffassung der \ac{NIST} zu hoch für eine Vielzahl von Anwendungen \parencite[vgl. ][S. 33]{NISTPQC3}. Dennoch wird die Einreichung in der vierten Runde weiter betrachtet, insbesondere, falls sich konkrete Anwendungsfälle ergeben, in denen konkurrierende Verfahren weniger gut geeignet scheinen als \textit{Classic McEliece} \parencite[vgl. ][S. 33]{NISTPQC3}.
+
+\subsubsection{HQC (Hamming Quasi-Cyclic)}
+Das Kryptosystem \textit{HQC} basiert wie \textit{BIKE} auf quasi-zyklischen \ac{MDPC}-Codes, deren Generatormatrizen jedoch in systematischer Form verwendet werden. Dafür ist die Definition zyklischer Matrizen erforderlich.
+\begin{definition}
+Sei $x = \langle x_1, \ldots, c_n\rangle \in \mathbb{F}_{q}^{n}$. Dann ist die aus $x$ abgeleitete Matrix
+\begin{equation}
+\text{rot}(x) = \left( 
+\begin{array}{cccc}
+x_1 & x_n & \cdots & x_2 \\
+x_2 & x_1 & \cdots & x_3 \\
+\vdots & \vdots & & \vdots \\
+x_n & x_{n-1} & \cdots & x_1
+\end{array}
+\right)
+\end{equation}
+\textbf{zyklisch} \parencite[vgl. ][S. 3929]{Aguilar-Melchor2018}.
+\end{definition}
+Mithilfe dieser zyklischen Matrizen können \textit{systematische quasi-zyklische} Codes angegeben werden \parencite[vgl. ][S. 3930f.]{Aguilar-Melchor2018}. \\\\
+Das Verfahren weist nach Auffassung der \ac{NIST} eine akzeptable, wenn auch nicht optimale Performanz auf, wird aber insbesondere aufgrund der starken Sicherheitseigenschaften weiter im Standardisierungsprozess betrachtet \parencite[vgl. ][S. 34]{NISTPQC3}.
