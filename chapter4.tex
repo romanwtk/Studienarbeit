@@ -29,6 +29,10 @@ Insbesondere durch das Aufgeben von Restriktionen in der Wahl des zugrundeliegen
 Eine weitere Klasse von Angriffen auf die Kryptosysteme von \textsc{Niederreiter} und \textsc{McEliece} sind \textit{Information Set Decoding}-Angriffe, die auf der bereits 1962 veröffentlichten Arbeit \citetitle{Prange1962} von \textsc{\citeauthor{Prange1962}} basieren und damit bereits \textsc{McEliece} bei der Wahl der Parameter des durch ihn vorgeschlagenen Kryptosystems beeinflusst haben. Veränderungen und Optimierungen dieses Angriffs, wie unter Anderem beschrieben in \parencite{Bernstein2008} führen dazu, dass ausreichend große Parameter für $n$, $t$ und nach Möglichkeit auch endliche Körper $\mathbb{F}_q$ mit anderen Werten für $q$ als Zweierpotenzen gewählt werden müssen, um diesen Angriffen zu widerstehen  \parencite[vgl. ][S. 44ff.]{Bernstein2008} \parencite[vgl. ][S. 11]{SlidesLange}. \\\\
 Diese Angriffe basieren darauf, über die Berechnung einer systematischen Form einer Generatormatrix eines Codes $C$ und einen gezielt erzeugten Vektor mit einer definierten Maximaldistanz zu $C$ zu erwirken, dass die Fehlerstellen einer Nachricht durch die systematische Form ersichtlich werden \parencite[vgl. ][]{Peters2010}. Diesen Angriffen kann durch die beschriebenen Maßnahmen begegnet werden \parencite[vgl. ][S. 44ff.]{Bernstein2008}.
 
+\section{Anwendungen in der Gegenwart}
+Während sich die Sicherheitsbewertung der Verfahren auch Dekaden nach ihrer Veröffentlichung nur geringfügig verändert hat und nie in einem Ausmaß, dem sich nicht durch Anpassungen der Parameter begegnen ließe, sind kaum Implementierungen und Anwendungen der Kryptosysteme von \textsc{McEliece} und \textsc{Niederreiter} bekannt \parencite[vgl. ][S. 44:2]{Maurich2015}. \\\\ 
+Auch eine Webrecherche mit den Suchtermen {\glqq}Applications of McEliece{\grqq} und {\glqq}McEliece in practice{\grqq} am 05.04.2023 in den Suchmaschinen \textit{Google}, \textit{Google Scholar} und \textit{\href{https://eprint.iacr.org/}{Cryptology ePrint Archive (IACR)}} lieferte neben akademischen Beiträgen kaum Informationen über praktische Anwendungsszenarien und Implementierungen, die über die wissenschaftliche Betrachtung des Kryptosystems hinausgehen. Die Gründe dafür liegen womöglich in der in Relation zu anderen Verfahren großen Schlüssellänge von mehreren Kilo- bis Megabyte \parencite[vgl. ][S. 79]{Berger2009}. Einige Versuche, die Schlüssellängen des Verfahrens zu reduzieren, auch durch die Wahl anderer Codes, verringerten die Sicherheit des Verfahrens und erwiesen sich dadurch als ungeeignet \parencite[vgl. ][S. 44:2]{Maurich2015}. Andere Beiträge mit diesem Ziel wie \parencite{Berger2009} reduzierten die Schlüssellänge zwar, jedoch nicht auf ein mit anderen \ac{PKC}s vergleichbares Maß.
+
 \section{Quantensicherheit}
 Dass code-basierte Kryptosysteme geeignet sein könnten, um die Schutzziele der Vertraulichkeit und Integrität auch unter der Verfügbarkeit von Quantencomputern zu gewährleisten, zeigen diverse Arbeiten, Forschungsgruppen und nicht zuletzt auch, dass entsprechende Kryptosysteme Teil von Standardisierungsrunden des \ac{NIST} sind. \\\\
 In diesem Abschnitt wird begründet, warum das \textsc{McEliece}-Kryptosystem als Kandidat für \textit{Post-Quantum Cryptography} gilt. Anschließend werden drei Kryptosysteme aus dem Standardisierungsprozess des \ac{NIST} vorgestellt, die auf code-basierter Kryptographie und insbesondere auch auf den Kryptosystemen von \textsc{Niederreiter} und \textsc{McEliece} basieren.
@@ -52,7 +56,7 @@ Im Gegensatz zu \textit{BIKE} ist die Schlüssellänge und der daher benötigte 
 \subsubsection{HQC (Hamming Quasi-Cyclic)}
 Das Kryptosystem \textit{HQC} basiert wie \textit{BIKE} auf quasi-zyklischen \ac{MDPC}-Codes, deren Generatormatrizen jedoch in systematischer Form verwendet werden. Dafür ist die Definition zyklischer Matrizen erforderlich.
 \begin{definition}
-Sei $x = \langle x_1, \ldots, c_n\rangle \in \mathbb{F}_{q}^{n}$. Dann ist die aus $x$ abgeleitete Matrix
+Sei $x = \langle x_1, \ldots, c_n\rangle \in \mathbb{F}_{q}^{n}$. Dann wird die aus $x$ abgeleitete Matrix
 \begin{equation}
 \text{rot}(x) = \left( 
 \begin{array}{cccc}
@@ -63,7 +67,7 @@ x_n & x_{n-1} & \cdots & x_1
 \end{array}
 \right)
 \end{equation}
-\textbf{zyklisch} \parencite[vgl. ][S. 3929]{Aguilar-Melchor2018}.
+als \textbf{zyklisch} bezeichnet\parencite[vgl. ][S. 3929]{Aguilar-Melchor2018}.
 \end{definition}
 Mithilfe dieser zyklischen Matrizen können \textit{systematische quasi-zyklische} Codes angegeben werden \parencite[vgl. ][S. 3930f.]{Aguilar-Melchor2018}. \\\\
 Das Verfahren weist nach Auffassung der \ac{NIST} eine akzeptable, wenn auch nicht optimale Performanz auf, wird aber insbesondere aufgrund der starken Sicherheitseigenschaften weiter im Standardisierungsprozess betrachtet \parencite[vgl. ][S. 34]{NISTPQC3}.
