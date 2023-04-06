@@ -20,13 +20,13 @@ heißt \textbf{$K$-Vektorraum}, sofern gilt:
 \end{itemize}
 \parencite[vgl.][S. 95]{Fischer2020LA}
 \end{definition}
-Vektorräume können mit einer beliebigen Dimension konstruiert werden und beinhalten folglich Vektoren dieser Dimension. In dieser Arbeit werden insbesondere Vektorräume mit Dimension $n \geq 2$ verwendet, auf denen eine komponentenweise Addition und skalare Multiplikation definiert ist. Für die Definition linearer Codes ist es erforderlich, Vektorräume $\mathbb{F}_{q}^{n}$ auf Primzahlkörpern $\mathbb{F}_{q}$ zu definieren.
+Vektorräume können mit einer beliebigen Dimension konstruiert werden und beinhalten folglich Vektoren dieser Dimension. In dieser Arbeit werden insbesondere Vektorräume mit Dimension $n \geq 2$ verwendet, auf denen eine komponentenweise Addition und skalare Multiplikation definiert sind. Für die Definition linearer Codes ist es erforderlich, Vektorräume $\mathbb{F}_{q}^{n}$ auf Primzahlkörpern $\mathbb{F}_{q}$ zu definieren.
 \begin{theorem}
 Sei $\mathbb{F}_{q}$ ein endlicher Körper. Für jedes $n \geq 1$ ist $\mathbb{F}_{q}^{n}$ ein $\mathbb{F}_{q}$-Vektorraum der Dimension $n$.
 \end{theorem}
 \begin{proof}
 Die Eigenschaften folgen unmittelbar, so ist die komponentenweise Addition definiert als \[(v_1, v_2, ..., v_n) + (w_1, w_2, ..., w_n) = (v_1 + w_1, v_2 + w_2, ..., v_n + w_n)\] und die Skalarmultiplikation als
-\[k \circ (v_1, v_2, ..., v_n) = (k\circ v_1, k \circ v_2, ..., k \circ v_n)\]. Damit ist leicht zu verifizieren, dass alle Forderungen erfüllt sind.
+\[k \circ (v_1, v_2, ..., v_n) = (k\circ v_1, k \circ v_2, ..., k \circ v_n)\text{.}\] Damit ist leicht zu verifizieren, dass alle Forderungen erfüllt sind.
 \end{proof}
 \begin{definition}
 Ein \textbf{Untervektorraum} $W$ eines Vektorraums $V$ ist eine Teilmenge $W \subset V$, für die gilt:
@@ -40,15 +40,15 @@ Ein \textbf{Untervektorraum} $W$ eines Vektorraums $V$ ist eine Teilmenge $W \su
 \begin{definition}
 Sei $\mathbb{F}_q$ ein endlicher Körper, $\lvert K \rvert = q$. Dann ist ein Blockcode $C$ ein \textbf{linearer Code} mit dem Alphabet $\mathbb{F}_q$ und Länge $n$, falls die Menge $C$ ein \textbf{Untervektorraum} von $\mathbb{F}_{q}^{n}$ ist \parencite[vgl. ][S. 29]{Manz2017}. 
 \end{definition}
-Folglich beschreibt ein linearer Code Tupel der Länge $n$ mit Komponenten aus $\mathbb{F}_q$. Ferner stellt die Untervektorraum-Eigenschaft sicher, dass die Addition von Codeworten und die Multiplikation eines Codewortes mit einem Skalar aus dem übergeordneten endlichen Körper $\mathbb{F}_q$ weiterhin valide Codeworte erzeugt. Dies ist eine elementare Eigenschaft linearer Codes.
+Folglich beschreibt ein linearer Code Tupel der Länge $n$ mit Komponenten aus $\mathbb{F}_q$. Ferner stellt die Untervektorraum-Eigenschaft sicher, dass die Addition von Codeworten und die Multiplikation eines Codewortes mit einem Skalar aus dem übergeordneten endlichen Körper $\mathbb{F}_q$ weiterhin valide Codeworte erzeugen. Dies ist eine elementare Eigenschaft linearer Codes.
 \\\\
-Eine Subklasse der linearen Codes sind die \textbf{zyklischen Codes}. 
+Eine Unterklasse der linearen Codes sind die \textbf{zyklischen Codes}. 
 \section{Zyklische Codes}
 \begin{definition}
 Ein $k$-dimensionaler Untervektorraum $C$ von $\mathbb{F}_{q}^{n}$ ist dann ein \textbf{zyklischer Code}, wenn
 \[\forall \, \langle a_0, a_1, ..., a_{n-1} \rangle \in C\colon \quad \langle a_{n-1}, a_0, a_1, ..., a_{n-2} \rangle \in C\] gilt \parencite[vgl. ][S. 42]{vanLint1973}.
 \end{definition}
-Ein linearer Code ist folglich dann zyklisch, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{gewöhnliche Reed-Colomon-Code}, der neben der verallgemeinerten, nicht zyklischen Version Gegenstand des nächsten Abschnitts ist.
+Ein linearer Code ist folglich dann \textbf{zyklisch}, falls zu jedem Codewort auch das Codewort Teil des Codes ist, das durch eine zyklische Verschiebung entsteht. Ein solcher Code ist beispielsweise der \textit{gewöhnliche Reed-Colomon-Code}, der neben der verallgemeinerten, nicht zyklischen Version Gegenstand des nächsten Abschnitts ist.
 \begin{theorem}\label{CyclicCodeIdeal}
 Zyklische Codes der Länge $n$ sind Ideale des Rings $R = \mathbb{F}_{q}[x]/(x^n -1)$.
 \end{theorem}
@@ -64,9 +64,9 @@ Sei $C$ ein linearer zyklischer Code der Länge $n$ über einem Körper $F_{q}$ 
 genau das zyklisch verschobene Codewort $a' \in C$. \\
 Dies folgt aus $x^n \equiv 1 \mod x^n - 1$ \parencite[vgl. ][S. 149f.]{Biggs08}.
 \end{proof}
-Durch die Linearität des Codes $C$ lässt sich ein $a \in C$ nicht nur beliebig oft zyklisch verschieben, also mit $x$ multiplizieren, sondern auch lineare Kombinationen (also Summen) gültiger Codeworte ergeben wiederum ein gültiges Codewort in $C$. Somit ergibt auch das Produkt aus einem Codewort und einem Polynom
+Durch die Linearität des Codes $C$ lässt sich ein $a \in C$ nicht nur beliebig oft zyklisch verschieben, also mit $x$ multiplizieren, sondern auch lineare Kombinationen (also Summen) gültiger Codeworte ergeben wiederum ein gültiges Codewort in $C$. Somit stellt auch das Produkt aus einem Codewort und einem Polynom
 \[a(x) \cdot c(x) \in C, \, c(x) \in C,\, a \in \mathbb{F}_{q}[x]/(x^n - 1)\] 
-ein gültiges Codewort \parencite[vgl. ][S. 121]{Moon05}. \\\\
+ein gültiges Codewort dar \parencite[vgl. ][S. 121]{Moon05}. \\\\
 Da Ideale eines Polynomrings erzeugende Polynome besitzen, ist die Angabe eines \textbf{Generatorpolynoms} $g(x)$ möglich, für das gilt:
 \begin{itemize}
 \item $\deg g(x) = n - k$
@@ -80,10 +80,10 @@ Ein Codewort beziehungsweise ein Codewortpolynom $c(x)$ eines linearen, zyklisch
 \[c(x) = m(x) \cdot g(x)\]
 Bei vielen aktuellen Anwendungen von \textit{Reed-Solomon-Codes} werden Generatorpolynome angegeben und genutzt \parencite[vgl. ][S. 6]{WBC11994}.
 \section{Reed-Solomon-Codes}
-Die grundlegende Idee von linearen (zyklischen) Codes über Polynomen besteht darin, Fehler über Interpolation zu korrigieren. Bildlich gesehen soll also ein Codewort konstruiert werden, dessen einzelnen Komponenten entlang einer interpolierbaren Abbildung aufgereiht sind. Sollte nun ein Übertragungsfehler die Lage eines Punktes (also einer Komponente) verändern, so ist die korrekte Lage durch die anderen Punkte jedoch hinreichend bestimmt und kann korrigiert werden.
+Die grundlegende Idee von linearen (zyklischen) Codes über Polynomen besteht darin, Fehler über Interpolation zu korrigieren. Bildlich gesehen soll also ein Codewort konstruiert werden, dessen einzelne Komponenten entlang einer interpolierbaren Abbildung aufgereiht sind. Sollte nun ein Übertragungsfehler die Lage eines Punktes (also einer Komponente) verändern, so ist die korrekte Lage durch die anderen Punkte jedoch hinreichend bestimmt und kann korrigiert werden.
 \paragraph{Idee}
 Eine Nachricht der Länge $k$ in Form eines Elementes eines Vektorraums $\mathbb{F}_{q}^{k}$ über einem endlichen Körper $\mathbb{F}_{q}$ kann als Polynom aufgefasst werden, indem die entsprechenden Komponenten der Nachricht die Koeffizienten des Polynoms bilden. Werden nun $n$ paarweise verschiedene Stützstellen aus dem dem Code zugrundeliegenden Körper $\mathbb{F}_{q}^{n}$ ausgewählt, so ergibt die Auswertung des Polynoms an den jeweiligen Stützstellen die Komponenten eines betrachteten Codewortes. \\\\
-Durch bereits $k$ Komponenten des Codewortes ist das Polynom hinreichend bestimmt, sodass $n-k$ Punkte, die während der Übertragung ausgelöscht wurden, und $(n-k)/2$ verfläscht übertragene Punkte als Fehler erkannt und korrigiert werden können.
+Durch bereits $k$ Komponenten des Codewortes ist das Polynom hinreichend bestimmt, sodass $n-k$ Punkte, die während der Übertragung ausgelöscht wurden, und $(n-k)/2$ verfälscht übertragene Punkte als Fehler erkannt und korrigiert werden können.
 \begin{definition}
 Sei $u = \langle u_1, u_2, ..., u_n \rangle \in \mathbb{F}_{q}^{n}$, wobei $\forall i, j \in \lbrace 1, ..., n \rbrace\colon u_i \neq u_j$. \\
 Dann ist $a = \langle a_1, a_2, ..., a_n \rangle \in \mathbb{F}_{q}^{n}$ ein Codewort eines \textbf{Reed-Solomon-Codes} $C$ mit Länge $n$, Dimension $k$ und Minimaldistanz $d = n - k + 1$, falls es ein Polynom $f(x)$ mit Grad $\deg f < k$ gibt, sodass $f(u_i) = a_i$ ist. Die Menge aller dieser Codeworte $a$ ist $C$ \parencite[vgl. ][S. 9]{Mahr88}:
@@ -93,7 +93,7 @@ Die Polynome $f$ mit den Koeffizienten $f_0, \ldots, f_{k-1}$ können hierbei al
 \begin{example}
 Betrachtet werde ein $[7, 4]_7$-Reed-Solomon-Code mit Länge $7$ und Dimension $4$ auf dem endlichen Körper $\mathbb{F}_{7}$. Dieser Code ist definiert durch \[C = \lbrace a \mid a_i = f(u_i), \deg f(x) < 4, f \in \mathbb{F}_{7}^{7}[x]\rbrace\]
 Dazu wurden $7$ paarweise verschiedene Stützstellen gewählt, wobei in $\mathbb{F}_{7}$ die Wahlfreiheit nur in der Anordnung besteht: $u = \langle 0, 1, 2, 3, 4, 5, 6 \rangle \in \mathbb{F}_{7}^{7}$. \\\\
-Für eine Nachricht $m = \langle 0, 1, 2, 1 \rangle \in \mathbb{F}_{7}^{4}$ ergibt sich polynomielle Darstellung $m(X) = 0 + 1 \circ X + 2 \circ X^2 + 1 \circ X^3 \in \mathbb{F}_{7}[X]$. Die Codierung dieser Nachricht folgt nun durch die Auswertung der Stützstellen in $m$:
+Für eine Nachricht $m = \langle 0, 1, 2, 1 \rangle \in \mathbb{F}_{7}^{4}$ ergibt sich die polynomielle Darstellung $m(X) = 0 + 1 \circ X + 2 \circ X^2 + 1 \circ X^3 \in \mathbb{F}_{7}[X]$. Die Codierung dieser Nachricht folgt nun durch die Auswertung der Stützstellen in $m$:
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
@@ -108,26 +108,26 @@ Damit ergibt sich das Codewort $c = \langle 0, 4, 4, 6, 2, 5, 0 \rangle \in \mat
 \begin{note}
 Typischerweise werden \textit{Reed-Solomon-Codes} betrachtet, deren Auswertungsstellen den Potenzen eines primitiven Elementes $\alpha$ entsprechen. Das Generatorpolynom zu einem solchen \textit{Reed-Solomon-Code} mit maximaler Fehlerkorrekturkapazität $t = \frac{n-k}{2}$ ist definiert durch
 \[g(x) = \prod_{j = 1}^{2t} (x - \alpha^{j})\]
-wobei $t$ die Anzahl der durch diesen Code korrigierbaren Fehler und $\alpha$ ein primitives Element des zugrundeliegenden Körpers repräsentier \parencite[vgl. ][S. 17]{Zivic2013}.
+wobei $t$ die Anzahl der durch diesen Code korrigierbaren Fehler und $\alpha$ ein primitives Element des zugrundeliegenden Körpers repräsentieren \parencite[vgl. ][S. 17]{Zivic2013}.
 \end{note}
 \subsection{Verallgemeinerte Reed-Solomon-Codes}
-\textit{Reed-Solomon-Codes} lassen sich verallgemeinern, in dem ein zusätzlicher Vektor $v =  \langle v_1, ..., v_{n} \rangle$ eingebracht wird.
+\textit{Reed-Solomon-Codes} lassen sich verallgemeinern, indem ein zusätzlicher Vektor $v =  \langle v_1, ..., v_{n} \rangle$ eingebracht wird.
 \begin{definition}
 Sei $ u = \langle u_1, u_2, ..., u_n \rangle \in \mathbb{F}_{q}^{n}$, wobei $\forall i, j \in \lbrace 0, ..., n-1 \rbrace\colon u_i, u_j \in \mathbb{F}_q \land ((u_i = u_j) \Rightarrow i = j)$. Ferner sei $v = \langle v_1, v_2, ..., v_n \rangle, \, \forall j \in \lbrace 1, ..., n \rbrace\colon \, v_j \in \mathbb{F}_{q} \setminus \lbrace 0 \rbrace$. Der \textbf{verallgemeinerte Reed-Solomon-Code} $GRS_k(u, v)$ besteht nun aus der Menge der Codeworte
 \[c = \langle v_1 f(u_1), v_2 f(u_2), ..., v_n f(u_n)\rangle\] für Polynome $f \in \mathbb{F}_{q}[x]$ mit Grad $\deg f < k$ \parencite[vgl. ][S. 13]{Mahr88}.
 \end{definition}
-Verallgemeinerte Reed-Solomon-Codes sind im Allgemeinen nicht zyklisch, folglich entfällt die Möglichkeit, ein Generatorpolynom anzugeben. Die Codierung basiert entsprechend auch nicht mehr auf einer Multiplikation des Informationstupels mit dem Generatorpolynom, sondern auf einer Multiplikation mit einer Generatormatrix, die im Folgenden betrachtet wird. Verallgemeinerte Reed-Solomon-Codes finden Verwendung im Ansatz von Niederreiter, da aufgrund der zusätzlich eingebrachten \textbf{Gewichte} die Anzahl der möglichen Codes signifikant steigt und die Codeklasse somit an kryptographischer Bedeutung gewinnt. \\\\
-Für den weiteren Verlauf der Arbeit ist die Betrachtung \textbf{dualer Codes} notwendig. Duale Codes können zu linearen Codes gebildet werden:
+Verallgemeinerte Reed-Solomon-Codes sind im Allgemeinen nicht zyklisch, folglich entfällt die Möglichkeit, ein Generatorpolynom anzugeben. Die Codierung basiert entsprechend auch nicht mehr auf einer Multiplikation des Informationstupels mit dem Generatorpolynom, sondern auf einer Multiplikation mit einer Generatormatrix, die im Folgenden betrachtet wird. Verallgemeinerte Reed-Solomon-Codes werden im Ansatz von \textsc{Niederreiter} als dem Verfahren zugrundeliegende Codeklasse vorgeschlagen, da aufgrund der zusätzlich eingebrachten \textbf{Gewichte} die Anzahl der möglichen Codes signifikant steigt und die Codeklasse somit an kryptographischer Bedeutung gewinnt. \\\\
+Für die weiteren Abschnitte dieser Arbeit ist die Betrachtung \textbf{dualer Codes} notwendig. Duale Codes können zu linearen Codes gebildet werden:
 \subsection{Duale Codes}
 \begin{definition}\label{Dual}
-Sei $C$ ein linearer $[n, k, d]_q$-Code mit Länge $n$, Dimension $k$ und Minimaldistanz $d$ über einem Körper $\mathbb{F}_q$. Ferner bezeichne die Operation $\cdot$ die Paarung -- analog zum Skalarprodukt über reellen Vektorräumen -- über dem Vektorraum $\mathbb{F}_{q}^{n}$, das definiert ist durch
-\[\langle a_1, a_2, ..., a_n\rangle \cdot \langle b_1, b_2, ..., b_n \rangle = \sum\limits_{i=1}^{n}a_{i}b_{i}\] 
+Sei $C$ ein linearer $[n, k, d]_q$-Code mit Länge $n$, Dimension $k$ und Minimaldistanz $d$ über einem Körper $\mathbb{F}_q$. Ferner bezeichne die Operation $\cdot$ die Paarung -- analog zum Skalarprodukt über reellen Vektorräumen -- über dem Vektorraum $\mathbb{F}_{q}^{n}$, die definiert ist durch
+\[\langle a_1, a_2, ..., a_n\rangle \cdot \langle b_1, b_2, ..., b_n \rangle = \sum\limits_{i=1}^{n}a_{i}b_{i} \text{.}\] 
 Nun ist der zu $C$ \textbf{duale Code} $C^{\perp}$ definiert als
 \[C^{\perp} = \lbrace v \in \mathbb{F}_{p}^{n} \mid v \cdot c = 0, \forall c \in C\rbrace\]
-\parencite[vgl. ][S. 35f.]{Manz2017}
+\parencite[vgl. ][S. 35f.]{Manz2017}.
 \end{definition}
 
-Diese Definition mag an die aus der linearen Algebra im Reellen bekannte Definition von Orthogonalität ({\glqq}Rechtwinkligkeit{\grqq}) erinnern, jedoch lässt sich dies auf die hier betrachteten Körper nicht übertragen, unter Anderem, da es auch \textbf{selbstduale} Codes gibt \parencite[vgl. ][S. 36]{Manz2017}.
+Diese Definition mag an die aus der linearen Algebra im Reellen bekannte Definition von Orthogonalität erinnern, jedoch lässt sich dies auf die hier betrachteten Körper nicht übertragen, unter anderem, da es auch \textbf{selbstduale} Codes gibt \parencite[vgl. ][S. 36]{Manz2017}.
 
 \begin{note}
 Der zu einem $[n, k, d]_{q}$-Code $C$ duale Code $C^{\perp}$ ist ein $[n, n-k, d']_{q}$-Code \parencite[vgl. ][S. 36]{Manz2017}.
@@ -141,8 +141,8 @@ Der duale Code zu einem verallgemeinerten Reed-Solomon-Code ist ebenfalls ein ve
 \end{theorem}
 \begin{proof}
 Zunächst wird $k = n-1$ angenommen. Dann ist zu zeigen, dass $GRS_{n-1} (u, v)^{\perp} = GRS_{1} (u, v')$ gilt. Dafür genügt es, zu beweisen, dass $v_{i}' \neq 0$ gilt und $v$ damit ein gültiges Gewichtstupel ist, da für alle $u_i$ bereits bekannt ist, dass sie die Forderungen von $GRS$-Codes erfüllen. Die Codewortmenge von $GRS_{1}(u, v')$ ist dadurch, dass zulässige Polynome auf diesem Code nur Skalare sein können, durch alle skalaren Vielfachen von allen $v_{i}'$ bereits vollständig beschrieben. \\\\
-Aus Definition \ref{Dual} ergibt sich nun, dass zu zeigen ist, dass 
-\[(hG) \cdot (kv') = 0\] gelten muss, wobei $h$ eine beliebige Nachricht aus $\mathbb{F}_{q}$, $G$ die Generatormatrix des $GRS_{n-1}(u, v)$-Codes und $k$ eine beliebiges Element aus $\mathbb{F}_q$ ist. Da $h$ und $k$ Werte ungleich $0$ annehmen können, gilt nach dem Nullproduktsatz bereits, dass $G \cdot v' = 0$ gelten muss. Mit Vorausgriff auf Bemerkung \ref{GRSGen} lässt sich entsprechend das folgende Gleichungssystem konstruieren \parencite[vgl. ][S. 304]{MacWilliams77}:
+Aus Definition \ref{Dual} ergibt sich nun, dass 
+\[(hG) \cdot (kv') = 0\] gelten muss, wobei $h$ eine beliebige Nachricht aus $\mathbb{F}_{q}$, $G$ die Generatormatrix des $GRS_{n-1}(u, v)$-Codes und $k$ ein beliebiges Element aus $\mathbb{F}_q$ ist. Da $h$ und $k$ Werte ungleich $0$ annehmen können, gilt nach dem Nullproduktsatz bereits, dass $G \cdot v' = 0$ gelten muss. Mit Vorausgriff auf Bemerkung \ref{GRSGen} lässt sich entsprechend das folgende Gleichungssystem konstruieren \parencite[vgl. ][S. 304]{MacWilliams77}:
 \begin{align*}
 v_0 v'_0 + v_1 v'_1 + \ldots + v_{n-1}v'_{n-1} &= 0 \\
 u_0 v_0 v'_0 + u_1 v_1 v'_0 + \ldots + u_{n-1} v_{n-1} v'_{n-1} &= 0 \\
@@ -167,13 +167,13 @@ v_1 v'_1 \\
 v_{n-1} v'_{n-1}
 \end{array}
 \right] 
-= 0
+= 0\text{.}
 \end{equation}
-Falls ein $v'_i = 0$ ist, so ergibt sich dadurch, dass keine Komponente der linken \textit{Vandermonde}-Matrix gemäß der Definition von $GRS$-Codes gleich $0$ sein kann, dass alle $v_i v'_i = 0$ und in der Folge alle $v'_i = 0$ sein müssten, was jedoch nicht möglich ist, zum Beispiel da die Dualisierung dieses Codes nicht wieder den $GRS_{n-1}(u, v)$-Code erzeugen kann. Damit ist gezeigt, dass $\forall i \in \lbrace 0, \ldots, n-1\rbrace\colon v_i \neq 0$ gilt und zugleich, dass $GRS_{n-1}(u, v)^{\perp}$ die Forderungen eines $GRS$-Codes erfüllt. Dass sich dieses Resultat nun auch auf $GRS$-Codes mit beliebigem $k < n-1$ übertragen lässt, ergibt sich nun aus folgender verallgemeinerten Form der obigen Gleichungen \parencite[vgl. ][S. 304]{MacWilliams77}:
+Falls ein $v'_i = 0$ ist, so ergibt sich dadurch, dass keine Komponente der linken \textit{Vandermonde}-Matrix gemäß der Definition von $GRS$-Codes gleich $0$ sein kann und, dass alle $v_i v'_i = 0$ und in der Folge alle $v'_i = 0$ sein müssten, was jedoch nicht möglich ist, zum Beispiel da die Dualisierung dieses Codes nicht wieder den $GRS_{n-1}(u, v)$-Code erzeugen kann. Damit ist gezeigt, dass $\forall i \in \lbrace 0, \ldots, n-1\rbrace\colon v_i \neq 0$ gilt und zugleich, dass $GRS_{n-1}(u, v)^{\perp}$ die Forderungen eines $GRS$-Codes erfüllt. Dass sich dieses Resultat nun auch auf $GRS$-Codes mit beliebigem $k < n-1$ übertragen lässt, ergibt sich nun aus folgender verallgemeinerten Form der obigen Gleichungen \parencite[vgl. ][S. 304]{MacWilliams77}:
 \begin{equation}
 \sum\limits_{i = 0}^{n-1} (u_{i}^{s} v_i) (u_{i}^{t} v'_i) = \sum\limits_{i=0}^{n-1} (u_{i}^{s+t} v_i v'_i) = 0
 \end{equation}
-Mit der gleichen Argumentation wie für $k = n-1$ ergibt sich unmittelbar, dass auch hier kein $v'_i$ gleich $0$ sein kann. Damit ist das Theorem gezeigt.
+Mit der gleichen Argumentation wie für $k = n-1$ ergibt sich unmittelbar, dass auch hier kein $v'_i$ gleich $0$ sein kann.
 \end{proof}
 \begin{note}
 Sei $GRS_k (u, v)^{\perp} = GRS_{n-k} (u, v')$. Dann gilt für die Komponenten des Vektors $v'$ \parencite[vgl. ][S. 14]{Mahr88}:
@@ -186,10 +186,10 @@ Da lineare Codes wie gezeigt Vektorräume bilden, ist die Angabe von \textbf{Bas
 \begin{definition}\label{ParCheck}
 Sei $C$ ein linearer $[n, k, d]_{q}$-Code und $C^{\perp}$ der duale Code zu $C$. \\
 Ferner sei $\big( \langle h_{11}, h_{12}, ..., h_{1n} \rangle, \langle h_{21}, ..., h_{2n} \rangle, ..., \langle h_{(n-k)1}, ..., h_{(n-k)n} \rangle \big)$ eine Basis zu $C^{\perp}$. Dann ist die Matrix 
-\[H = \left( \begin{array}{cccc} h_{11} & h_{12} & ... & h_{1n} \\ h_{21} & h_{22} & ... & h_{2n} \\ ... & ... & ... & ... \\ h_{(n-k)1} & h_{(n-k)2} & ... & h_{(n-k)n}\end{array}\right) \] eine \textbf{Generatormatrix} von $C^{\perp}$ und \textbf{Kontrollmatrix} oder \textbf{Paritätsprüfmatrix} von $C$ \parencite[vgl. ][S. 37]{Manz2017}
+\[H = \left( \begin{array}{cccc} h_{11} & h_{12} & ... & h_{1n} \\ h_{21} & h_{22} & ... & h_{2n} \\ ... & ... & ... & ... \\ h_{(n-k)1} & h_{(n-k)2} & ... & h_{(n-k)n}\end{array}\right) \] eine \textbf{Generatormatrix} von $C^{\perp}$ und \textbf{Kontrollmatrix} oder \textbf{Paritätsprüfmatrix} von $C$ \parencite[vgl. ][S. 37]{Manz2017}.
 \end{definition}
 
-Der Zusammenhang zwischen Generator- und Kontrollmatrix ergibt sich daraus, dass über eine Generatormatrix des dualen Codes $C^{\perp}$ zu $C$ überprüft werden kann, ob für ein $x \in\mathbb{F}_{q}$ auch $x \in C$ gilt, indem die Paarungen $x \cdot h_i, \forall i \in \lbrace 1, ..., n-k \rbrace$ gebildet werden. Sollte für mindestens eines dieser Produkte $x \cdot h_i \neq 0$ gelten, so ist $x \notin C$ \parencite[vgl. ][S. 37]{Manz2017}. So ließe sich beispielsweise eine Identitätsabbildung $1_{C}(x)$ auf $C$ bilden.
+Der Zusammenhang zwischen Generator- und Kontrollmatrix ergibt sich daraus, dass über eine Generatormatrix des dualen Codes $C^{\perp}$ zu $C$ überprüft werden kann, ob für ein $x \in\mathbb{F}_{q}$ auch $x \in C$ gilt, indem die Paarungen $x \cdot h_i, \forall i \in \lbrace 1, ..., n-k \rbrace$ gebildet werden. Sollte für mindestens eines dieser Produkte $x \cdot h_i \neq 0$ gelten, so ist $x \notin C$ \parencite[vgl. ][S. 37]{Manz2017}. So ließe sich beispielsweise eine Identitätsabbildung $1_{C}(x)$ auf $C$ erzeugen.
 
 \subsubsection{Generatormatrizen des verallgemeinerten Reed-Solomon-Codes}\label{GenParMatrix}
 Zur Kodierung eines Informationstupels mittels des verallgemeinerten Reed-Solomon-Codes wird eine Generatormatrix des Codes benötigt.
@@ -211,10 +211,10 @@ v_1 u_1 & v_2 u_2 & \cdots & v_n u_n \\
 \vdots & \vdots &  & \vdots \\
 v_1 u_{1}^{k-1} & v_2 u_{2}^{k-1} & \cdots & v_n u_{n}^{k-1}
 \end{array}\right)
-\]\parencite[vgl. ][S. 277]{Moon05} und \parencite[vgl. ][S. 304]{MacWilliams77}. 
+\]\parencite[vgl. ][S. 277]{Moon05} \parencite[vgl. ][S. 304]{MacWilliams77}. 
 \end{note}
 
-Diese Matrizen sind für die Kodierung und Dekodierung -- insbesondere auch für die beabsichtigte kryptographische Verwendung -- von besonderer Bedeutung, da mithilfe ihrer Codes definiert werden können und die Frage, ob ein Wort Codewort dieses Codes ist, nun entscheidbar wird. Generatormatrizen lassen sich durch elementare Zeilen- und Spaltenoperationen verändern, sodass zwar weiterhin gültige Codeworte eines Codes $C$ gebildet werden, jedoch wird die Projektion des Informationstupels auf ein Codewort dadurch beeinflusst, sodass womöglich andere Codeworte entstehen. Diese Eigenschaft wird genutzt, um beispielsweise eine systematische Codierung zu ermöglichen.
+Diese Matrizen sind für die Kodierung und Dekodierung -- insbesondere auch für die beabsichtigte kryptographische Verwendung -- von besonderer Bedeutung, da mit ihrer Hilfe Codes definiert werden können und die Frage, ob ein Wort Codewort dieses Codes ist, nun entscheidbar wird. Generatormatrizen lassen sich durch elementare Zeilen- und Spaltenoperationen verändern, sodass zwar weiterhin gültige Codeworte eines Codes $C$ gebildet werden, jedoch wird die Projektion des Informationstupels auf ein Codewort dadurch beeinflusst, weshalb womöglich andere Codeworte entstehen. Diese Eigenschaft wird genutzt, um beispielsweise eine systematische Codierung zu ermöglichen.
 
 \section{Kodierung, Fehlerkorrektur und Dekodierung}
 In diesem Abschnitt wird mit der algorithmischen Betrachtung der Kodierung und Dekodierung samt der Fehlerkorrektur verallgemeinerter Reed-Solomon-Codes die Grundlage dafür gelegt, ein kryptographisches Verfahren auf Basis fehlerkorrigierender Codes zu konstruieren, wie es \textsc{McEliece} und \textsc{Niederreiter} in ihren Ansätzen tun. \\\\
@@ -274,10 +274,10 @@ h_0 & h_1 & \cdots & h_{k-1} &
 &= \langle h_0, h_1, \ldots, h_{k-1}, c_k, c_{k+1}, \ldots, c_{n-1}\rangle
 \end{align*}
 \subsubsection{Implementierung}
-Im Anhang \ref{CodingLst} ist die Implementierung des Kodiervorgangs eines verallgemeinerten Reed-Solomon-Codes über endlichen Körpern in \textit{SageMath} dargestellt. Das Skript generiert aus den Stützstellen und Gewichten eine Generatormatrix für die nicht-systematische Kodierung. Die Generatormatrix für die systematische Kodierung wird dadurch erzeugt, dass die $k \times k$-Untermatrix der ersten $k$ Spalten invertiert und mit $G$ multipliziert wird. Dadurch wird die systematische Form erreicht. Referenzen und alternative Algorithmen sind dem Anhang \ref{MatrixConversion} zu entnehmen.
+Im Anhang \ref{CodingLst} ist die Implementierung des Kodiervorgangs eines verallgemeinerten Reed-Solomon-Codes über endlichen Körpern in \textit{SageMath} dargestellt. Das Skript generiert aus den Stützstellen und Gewichten eine Generatormatrix für die nicht-systematische Kodierung. Die Generatormatrix für die systematische Kodierung wird dadurch erzeugt, dass die $k \times k$-Untermatrix der ersten $k$ Spalten invertiert und mit $G$ multipliziert wird. Referenzen und alternative Algorithmen sind dem Anhang \ref{MatrixConversion} zu entnehmen.
 \subsection{Dekodierung}
 Nachdem (nicht-)systematisch erzeugte Codeworte nun über einen unzuverlässigen Kanal übertragen wurden, werden Fehlerkorrektur- und Dekodieralgorithmen angewandt, um die übertragenen Informationen zu erhalten. \\\\
-Im Folgenden wird der \textbf{syndrombasierte} Dekodieralgorithmus für eine maximale Fehleranzahl von $t = \lfloor\frac{n-k}{2}\rfloor$ dargestellt. Der alternative Ansatz des \textbf{listen-basierten} Dekodierens, der die Korrektur von einer größeren Anzahl an Fehlern ermöglicht, wird ohne vertiefte Darstellung erwähnt.
+Im Folgenden wird der \textbf{syndrombasierte} Dekodieralgorithmus für eine maximale Fehleranzahl von $t = \lfloor\frac{n-k}{2}\rfloor$ dargestellt. Der alternative Ansatz des \textbf{listen-basierten} Dekodierens, der die Korrektur von einer größeren Anzahl an Fehlern ermöglicht, wird anschließend ohne vertiefte Darstellung erwähnt.
 \subsubsection{Syndrombasierter Dekodieralgorithmus}
 \label{SBD}
 Gegeben sei ein verallgemeinerter Reed-Solomon-Code $GRS_k (u, v)$ mit 
@@ -285,7 +285,7 @@ Gegeben sei ein verallgemeinerter Reed-Solomon-Code $GRS_k (u, v)$ mit
 \item Auswertungsstellen $u = \langle u_0, ..., u_{n-1}\rangle$, $\forall i, j \in \lbrace 0, ..., n-1 \rbrace\colon u_i, u_j \in \mathbb{F}_q \land ((u_i = u_j) \Rightarrow i = j)$
 \item Gewichten $v = \langle v_0, ..., v_{n-1} \rangle$, $\forall i \in \lbrace 0, ..., n-1 \rbrace\colon v_i \in \mathbb{F}_{q}\setminus \lbrace 0 \rbrace$
 \end{itemize}
-Nach einem Datenübertragungsvorgang wurde ein Tupel $r = \langle r_0, r_1, ..., r_{n-1}\rangle$ empfangen, das sich aus dem korrekten \textbf{Codeworttupel} $c = \langle c_0, c_1, ..., c_{n-1}\rangle$ und einem \textbf{Fehlertupel} $e = \langle e_0, e_1, ..., e_{n-1}\rangle$ zusammensetzt, wobei die Anzahl der Komponenten von $e$, die nicht null sind, nicht größer als $t = \lfloor\frac{n-k}{2}\rfloor$ sein darf, andernfalls ist es nicht möglich, mit diesem Dekodieralgorithmus das korrekte Codewort aus $r$ zu ermitteln. Im Folgenden bezeichne 
+Nach einem Datenübertragungsvorgang wurde ein Tupel $r = \langle r_0, r_1, ..., r_{n-1}\rangle$ empfangen, das sich aus dem korrekten \textbf{Codeworttupel} $c = \langle c_0, c_1, ..., c_{n-1}\rangle$ und einem \textbf{Fehlertupel} $e = \langle e_0, e_1, ..., e_{n-1}\rangle$ zusammensetzt. Dabei darf die Anzahl der Komponenten von $e$, die nicht null sind, nicht größer als $t = \lfloor\frac{n-k}{2}\rfloor$ sein, andernfalls ist es nicht möglich, mit diesem Dekodieralgorithmus das korrekte Codewort aus $r$ zu ermitteln. Im Folgenden bezeichne 
 \begin{itemize}
 \item $k_1, ..., k_{\epsilon}$ die \textbf{Fehlerstellen} im empfangenen Wort, wobei $\epsilon \leq t$ gilt
 \item $e_{k_{j}}$ die \textbf{Fehlergröße} an der Stelle $k_j$.
@@ -296,14 +296,13 @@ Aus diesen Angaben lässt sich gemäß Abschnitt \ref{GenParMatrix} eine Generat
 Ist eine Generatormatrix in systematischer Form gegeben, so kann dazu eine Paritätsprüfmatrix wie folgt ermittelt werden \parencite[vgl. ][S. 5]{MacWilliams77C1}:
 \[G = [I_{k} \mid A] \; \Rightarrow \; H = [-A^{T} \mid I_{n-k}]\]
 Hier bezeichne $I_{j}$ eine $j \times j$-Identitätsmatrix. Wie eine Generatormatrix in systematische Form gebracht werden kann, ist in Anhang \ref{MatrixConversion} dargestellt. \\\\
-Eine explizite Formel zur Berechnung der Koeffizienten der Paritätsprüfmatrix (und damit der Gewichte $d_i$ des zum betrachteten dualen Codes) folgt aus diesem Zusammenhang \parencite[vgl. ][S. 14]{Mahr88} \parencite[vgl. ][S. 9f]{Weger2017}:
+Eine explizite Formel zur Berechnung der Koeffizienten der Paritätsprüfmatrix (und damit der Gewichte $d_i$ des zum betrachteten Codes dualen Codes) folgt aus diesem Zusammenhang \parencite[vgl. ][S. 14]{Mahr88} \parencite[vgl. ][S. 9f]{Weger2017}:
 \[d_i = v_i^{-1} \cdot \prod\limits_{j=1, \, j \neq i}^{n} (u_i - u_j)^{-1}\]
-
-Basis des Dekodieralgorithmus bilden nun $n-k-1$ Syndrome, die die Komponenten des Produkts dieser Paritätsprüfmatrix $H$ mit dem empfangenen Wort $r$ ergeben:
+Die Basis des Dekodieralgorithmus bilden nun $n-k-1$ Syndrome, die die Komponenten des Produkts dieser Paritätsprüfmatrix $H$ mit dem empfangenen Wort $r$ ergeben:
 \begin{definition}\label{Syndrom}
 Das $l$-te \textbf{Syndrom} eines Wortes $r$ sei definiert als
 \[S_l = \sum\limits_{j=0}^{n-1}r_{j} \, \cdot \, d_{j}\cdot u_{j}^{l}\]
-\parencite[vgl. ][S. 184]{Roth06}
+\parencite[vgl. ][S. 184]{Roth06}.
 \end{definition}
 Da zweifelsfrei für jedes Codewort-Syndrom $\sum\limits_{j=0}^{n-1}c_j d_j u_{j}^{l} = 0$ gilt, sind die Fehlerwortsyndrome äquivalent zu den Syndromen obiger Definition. Ferner gilt sogar $S_l = \sum\limits_{j=1}^{\epsilon} e_{k_{j}} d_{k_j}u_{k_j}^{l}$, da die Fehlergröße $e_j$ an nicht fehlerhaften Stellen gleich $0$ sein muss. Die Betrachtung dieser Syndrome gibt Aufschluss darüber, an welchen Stellen Fehler während der Übertragung aufgetreten sind.\\\\
 Durch die Syndrome ergibt sich folgendes Gleichungssystem:
@@ -318,10 +317,10 @@ Da dieses Gleichungssystem jedoch angesichts der Potenzen nicht linear ist, läs
 Stattdessen wird ein \textbf{Fehlerlokalisationspolynom} definiert.
 \[\sigma(x) = \prod\limits_{k_j} x - u_{k_j} = \sum\limits_{i = 0}^{\epsilon} \sigma_i \cdot x^{i}\]
 Aus der Definition folgt unmittelbar, dass jede Wurzel dieses Polynoms eine Fehlerstelle ist \parencite[vgl. ][S. 180f]{Huffman10} \parencite[vgl. ][S. 185]{Roth06} \parencite[vgl. ][S. 28f.]{Matzat2007}. \\\\
-Ziel ist es nun, die Unbekannten $\sigma_j$ zu bestimmen, um damit die Fehlerstellennummern ermitteln zu können. Dafür wird das Fehlerlokalisationspolynom mit dem durch die Syndrome erzeugte Gleichungssystem in Verbindung gesetzt \parencite[vgl. ][S. 181f.]{Huffman10}\parencite[vgl. ][S. 148f.]{Hoffman1991}, indem für die Variable $x$ das Syndrom $S_{j+l}$ eingesetzt wird, so ergibt sich dadurch, dass für alle nicht-fehlerhaften Stellen es betrachteten Wortes die Fehlergröße $e_i = 0$ und für alle fehlerhaften Stellen das Fehlerlokalisationspolynom $\sigma(u_{k_i}) = 0$ ist, dass die Koeffizienten des Fehlerlokalisationspolynoms dieses Gleichungssystem erfüllen \parencite[vgl. ][S. 28f]{Matzat2007}.
+Ziel ist es nun, die Unbekannten $\sigma_j$ zu bestimmen, um damit die Fehlerstellennummern ermitteln zu können. Dafür wird das Fehlerlokalisationspolynom mit dem durch die Syndrome erzeugten Gleichungssystem in Verbindung gesetzt \parencite[vgl. ][S. 181f.]{Huffman10} \parencite[vgl. ][S. 148f.]{Hoffman1991}, indem für die Variable $x$ das Syndrom $S_{j+l}$ eingesetzt wird. So ergibt sich, dass für alle nicht-fehlerhaften Stellen des betrachteten Wortes die Fehlergröße $e_i = 0$ und für alle fehlerhaften Stellen das Fehlerlokalisationspolynom $\sigma(u_{k_i}) = 0$ ist, weshalb die Koeffizienten des Fehlerlokalisationspolynoms dieses Gleichungssystem erfüllen \parencite[vgl. ][S. 28f.]{Matzat2007}.
 \[\sum\limits_{l = 0}^{\epsilon} \sigma_l \cdot S_{j + l} = 0 \quad \quad \forall j \in \lbrace 0, \ldots, \epsilon -1\rbrace\]
-Ferner ist in \parencite{Matzat2007} bewiesen, dass dieses Gleichungssystem die Koeffizienten $\sigma_j$ des Fehlerlokalisationspolynoms eindeutig bestimmt \parencite[vgl. ][S. 28f]{Matzat2007}. \\\\
-Zusammengefasst wird eine nicht-triviale Lösung des durch diese Matrix beschriebenen Gleichungssystems gesucht \parencite[vgl. ][S. 181f.]{Huffman10}:
+Ferner ist in \parencite{Matzat2007} bewiesen, dass dieses Gleichungssystem die Koeffizienten $\sigma_j$ des Fehlerlokalisationspolynoms eindeutig bestimmt \parencite[vgl. ][S. 28f.]{Matzat2007}. \\\\
+Zusammengefasst wird eine nicht-triviale Lösung des durch diese folgende Matrix beschriebenen Gleichungssystems gesucht \parencite[vgl. ][S. 181f.]{Huffman10}:
 \begin{equation}\label{ErrLocMat}
 \left[ 
 	\begin{array}{cccc}

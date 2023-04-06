@@ -2,30 +2,30 @@
 \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=6em, text centered, minimum height=3em]
 \tikzstyle{greenblock} = [ellipse, draw, fill=green!20, text width=4em, text centered, minimum height=3em]
 \chapter{Codierungstheorie}
-Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das auf Elementen der Codierungstheorie basiert, wird diese nun zunächst in Definitionen und Hintergründen dargestellt.
+Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das auf Elementen der Codierungstheorie basiert, wird diese zunächst in Definitionen und theoretischen Hintergründen dargestellt.
 \section{Übermittlung von Informationen}
-Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Objekte der Anschauung.
+Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Gegenstände der Forschung.
 \begin{definition}\label{Alphabet}
 Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a_i \in \Sigma$, wobei $\Sigma$ eine endliche Menge von Zeichen (genannt \textbf{Alphabet}) bezeichnet.
 \[m = \langle a_1, a_2, ..., a_{n-1}, a_n \rangle \quad \forall i = 1, ..., n: a_i \in \Sigma\]
 \end{definition}
-Ein typisches Alphabet sind die Zeichen der \textit{ASCII}-Kodierung, mit denen nahezu alle Worte und Sätze der natürlichen englischen Sprache gebildet werden können \parencite[vgl. ][]{rfc20}. Dieses Alphabet besteht nun nicht aus Zeichen der natürlichen Sprache, sondern aus 7 Bit langen Zahlenwerten, was die Anwendung von Codes oder kryptographischen Verfahren ermöglicht. Im Rahmen dieser Arbeit wird angenommen, dass Zeichen stets in einem Zahlenformat repräsentiert werden. \\\\
-Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (ein natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
-Wird diese Nachricht nun über einen Kanal an eine andere Partei übertragen, so nennen wir diese den \textbf{Empfänger}. Entgegen der in der Kryptographie üblichen \textit{Alice-Bob}-Notation wird in dieser Arbeit diese Terminologie beibehalten, um an den codierungstheoretischen Hintergrund anzuknüpfen. \\\\
+Ein typisches Alphabet sind die Zeichen der \textit{ASCII}-Kodierung, mit denen nahezu alle Worte und Sätze der natürlichen englischen Sprache gebildet werden können \parencite[vgl. ][]{rfc20}. Dieses Alphabet besteht nicht aus Zeichen der natürlichen Sprache, sondern aus $7$ Bit langen Zahlenwerten, was die Anwendung von Codes oder kryptographischen Verfahren ermöglicht. Im Rahmen dieser Arbeit wird angenommen, dass Zeichen stets in einem Zahlenformat repräsentiert werden. \\\\
+Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (eine natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
+Wird diese Nachricht nun über einen Kanal an eine andere Partei übertragen, so nennen wir diese den \textbf{Empfänger}. \\\\
 Ein \textbf{Kanal} bezeichne ein Medium zur Datenübertragung wie beispielsweise einen elektrischen Leiter, einen Lichtwellenleiter oder die Luft für eine drahtlose Verbindung. Es gibt Kanäle, die Informationen \textbf{digital} übertragen, also als diskrete Binärwerte, und im Gegensatz dazu Kanäle, die fortlaufend und stetig Signale übertragen \parencite[vgl. ][S. 1]{Borda2011}.
 \textbf{Rauschen} bezeichne nicht-deterministische Daten, die Nachrichten bei einer Übertragung über einen Kanal unbeabsichtigt hinzugefügt werden und so die Nachricht verändern, sie folglich mit \textbf{Fehlern} versetzen \parencite[vgl. ][S. 1]{vanLint1973}. 
 \begin{definition}
 Ein \textbf{Kanal} $K$ mit der Menge der Eingabewerte $I$ und der Menge der Ausgabewerte $J$ sei definiert als Matrix 
-\[K_{ij} = \textnormal{Pr}(j \mid i) \quad i \in I, j \in J\]
-wobei $\textnormal{Pr}(j \mid i)$ definiert sei als die Wahrscheinlichkeit für die Ausgabe $j$ unter der Bedingung $i$. \\\\
-Sofern mindestens ein Koeffizient der Matrix $i \neq j$ einen Wert $> 0$ aufweist, ist der Kanal \textbf{rauschend} \parencite[vgl. ][S. 73f.]{Biggs08}.
+\[K_{i,j} = \textnormal{Pr}(j \mid i) \quad \forall i \in I, j \in J\]
+wobei $\textnormal{Pr}(j \mid i)$ definiert sei als die Wahrscheinlichkeit für die Ausgabe $j$ unter der Bedingung der Eingabe $i$. \\\\
+Sofern mindestens ein Koeffizient der Matrix $i \neq j$ einen Wert $> 0$ aufweist, wird der Kanal als \textbf{rauschend} bezeichnet \parencite[vgl. ][S. 73f.]{Biggs08}.
 \end{definition}
 \begin{example}
-Ein \textbf{\ac{BSC}} $\Gamma$ mit einer Bitfehlerwahrscheinlichkeit $e$ ist definiert durch 
-\[\Gamma = \left( \begin{matrix} \Gamma_{00} & \Gamma_{01} \\ \Gamma_{10} & \Gamma_{11}\end{matrix}\right) = \left( \begin{matrix}1 - e & e \\ e & 1 - e\end{matrix}\right)\]
+Ein \textbf{\ac{BSC}} $\Gamma$ mit einer Bitfehlerwahrscheinlichkeit $e$ ist definiert durch die Matrix
+\[\Gamma = \left( \begin{matrix} \Gamma_{00} & \Gamma_{01} \\ \Gamma_{10} & \Gamma_{11}\end{matrix}\right) = \left( \begin{matrix}1 - e & e \\ e & 1 - e\end{matrix}\right)\text{.}\]
 \end{example}
 
-Dass ein Kanal eine Nachricht ohne Rauschen überträgt, ist zwar ein erstrebenswerter Zustand, praktisch jedoch aufgrund der Physik nicht zu erreichen. Jede physische Datenübertragung verläuft nicht fehlerfrei, weshalb die Beziehung $m = m'$ daher nur in einem theoretischen Idealfall gilt. Diese Feststellung liefert die Begründung für die Beschäftigung mit der Codierungstheorie.
+Dass ein Kanal eine Nachricht ohne Rauschen überträgt, ist zwar ein erstrebenswerter Zustand, praktisch jedoch aufgrund physikalischer Effekte nicht zu erreichen. Jede physische Datenübertragung verläuft nicht fehlerfrei, weshalb die Beziehung $m = m'$ daher nur in einem theoretischen Idealfall gilt. Unter anderem diese Feststellung motiviert die Begründung für die Beschäftigung mit der Codierungstheorie.
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}[node distance = 1cm and 2cm]
@@ -42,10 +42,10 @@ Dass ein Kanal eine Nachricht ohne Rauschen überträgt, ist zwar ein erstrebens
 \end{figure}
 
 \section{Problemstellung und Zielsetzung}
-Da die Datenübertragung über eine Vielzahl von Kanälen eben nicht fehlerfrei verläuft, liegt es nahe, die Daten so zu übertragen, dass fehlende Bits aus dem Rest der Nachricht erschlossen werden können, wie es zum Beispiel bei natürlicher Sprache der Fall ist. Unsere Worte enthalten häufig Buchstaben, die nicht zwingend erforderlich sind, um das gemeinte Wort zu erkennen \parencite[vgl. ][S. 3]{vanLint1973}. \\\\
-Überträgt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich auch nach der Übermittlung nicht verringert hat. Ein spezieller Typ dieser Verfahren wird als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, welche die Transformation der zu versendenden Daten zum Ziel hat, beispielsweise zur Kompression und Redundanzverringerung \parencite[vgl. ][S. 1]{Manz2017}. Der Fokus dieser Arbeit liegt dabei auf der Kanalcodierung, da die betrachteten kryptographischen Verfahren auf ihr basieren.
+Da die Datenübertragung über eine Vielzahl von Kanälen eben nicht fehlerfrei verläuft, liegt es nahe, die Daten so zu übertragen, dass fehlende Bits aus dem Rest der Nachricht erschlossen werden können. Dies ist auch bei natürlicher Sprache der Fall: Unsere Worte enthalten häufig Buchstaben, die nicht zwingend erforderlich sind, um das gemeinte Wort zu erkennen \parencite[vgl. ][S. 3]{vanLint1973}. \\\\
+Überträgt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich durch die Übermittlung nicht verringert hat. Ein spezieller Typ dieser Verfahren wird als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, welche die Transformation der zu versendenden Daten zum Ziel hat, beispielsweise zur Kompression und Redundanzverringerung \parencite[vgl. ][S. 1]{Manz2017}. Der Fokus dieser Arbeit liegt dabei auf der Kanalcodierung, da die Anwendung dieser Codes für die Kryptographie seit längerer Zeit diskutiert und erforscht wird. Auch Codes zur Quellencodierung können für kryptographische Zwecke genutzt werden, jedoch sind diese Verfahren im Vergleich signifikant weniger erforscht \parencite[vgl. ][]{Massey1994}.
 \section{Kanalcodierung}
-Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \acs{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}. Populäre Beiträge der Grundlagenforschung wie jener von \textsc{\citeauthor{Hamming1950}} sind daher auch trotz ihres einige Dekaden umspannenden Alters Fundament der folgenden Definitionen.
+Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \acs{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}, während relevante Beiträge der Grundlagenforschung wie jene von \textsc{\citeauthor{Hamming1950}} aus dem Jahr 1950 weiterhin die Basis aufbauender Definitionen bildet.
 \subsection{Grundbegriffe}
 Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung und Präzisierung der Abbildung \ref{Gegenstand} erforderlich. Die Zuordnung eines Codewortes $c$ zu einer Nachricht $m$ wird als \textbf{Codierung} (der Nachricht) bezeichnet. \\
 \begin{figure}[h!]
@@ -70,14 +70,14 @@ Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung un
 
 \begin{definition}
 Sei $A$ ein Alphabet und $n \in \mathbb{N}$. \\ 
-Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace \langle a_1, a_2, ..., a_n \rangle \mid a_i \in A \rbrace$.  \\\\
+Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace \langle a_1, a_2, ..., a_n \rangle \mid a_i \in A \rbrace$. \\\\
 Ein \textbf{Blockcode} $C$ der Länge $n$ über dem Alphabet $A$ ist definiert als $C \subseteq A^{n} \text{, wobei } \lvert C \rvert > 0$ gelten muss.\\\\
 Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f\colon B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
 \end{definition}
-Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise codiert, sondern über Schieberegister in Abhängigkeit zueinander, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergibt \parencite[vgl. ][S. 752]{Viterbi1971}. Der Ansatz, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weist Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Bedeutung auf Blockcodes liegen. \\\\
-Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codeworte, bietet sich die \textbf{Hamming-Distanz} an.
+Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise, sondern über Schieberegister in Abhängigkeit zueinander codiert, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergibt \parencite[vgl. ][S. 752]{Viterbi1971}. Diese Ansätze, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weisen Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Eigenschaften von Blockchiffren wie Diffusion und Lawineneffekt auf Blockcodes liegen. \\\\
+Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codeworten, bietet sich die \textbf{\textsc{Hamming}-Distanz} an.
 \begin{definition}
-Seien $a = \langle a_1, a_2, ..., a_n \rangle$, $b = \langle b_1, b_2, ..., b_n \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{Hamming-Distanz} $d$ eine Metrik auf $A^n$. Sie ist definiert als die Anzahl der abweichenden Stellen in zwei Codeworten $a$ und $b$:
+Seien $a = \langle a_1, a_2, ..., a_n \rangle$, $b = \langle b_1, b_2, ..., b_n \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{\textsc{Hamming}-Distanz} $d$ eine Metrik auf $A^n$. Sie ist definiert als die Anzahl der abweichenden Stellen in zwei Codeworten $a$ und $b$:
 \[d(a, b) = \lvert \lbrace i \mid 1 \leq i \leq n, a_i \neq b_i \rbrace \rvert\]
 Des Weiteren sei die \textbf{Minimaldistanz} eines Blockcodes $C$ mit $\lvert C \rvert > 1$ definiert als 
 \[d(C) = \min \lbrace d(x, y) \mid x, y \in C, x \neq y \rbrace\] \parencite[vgl. ][S. 11]{Manz2017} \parencite[vgl. ][S. 105]{Roman1992} \parencite[vgl. ][S. 155]{Hamming1950}.
@@ -96,7 +96,7 @@ Wenn die Werte einer Codierungsfunktion im Bildbereich weit verstreut sind, der 
 Eine \textbf{abgeschlossene Kugel} $B(a, r)$ um einen Punkt $a$ mit Radius $r$ in einem (metrischen) Raum $X$ sei definiert durch 
 \[B(a, r) = \lbrace x \in X \mid d(a, x) \leq r\rbrace\] 
 \end{definition}
-Als Abstandsmaß $d$ kann hier beispielsweise die eingeführte \textit{Hamming}-Distanz verwendet werden.
+Als Abstandsmaß $d$ kann hier beispielsweise die eingeführte \textsc{Hamming}-Distanz verwendet werden.
 \begin{definition}\label{DistSphere}
 Sei $B$ eine Kugel mit Radius $r \geq 2$ und Mittelpunkt $x \in A^n$. Dann liegen alle $a_i \in A^n$ mit $d(a_i, x) = r$ auf der Kugeloberfläche von $B$. Sei $C \subseteq A^n$ nun ein Blockcode mit $d(C) = r$ und $x \in C$. Dann liegen alle $c \in (C \setminus \lbrace x \rbrace )$ auf der Kugeloberfläche oder außerhalb der Kugel $B$. 
 \end{definition}
@@ -148,7 +148,7 @@ Dann ist $C = \lbrace \langle 0, 0, 0\rangle , \langle 0, 1, 1 \rangle , \langle
 \end{example}
 Welches Potenzial von fehlerkorrigierenden Codes für das zugrundeliegende Problem ausgeht, verdeutlicht das folgende Theorem:
 \subsection{Noisy Channels Coding Theorem}
-\textsc{Shannon} konnte 1948 zeigen, dass es für einen binären, symmetrischen und rauschenden Kanal (\acs{BSC}) Codes gibt, bei der die auftretende Fehlerwahrscheinlichkeit beliebig klein wird, solange sich die Datenrate der Übertragung unterhalb der Kapazität eines Kanals befindet.
+\textsc{Shannon} konnte 1948 zeigen, dass es für einen binären, symmetrischen und rauschenden Kanal (\acs{BSC}) Codes gibt, bei denen die Wahrscheinlichkeit für das Auftreten von Fehlern beliebig klein wird, solange sich die Datenrate der Übertragung unterhalb der Kapazität des Kanals befindet.
 \begin{theorem}
 Sei $C$ die \textbf{Kapazität} eines binären, rauschenden Kanals, $n$ die Länge uniformer Codeworte, $P(E)$ die Fehlerwahrscheinlichkeit und $D$ die Datenübertragungsrate, wobei  $D < C$. Dann gilt
 \[P(E) \leq 2^{-n \cdot e(D)}\]
@@ -163,14 +163,14 @@ Ausgangspunkt der Definition von endlichen Körpern ist nach \textsc{\citeauthor
 Sei $G$ eine Menge und $\circ$ eine binäre Relation $\circ: G \times G \to G$ mit folgenden Eigenschaften:
 \begin{enumerate}
 \item \textbf{Assoziativität: }\\
-$\forall\, a, b, c \in G: \quad a \circ (b \circ c) \Leftrightarrow (a \circ b) \circ c$
+$\forall\, a, b, c \in G\colon \quad a \circ (b \circ c) \Leftrightarrow (a \circ b) \circ c$
 \item \textbf{Existenz eines neutralen Elements: }\\
-$\exists\, e \in G,  \: \forall \, a \in G: \quad a \circ e \Leftrightarrow e \circ a \Leftrightarrow a$
+$\exists\, e \in G,  \: \forall \, a \in G\colon \quad a \circ e \Leftrightarrow e \circ a \Leftrightarrow a$
 \item \textbf{Existenz inverser Elemente: }\\
-$\forall\, a \in G,  \: \exists \, a^{-1} \in G: \quad a \circ a^{-1} \Leftrightarrow a^{-1} \circ a \Leftrightarrow e$
+$\forall\, a \in G,  \: \exists \, a^{-1} \in G\colon \quad a \circ a^{-1} \Leftrightarrow a^{-1} \circ a \Leftrightarrow e$
 \end{enumerate}
 Dann ist $(G, \circ)$ eine \textbf{Gruppe}. \\\\
-Gilt für eine Gruppe zudem $\forall\, a, b \in G: \: a \circ b \Leftrightarrow b \circ a$, so ist sie \textbf{kommutativ}, auch bezeichnet als \textbf{abelsch} \parencite[vgl. ][S. 2]{Niederreiter97}.
+Gilt für eine Gruppe zudem $\forall\, a, b \in G\colon \quad a \circ b \Leftrightarrow b \circ a$, so ist sie \textbf{kommutativ}, auch bezeichnet als \textbf{abelsch} \parencite[vgl. ][S. 2]{Niederreiter97}.
 \end{definition}
 \begin{example}
 Gegeben seien die Menge der ganzen Zahlen $\mathbb{Z}$ und eine binäre Relation.
@@ -180,11 +180,11 @@ Gegeben seien die Menge der ganzen Zahlen $\mathbb{Z}$ und eine binäre Relation
 \item Assoziativität: \\
 Seien $a, b, c \in \mathbb{Z}$. Dann gilt mit dem Distributivgesetz der Addition $a + (b + c) \Leftrightarrow a + b + c \Leftrightarrow (a + b) + c$
 \item Existenz eines neutralen Elements: \\
-$\forall\, x \in \mathbb{Z}: \quad x + 0 \Leftrightarrow 0 + x \Leftrightarrow x$
+$\forall\, x \in \mathbb{Z}\colon \quad x + 0 \Leftrightarrow 0 + x \Leftrightarrow x$
 \item Existenz inverser Elemente: \\
-$\forall\, x \in \mathbb{Z}, \: \exists \, -x \in \mathbb{Z}: \quad x + (-x) = 0$
+$\forall\, x \in \mathbb{Z}, \: \exists \, -x \in \mathbb{Z}\colon \quad x + (-x) = 0$
 \item Kommutativität: \\
-$\forall\, a, b \in \mathbb{Z}: \quad a + b \Leftrightarrow b + a$
+$\forall\, a, b \in \mathbb{Z}\colon \quad a + b \Leftrightarrow b + a$
 \end{enumerate}
 \item $(\mathbb{Z}, \cdot)$, wobei $\cdot$ die Multiplikation bezeichne, ist keine Gruppe, da die inversen Elemente zu Elementen von $\mathbb{Z}$ nicht Teil von $\mathbb{Z}$ sind.
 \[\forall\, x \in \mathbb{Z}\setminus \lbrace 1, -1\rbrace : \quad x \cdot \frac{1}{x} = 1 \text{, aber } \frac{1}{x} \notin \mathbb{Z}\]
@@ -192,10 +192,9 @@ $\forall\, a, b \in \mathbb{Z}: \quad a + b \Leftrightarrow b + a$
 \end{example}
 \begin{definition}
 Eine multiplikative Gruppe ist \textbf{zyklisch}, sofern
-\[\exists \, a \in G, \forall \, b \in G, \exists \, j \in \mathbb{Z}: \quad b = a^j\]
-Dann ist $a$ ein \textbf{Generator} der multiplikativen Gruppe\footnote{Wird zu einer Gruppe keine binäre Relation angegeben, handelt es sich implizit um eine multiplikative Verknüpfung.} $G$ \parencite[vgl. ][S. 3f.]{Niederreiter97}. Die Gruppe ist durch $G = \langle a \rangle$ hinreichend beschrieben.
+\[\exists \, a \in G, \forall \, b \in G, \exists \, j \in \mathbb{Z}: \quad b = a^j\] gilt. Dann ist $a$ ein \textbf{Generator} der multiplikativen Gruppe\footnote{Wird zu einer Gruppe keine binäre Relation angegeben, handelt es sich implizit um eine multiplikative Verknüpfung.} $G$ \parencite[vgl. ][S. 3f.]{Niederreiter97}. Die Gruppe ist durch $G = \langle a \rangle$ hinreichend beschrieben.
 \end{definition}
-\paragraph{Kryptographische Bedeutung} Zu Gruppen existieren einige mathematische Probleme, die sich für kryptographische Verfahren anbieten. \textsc{\citeauthor{Myasnikov08}} stellen in \parencite{Myasnikov08} kryptographische Protokolle dar, die beispielsweise auf dem \textit{Konjugationssuchproblem} nicht-kommutativer Gruppen basieren: \\
+\paragraph{Kryptographische Bedeutung} In Bezug auf Gruppen existieren einige mathematische Probleme, die sich für die Konstruktion kryptographischer Verfahren nutzen lassen. \textsc{\citeauthor{Myasnikov08}} stellen in \parencite{Myasnikov08} kryptographische Protokolle dar, die beispielsweise auf dem \textit{Konjugationssuchproblem} nicht-kommutativer Gruppen basieren: \\
 Für zwei Elemente $u, v \in G$ einer Gruppe $G$ soll mindestens ein $x \in G$ gefunden werden, sodass $u^{x} = v$ gilt. Ist kein anderer Algorithmus für dieses Problem für die  Gruppe $G$ bekannt, so lässt sich $x \to u^x$ als Einwegfunktion auffassen und so ein kryptographisches Protokoll konstruieren \parencite[vgl. ][S. 37f.]{Myasnikov08}. 
 \\\\Abhängig davon, ob eine Gruppe abelsch ist oder nicht, lassen sich unterschiedliche Such- oder Entscheidungsprobleme zur Konstruktion kryptographischer Verfahren verwenden, die in \parencite{Myasnikov08} dargestellt, aber in dieser Arbeit nicht weiter behandelt werden.
 \subsection{Körper}
@@ -219,7 +218,7 @@ Um nun endliche Körper und \textit{Galois-Körper} definieren zu können, ist d
 Sei $R$ ein Ring. Dann ist $J$ ein \textbf{Unterring} von $R$, falls $J$ abgeschlossen ist unter beiden Operationen $+ \text{ und } \circ$ \parencite[vgl. ][S. 13]{Niederreiter97}. 
 \end{definition}
 \begin{note}
-Abgeschlossenheit bezeichnet hier, dass das Ergebnis der Operation auf zwei beliebigen Elementen des Rings ein Element ergibt, das wiederum Element des Rings ist.
+Abgeschlossenheit bezeichnet hier, dass das Ergebnis einer Operation mit zwei beliebigen Elementen des Rings als Operanden einem Element entspricht, das wiederum Element des Rings ist.
 \end{note}
 \begin{definition}
 Ferner ist $J$ ein \textbf{Ideal} von $R$, falls $J$ ein Unterring von $R$ ist und 
@@ -242,17 +241,17 @@ Auch auf Restklassen lassen sich die Operationen eines Rings anwenden:
 (a + J) \circ (b + J) &= ab + J
 \end{align*}
 \begin{note}
-Durch diese beiden Operationen auf Restklassen ensteht ein Ring, der als \textbf{Restklassenring} bezeichnet und mit $R / J$  notiert wird \parencite[vgl. ][S. 13f.]{Niederreiter97} \parencite[vgl. ][S. 10]{Howie06}.
+Durch diese beiden Operationen auf Restklassen entsteht ein Ring, der als \textbf{Restklassenring} bezeichnet und mit $R / J$  notiert wird \parencite[vgl. ][S. 13f.]{Niederreiter97} \parencite[vgl. ][S. 10]{Howie06}.
 \end{note}
 \begin{example}
-Ein klassisches Beispiel für einen auf diese Weise entstandenen Restklassenring ist $\mathbb{Z} / (p), p \in \mathbb{P}$, wobei $\mathbb{P}$ die Menge aller Primzahlen bezeichnet. Hier ist $(p)$ ein durch $p$ generiertes Hauptideal. Dieser Ring ist ein Körper, wie in \parencite{Niederreiter97} bewiesen wird und aufgrund der endlichen Anzahl an Elementen \textbf{finit}. Die Elemente sind beschrieben durch 
+Ein klassisches Beispiel für einen auf diese Weise entstandenen Restklassenring ist $\mathbb{Z} / (p), p \in \mathbb{P}$, wobei $\mathbb{P}$ die Menge aller Primzahlen bezeichnet. Hier ist $(p)$ ein durch $p$ generiertes Hauptideal. Dieser Ring ist ein Körper, wie in \parencite{Niederreiter97} bewiesen wird, und aufgrund der endlichen Anzahl an Elementen \textbf{finit}. Die Elemente sind beschrieben durch 
 \[\lbrace [0] = 0 + (n), [1] = 1 + (n), ... \rbrace\] 
 Der Restklassenring $\mathbb{Z} / (3)$ enthält die Elemente $[0], [1] \text{ und } [2]$.
 \end{example} 
 Nun ist die Definition der \textit{Galois-Körper} unmittelbar möglich:
 \begin{definition}
 Sei $p \in \mathbb{P}$. Dann sei $\mathbb{F}_{p}$ der Körper, der durch den Restklassenring $\mathbb{Z} / (p) = \mathbb{Z} / p \mathbb{Z} $ beschrieben wird und folglich die Struktur $\mathbb{F}_{p} = \lbrace [0], [1], ..., [p-1] \rbrace$ aufweist. 
-$\mathbb{F}_{p}$ wird dann als \textbf{Galois-Körper} der Ordnung $p$ bezeichnet \parencite[vgl. ][S. 15]{Niederreiter97}\parencite[vgl. ][S. 75]{Fischer2020LA}.
+$\mathbb{F}_{p}$ wird dann als \textbf{\textsc{Galois}-Körper} der Ordnung $p$ bezeichnet \parencite[vgl. ][S. 15]{Niederreiter97}\parencite[vgl. ][S. 75]{Fischer2020LA}.
 \end{definition}
 \begin{example}
 Beispiele für endliche Körper sind:
@@ -261,26 +260,26 @@ Beispiele für endliche Körper sind:
 \item $\mathbb{F}_3 = \lbrace [0], [1], [2] \rbrace, \text{ beispielsweise } \lbrace 0, 1, -1 \rbrace$
 \end{itemize}
 \end{example}
-Neben \textit{Galois-Körpern}, die auf diese Weise erzeugt wurden, bilden auch alle Primzahlpotenzen $p^f, p\in \mathbb{P} \text{ und } f \in \mathbb{N}$ jeweils einen endlichen Körper.
+Neben \textsc{Galois}-Körpern, die auf diese Weise erzeugt wurden, bilden auch alle Primzahlpotenzen $p^f, p\in \mathbb{P} \text{ und } f \in \mathbb{N}$ jeweils einen endlichen Körper.
 \begin{theorem}
 Für jede Primzahlpotenz $p^f, p \in \mathbb{P} \text{ und } f \in \mathbb{N}$ gibt es (bis auf Isomorphie) genau einen endlichen Körper $K$ mit $\lvert K \rvert = p^f$.
 \end{theorem} 
-Die durch Primzahlpotenzen entstandenen endlichen Körper basieren nun nicht bloß auf den Restklassen des Unterkörpers $\mathbb{F}_p$, sondern werden mit \textbf{Polynomen} erweitert.
+Die durch Primzahlpotenzen entstandenen endlichen Körper basieren nicht bloß auf den Restklassen des Unterkörpers $\mathbb{F}_p$, sondern werden mit \textbf{Polynomen} erweitert.
 \subsection{Polynome}
 Durch die Verkettung der beiden Operationen eines Körpers $\mathbb{K}$ lassen sich \textbf{Polynome} erzeugen. Die Menge aller Polynome über einem Körper $\mathbb{K}$ wird definiert als
 \[\mathbb{K}[x] = \lbrace p(x) = a_{n}x^{n} + ... + a_{1}x + a_0 \mid a_i \in \mathbb{K} \rbrace\]
 \parencite[vgl. ][S. 118f.]{Teschl}
 und bildet einen kommutativen Ring, aufgrund der fehlenden Abgeschlossenheit der Division jedoch keinen Körper. Wird ein Polynom durch ein anderes dividiert, so kann dabei ein Rest entstehen, was die Anwendung des Kongruenzbegriffs nahelegt. Die Polynomdivision aller Polynome aus einem Körper $\mathbb{K}$ mit einem Polynom $m(x)$ erzeugt einen \textbf{Restklassenring} $\mathbb{K}[x]/({m(x)})$ mit der bekannten Addition und Multiplikation auf Polynomen. \\\\
-Die Frage, ob jener Ring auch ein (endlicher) Körper ist, ergibt sich daraus, ob zu jedem Polynom ein multiplikatives Inverses Teil des Rings ist. Dafür ist folgende Eigenschaft eines Polynoms relevant:
+Die Frage, ob jener Ring auch ein (endlicher) Körper ist, ergibt sich daraus, ob zu jedem Polynom ein multiplikatives Inverses Teil des Rings ist. Für diese Bedingung hinreichend ist folgende Eigenschaft eines Polynoms:
 \begin{definition}
 Ein Polynom $p(x) \in \mathbb{K}$ vom Grad (also dem höchsten Exponenten des Polynoms) $\deg (p) > 1$ wird als \textbf{irreduzibel} bezeichnet, falls es kein Polynom $q(x) \in \mathbb{K}$ mit $0 < \deg (q) <  \deg (p)$ gibt, das $p(x)$ teilt \parencite[vgl. ][S. 129]{Teschl}.
 \end{definition}
-Wird ein Polynomring nun durch reduzibles Polynom dividiert, also durch ein Polynom, dass sich selbst weiter dividieren lässt, existiert zu jedem seiner Teiler kein multiplikatives Inverses mehr, weshalb dadurch folglich kein Körper beschrieben wird.
+Wird ein Polynomring nun durch ein reduzibles Polynom dividiert, also durch ein Polynom, das sich selbst weiter dividieren lässt, existiert zu jedem seiner Teiler kein multiplikatives Inverses mehr, weshalb dadurch kein Körper beschrieben wird.
 \begin{theorem}
 Ein Ring $\mathbb{K}[x]/({m(x)})$ ist genau dann ein Körper, wenn $m(x)$ irreduzibel über $\mathbb{K}$ ist \parencite[vgl. ][S. 130]{Teschl}.
 \end{theorem}
-Ein Galois-Körper $\mathbb{F}_p$ kann auf diese Weise zu einem Körper $\mathbb{F}_{p^k}$ erweitert werden, in dem aus dem Polynomring $\mathbb{F}_{p}[x]$ ein irreduzibles Polynom $m(x)$ vom Grad $k$ ausgewählt wird. Dann ist 
-\[\mathbb{F}_{p^k} \quad \Leftrightarrow \quad \mathbb{F}_{p}[x]/({m(x)})\]
+Ein \textsc{Galois}-Körper $\mathbb{F}_p$ kann auf diese Weise zu einem Körper $\mathbb{F}_{p^k}$ erweitert werden, indem aus dem Polynomring $\mathbb{F}_{p}[x]$ ein irreduzibles Polynom $m(x)$ vom Grad $k$ ausgewählt wird. Dann ist 
+\[\mathbb{F}_{p^k} \quad \Leftrightarrow \quad \mathbb{F}_{p}[x]/({m(x)})\text{.}\]
 \begin{example}
 Typische Beispiele für endliche Körper sind:
 \begin{itemize}
