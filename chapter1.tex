@@ -4,10 +4,10 @@
 \chapter{Codierungstheorie}
 Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das auf Elementen der Codierungstheorie basiert, wird diese zunächst in Definitionen und theoretischen Hintergründen dargestellt.
 \section{Übermittlung von Informationen}
-Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Gegenstände der Forschung.
+Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Objekte der Anschauung.
 \begin{definition}\label{Alphabet}
 Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a_i \in \Sigma$, wobei $\Sigma$ eine endliche Menge von Zeichen (genannt \textbf{Alphabet}) bezeichnet.
-\[m = \langle a_1, a_2, ..., a_{n-1}, a_n \rangle \quad \forall i = 1, ..., n: a_i \in \Sigma\]
+\[m = \langle a_1, a_2, ..., a_{n-1}, a_n \rangle \quad \forall i = 1, ..., n\colon \, a_i \in \Sigma\]
 \end{definition}
 Ein typisches Alphabet sind die Zeichen der \textit{ASCII}-Kodierung, mit denen nahezu alle Worte und Sätze der natürlichen englischen Sprache gebildet werden können \parencite[vgl. ][]{rfc20}. Dieses Alphabet besteht nicht aus Zeichen der natürlichen Sprache, sondern aus $7$ Bit langen Zahlenwerten, was die Anwendung von Codes oder kryptographischen Verfahren ermöglicht. Im Rahmen dieser Arbeit wird angenommen, dass Zeichen stets in einem Zahlenformat repräsentiert werden. \\\\
 Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (eine natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
@@ -16,9 +16,9 @@ Ein \textbf{Kanal} bezeichne ein Medium zur Datenübertragung wie beispielsweise
 \textbf{Rauschen} bezeichne nicht-deterministische Daten, die Nachrichten bei einer Übertragung über einen Kanal unbeabsichtigt hinzugefügt werden und so die Nachricht verändern, sie folglich mit \textbf{Fehlern} versetzen \parencite[vgl. ][S. 1]{vanLint1973}. 
 \begin{definition}
 Ein \textbf{Kanal} $K$ mit der Menge der Eingabewerte $I$ und der Menge der Ausgabewerte $J$ sei definiert als Matrix 
-\[K_{i,j} = \textnormal{Pr}(j \mid i) \quad \forall i \in I, j \in J\]
+\[K_{i, j} = \textnormal{Pr}(j \mid i) \quad \forall i \in I, \,j \in J\]
 wobei $\textnormal{Pr}(j \mid i)$ definiert sei als die Wahrscheinlichkeit für die Ausgabe $j$ unter der Bedingung der Eingabe $i$. \\\\
-Sofern mindestens ein Koeffizient der Matrix $i \neq j$ einen Wert $> 0$ aufweist, wird der Kanal als \textbf{rauschend} bezeichnet \parencite[vgl. ][S. 73f.]{Biggs08}.
+Sofern mindestens ein Koeffizient $i \neq j$ der Matrix einen Wert größer als $0$ aufweist, wird der Kanal als \textbf{rauschend} bezeichnet \parencite[vgl. ][S. 73f.]{Biggs08}.
 \end{definition}
 \begin{example}
 Ein \textbf{\ac{BSC}} $\Gamma$ mit einer Bitfehlerwahrscheinlichkeit $e$ ist definiert durch die Matrix
@@ -43,9 +43,9 @@ Dass ein Kanal eine Nachricht ohne Rauschen überträgt, ist zwar ein erstrebens
 
 \section{Problemstellung und Zielsetzung}
 Da die Datenübertragung über eine Vielzahl von Kanälen eben nicht fehlerfrei verläuft, liegt es nahe, die Daten so zu übertragen, dass fehlende Bits aus dem Rest der Nachricht erschlossen werden können. Dies ist auch bei natürlicher Sprache der Fall: Unsere Worte enthalten häufig Buchstaben, die nicht zwingend erforderlich sind, um das gemeinte Wort zu erkennen \parencite[vgl. ][S. 3]{vanLint1973}. \\\\
-Überträgt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich durch die Übermittlung nicht verringert hat. Ein spezieller Typ dieser Verfahren wird als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, welche die Transformation der zu versendenden Daten zum Ziel hat, beispielsweise zur Kompression und Redundanzverringerung \parencite[vgl. ][S. 1]{Manz2017}. Der Fokus dieser Arbeit liegt dabei auf der Kanalcodierung, da die Anwendung dieser Codes für die Kryptographie seit längerer Zeit diskutiert und erforscht wird. Auch Codes zur Quellencodierung können für kryptographische Zwecke genutzt werden, jedoch sind diese Verfahren im Vergleich signifikant weniger erforscht \parencite[vgl. ][]{Massey1994}.
+Überträgt man diese Erkenntnis auf Nachrichten einer beliebigen Sprache, so lassen sich auch im allgemeinen Fall durch das Hinzufügen von redundanten Informationen Nachrichten erzeugen, deren Informationsgehalt sich durch die Übermittlung nicht verringert hat. Ein spezieller Typ dieser Verfahren wird als \textbf{fehlerkorrigierende Codes} bezeichnet \parencite[vgl. ][S. 3]{vanLint1973}. Diese Codes sind dem Gebiet der \textbf{Kanalcodierung} zuzurechnen, die das Ziel hat, die Qualität der Übertragung auf verlustbehafteten Kanälen sicherzustellen. Sie grenzt sich ab von der \textbf{Quellencodierung}, die Verfahren bündelt, welche die Transformation der zu versendenden Daten zum Ziel hat, beispielsweise zur Kompression und Redundanzverringerung \parencite[vgl. ][S. 1]{Manz2017}. Der Fokus dieser Arbeit liegt dabei auf der Kanalcodierung, da die Anwendung dieser Codes für die Kryptographie seit im Vergleich längerer Zeit diskutiert und erforscht wird. Auch Codes zur Quellencodierung können für kryptographische Zwecke genutzt werden, jedoch sind diese Verfahren im Vergleich signifikant weniger erforscht \parencite[vgl. ][]{Massey1994}.
 \section{Kanalcodierung}
-Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \acs{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}, während relevante Beiträge der Grundlagenforschung wie jene von \textsc{\citeauthor{Hamming1950}} aus dem Jahr 1950 weiterhin die Basis aufbauender Definitionen bildet.
+Die Relevanz der Frage, wie möglichst viele Übertragungsfehler in einer Datenübertragung vermieden oder korrigiert werden können, stieg mit der Verbreitung von \acs{EDV}-Systemen und nicht zuletzt dem Internet rasant an \parencite[vgl. ][S. 209]{Borda2011}, während relevante Beiträge der Grundlagenforschung wie jene von \textsc{\citeauthor{Hamming1950}} aus dem Jahr 1950 unverändert als gültig anzusehen sind und weiterhin die Basis aufbauender Definitionen bilden.
 \subsection{Grundbegriffe}
 Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung und Präzisierung der Abbildung \ref{Gegenstand} erforderlich. Die Zuordnung eines Codewortes $c$ zu einer Nachricht $m$ wird als \textbf{Codierung} (der Nachricht) bezeichnet. \\
 \begin{figure}[h!]
@@ -72,9 +72,9 @@ Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung un
 Sei $A$ ein Alphabet und $n \in \mathbb{N}$. \\ 
 Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace \langle a_1, a_2, ..., a_n \rangle \mid a_i \in A \rbrace$. \\\\
 Ein \textbf{Blockcode} $C$ der Länge $n$ über dem Alphabet $A$ ist definiert als $C \subseteq A^{n} \text{, wobei } \lvert C \rvert > 0$ gelten muss.\\\\
-Ist $m = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < m$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f\colon B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
+Ist $o = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < o$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f\colon B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
 \end{definition}
-Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise, sondern über Schieberegister in Abhängigkeit zueinander codiert, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergibt \parencite[vgl. ][S. 752]{Viterbi1971}. Diese Ansätze, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weisen Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Eigenschaften von Blockchiffren wie Diffusion und Lawineneffekt auf Blockcodes liegen. \\\\
+Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise, sondern über Schieberegister in Abhängigkeit zueinander codiert, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergibt \parencite[vgl. ][S. 752]{Viterbi1971}. Diese Ansätze, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weisen Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Eigenschaften von Blockchiffren wie der höheren Diffusion und dem Lawineneffekt auf Blockcodes liegen. \\\\
 Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codeworten, bietet sich die \textbf{\textsc{Hamming}-Distanz} an.
 \begin{definition}
 Seien $a = \langle a_1, a_2, ..., a_n \rangle$, $b = \langle b_1, b_2, ..., b_n \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{\textsc{Hamming}-Distanz} $d$ eine Metrik auf $A^n$. Sie ist definiert als die Anzahl der abweichenden Stellen in zwei Codeworten $a$ und $b$:
@@ -101,11 +101,11 @@ Als Abstandsmaß $d$ kann hier beispielsweise die eingeführte \textsc{Hamming}-
 Sei $B$ eine Kugel mit Radius $r \geq 2$ und Mittelpunkt $x \in A^n$. Dann liegen alle $a_i \in A^n$ mit $d(a_i, x) = r$ auf der Kugeloberfläche von $B$. Sei $C \subseteq A^n$ nun ein Blockcode mit $d(C) = r$ und $x \in C$. Dann liegen alle $c \in (C \setminus \lbrace x \rbrace )$ auf der Kugeloberfläche oder außerhalb der Kugel $B$. 
 \end{definition}
 \begin{note}Ein Punkt $a_j \neq x$ mit $d(a_i, x) < r$ (unterscheidet sich in in weniger als $r$ Stellen von $x$) liegt nicht auf der Kugeloberfläche und kann folglich kein fehlerfreies Codewort sein. Ein Code $C$ mit Minimaldistanz $2$ ist damit \textbf{fehlererkennend} für maximal ein falsch übertragenes Zeichen (notiert: {\glqq}1-fehlererkennend{\grqq}). \\\\
-Ferner ist ein Code $C'$ mit Minimaldistanz $3$ \textbf{fehlerkorrigierend}: Sei $a_r$ ein gültiges Codewort mit einer Minimaldistanz von $3$ zu allen anderen Codeworten in $C'$. Für ein in einer Stelle abweichendes Wort $a_f$ gilt folglich $d(a_r, a_f) = 1$, aber $\forall a_i \in C' \setminus \lbrace a_r, a_f \rbrace : d(a_i, a_f) > 1$. Damit lässt sich $a_f$ eindeutig $a_r$ zuordnen, wodurch sich der Fehler korrigieren lässt und $C'$ \textbf{1-fehlerkorrigierend} ist \parencite[vgl. ][S. 155f.]{Hamming1950}.
+Ferner ist ein Code $C'$ mit Minimaldistanz $3$ \textbf{fehlerkorrigierend}: Sei $a_r$ ein gültiges Codewort mit einer Minimaldistanz von $3$ zu allen anderen Codeworten in $C'$. Für ein in einer Stelle abweichendes Wort $a_f$ gilt folglich $d(a_r, a_f) = 1$, aber $\forall a_i \in C' \setminus \lbrace a_r, a_f \rbrace\colon d(a_i, a_f) > 1$. Damit lässt sich $a_f$ eindeutig $a_r$ zuordnen, wodurch sich der Fehler korrigieren lässt und $C'$ \textbf{1-fehlerkorrigierend} ist \parencite[vgl. ][S. 155f.]{Hamming1950}.
 \end{note}
 Die Eigenschaft eines Codes, fehlererkennend oder fehlerkorrigierend zu sein, ist skalierbar: 
 \begin{definition}
-Seien $c, c' \in C; c \neq c'$ Codeworte eines Blockcodes $C \in A^n$, $\epsilon \in \mathbb{N}$, $B_e(c) = \lbrace x \in A^n \mid d(x, c) \leq \epsilon \rbrace$ und $B_e(c')$ analog $B_e(c') = \lbrace x \in A^n \mid d(x, c') \leq \epsilon \rbrace$. \\Dann ist $C$ \textbf{$\epsilon$-fehlerkorrigierend}, wenn $\forall c, c' \in C: B_e(c) \cap B_e(c') = \emptyset$ gilt \parencite[vgl. ][S. 12f.]{Manz2017}.
+Seien $c, c' \in C; c \neq c'$ Codeworte eines Blockcodes $C \in A^n$, $\epsilon \in \mathbb{N}$, $B_{\epsilon}(c) = \lbrace x \in A^n \mid d(x, c) \leq \epsilon \rbrace$ und $B_{\epsilon}(c')$ analog $B_{\epsilon}(c') = \lbrace x \in A^n \mid d(x, c') \leq \epsilon \rbrace$. \\Dann ist $C$ \textbf{$\epsilon$-fehlerkorrigierend}, wenn $\forall c, c' \in C: B_{\epsilon}(c) \cap B_{\epsilon}(c') = \emptyset$ gilt \parencite[vgl. ][S. 12f.]{Manz2017}.
 \end{definition}
 \begin{figure}[h!]
 \centering
@@ -132,11 +132,11 @@ Seien $c, c' \in C; c \neq c'$ Codeworte eines Blockcodes $C \in A^n$, $\epsilon
 \caption{Visualisierung der Kugelinterpretation (nach \parencite{Hamming1950})}
 \end{figure}
 \begin{note}
-Ein Blockcode $C$ ist $\epsilon$-fehlerkorrigierend, wenn $d(C) \geq 2 \cdot e + 1$ gilt \parencite[vgl. ][S. 12f.]{Manz2017}.
+Ein Blockcode $C$ ist $\epsilon$-fehlerkorrigierend, wenn $d(C) \geq 2 \cdot \epsilon + 1$ gilt \parencite[vgl. ][S. 12f.]{Manz2017}.
 \end{note}
 \begin{definition}
 Sei $c \in C$ Codewort eines Blockcodes $C \in A^n$ und $B_t(c) = \lbrace x \in A^n \mid d(x, c) \leq t \rbrace$ die zu $c$ gehörige Kugel mit allen Elementen aus $A^n$, die höchstens $t$ entfernt sind. \\
-Dann ist $C$ \textbf{$t$-fehlererkennend}, wenn $\forall c \in C: B_t(c) \cap (C \setminus \lbrace c \rbrace ) = \emptyset$, die Kugel um $c$ also keine anderen Codeworte enthält \parencite[vgl. ][S. 13]{Manz2017}.
+Dann ist $C$ \textbf{$t$-fehlererkennend}, wenn $\forall c \in C\colon B_t(c) \cap (C \setminus \lbrace c \rbrace ) = \emptyset$, die Kugel um $c$ also keine anderen Codeworte enthält \parencite[vgl. ][S. 13]{Manz2017}.
 \end{definition}
 \begin{note}
 Ein Blockcode $C$ ist $t$-fehlererkennend, wenn $d(C) \geq t + 1$ gilt \parencite[vgl. ][S. 13]{Manz2017}.
@@ -160,7 +160,7 @@ Viele der in der Praxis häufig eingesetzten Codierfunktionen basieren auf der A
 Ausgangspunkt der Definition von endlichen Körpern ist nach \textsc{\citeauthor{Niederreiter97}} die algebraische Struktur der \textbf{Gruppe}.
 \subsection{Gruppen}
 \begin{definition}
-Sei $G$ eine Menge und $\circ$ eine binäre Relation $\circ: G \times G \to G$ mit folgenden Eigenschaften:
+Sei $G$ eine Menge und $\circ$ eine binäre Relation $\circ\colon G \times G \to G$ mit folgenden Eigenschaften:
 \begin{enumerate}
 \item \textbf{Assoziativität: }\\
 $\forall\, a, b, c \in G\colon \quad a \circ (b \circ c) \Leftrightarrow (a \circ b) \circ c$
@@ -194,9 +194,9 @@ $\forall\, a, b \in \mathbb{Z}\colon \quad a + b \Leftrightarrow b + a$
 Eine multiplikative Gruppe ist \textbf{zyklisch}, sofern
 \[\exists \, a \in G, \forall \, b \in G, \exists \, j \in \mathbb{Z}: \quad b = a^j\] gilt. Dann ist $a$ ein \textbf{Generator} der multiplikativen Gruppe\footnote{Wird zu einer Gruppe keine binäre Relation angegeben, handelt es sich implizit um eine multiplikative Verknüpfung.} $G$ \parencite[vgl. ][S. 3f.]{Niederreiter97}. Die Gruppe ist durch $G = \langle a \rangle$ hinreichend beschrieben.
 \end{definition}
-\paragraph{Kryptographische Bedeutung} In Bezug auf Gruppen existieren einige mathematische Probleme, die sich für die Konstruktion kryptographischer Verfahren nutzen lassen. \textsc{\citeauthor{Myasnikov08}} stellen in \parencite{Myasnikov08} kryptographische Protokolle dar, die beispielsweise auf dem \textit{Konjugationssuchproblem} nicht-kommutativer Gruppen basieren: \\
+\paragraph{Kryptographische Bedeutung} In Bezug auf Gruppen existieren einige mathematische Probleme, die sich für die Konstruktion kryptographischer Verfahren nutzen lassen. \textsc{Myasnikov}, \textsc{Ushakov} und \textsc{Shpilrain} stellen in \parencite{Myasnikov08} kryptographische Protokolle dar, die beispielsweise auf dem \textit{Konjugationssuchproblem} nicht-kommutativer Gruppen basieren: \\
 Für zwei Elemente $u, v \in G$ einer Gruppe $G$ soll mindestens ein $x \in G$ gefunden werden, sodass $u^{x} = v$ gilt. Ist kein anderer Algorithmus für dieses Problem für die  Gruppe $G$ bekannt, so lässt sich $x \to u^x$ als Einwegfunktion auffassen und so ein kryptographisches Protokoll konstruieren \parencite[vgl. ][S. 37f.]{Myasnikov08}. 
-\\\\Abhängig davon, ob eine Gruppe abelsch ist oder nicht, lassen sich unterschiedliche Such- oder Entscheidungsprobleme zur Konstruktion kryptographischer Verfahren verwenden, die in \parencite{Myasnikov08} dargestellt, aber in dieser Arbeit nicht weiter behandelt werden.
+\\\\Abhängig davon, ob eine Gruppe abelsch ist oder nicht, lassen sich unterschiedliche Such- oder Entscheidungsprobleme zur Konstruktion kryptographischer Verfahren verwenden, die in \parencite{Myasnikov08} dargestellt, aber in dieser Studienarbeit nicht weiter behandelt werden.
 \subsection{Körper}
 \begin{definition}
 Ein \textbf{Ring} $(R, +, \circ)$ ist eine nicht-leere Menge $R$ mit den zwei auf ihr definierten binären Relationen, notiert durch $+$ und $\circ$, für die gilt:
@@ -209,7 +209,7 @@ Ein \textbf{Ring} $(R, +, \circ)$ ist eine nicht-leere Menge $R$ mit den zwei au
 \end{itemize}
 Ein Ring ist \textbf{kommutativ}, wenn die Operation $\circ$ kommutativ ist. Ferner ist ein Ring ein \textbf{Divisionsring}, falls $(R \setminus \lbrace 0 \rbrace , \circ )$ eine Gruppe bildet \parencite[vgl. ][S. 13]{Niederreiter97}\parencite[vgl. ][S. 1f.]{Howie06}. 
 \end{definition}
-Ein Ring beinhaltet folglich eine Gruppe, jedoch auch eine Operation, die nicht notwendigerweise die Anforderungen an eine Gruppe erfüllt. Da beispielsweise der Menge $\mathbb{Z}$ inverse Elemente bezüglich der Multiplikation fehlen, so ist $(\mathbb{Z}, +, \circ)$ dennoch ein Ring, wenn auch kein Divisionsring. 
+Ein Ring beinhaltet folglich eine Gruppe, jedoch auch eine Operation, die nicht notwendigerweise die Anforderungen an eine Gruppe erfüllt. Da beispielsweise der Menge $\mathbb{Z}$ inverse Elemente bezüglich der Multiplikation fehlen, ist $(\mathbb{Z}, +, \circ)$ dennoch ein Ring, wenn auch kein Divisionsring. 
 \begin{definition}
 Ein kommutativer Divisionsring wird als \textbf{Feld} oder \textbf{Körper} bezeichnet \parencite[vgl. ][S. 13]{Niederreiter97}.
 \end{definition}
@@ -229,8 +229,8 @@ Gilt $I = (a)$ für ein $a \in I$, so ist $I$ ein von $a$ erzeugtes \textbf{Haup
 Ein Ideal ist nun nicht mehr nur bezüglich eigenen Elementen und beiden Operationen abgeschlossen, sondern in Bezug auf die Multiplikation auch bezüglich Elementen des übergeordneten Rings.
 \end{note}
 \begin{definition}
-Sei $R$ eine Restklasse, $a \in R$ und $J$ ein Ideal von $R$. Die \textbf{Restklasse} von $a \mod J$ sei definiert als Menge aller Elemente der Form $a + c \in R, \forall \, c \in J$ \parencite[vgl. ][S. 13]{Niederreiter97}\parencite[vgl. ][S. 10]{Howie06}:
-\[[a] = a + J = \lbrace a + c \in R : c \in J \rbrace\]
+Sei $R$ eine Restklasse, $a \in R$ und $J$ ein Ideal von $R$. Die \textbf{Restklasse} von $a \mod J$ sei definiert als Menge aller Elemente der Form $(a + c) \in R, \forall \, c \in J$ \parencite[vgl. ][S. 13]{Niederreiter97}\parencite[vgl. ][S. 10]{Howie06}:
+\[[a] = a + J = \lbrace (a + c) \in R; c \in J \rbrace\]
 \end{definition}
 \begin{note}
 Zwei Elemente $a, b \in R$ sind \textit{kongruent} modulo $J$, wenn sie Elemente der gleichen Restklasse bezüglich $J$ sind, geschrieben $a \equiv b \mod J$. 
@@ -244,7 +244,7 @@ Auch auf Restklassen lassen sich die Operationen eines Rings anwenden:
 Durch diese beiden Operationen auf Restklassen entsteht ein Ring, der als \textbf{Restklassenring} bezeichnet und mit $R / J$  notiert wird \parencite[vgl. ][S. 13f.]{Niederreiter97} \parencite[vgl. ][S. 10]{Howie06}.
 \end{note}
 \begin{example}
-Ein klassisches Beispiel für einen auf diese Weise entstandenen Restklassenring ist $\mathbb{Z} / (p), p \in \mathbb{P}$, wobei $\mathbb{P}$ die Menge aller Primzahlen bezeichnet. Hier ist $(p)$ ein durch $p$ generiertes Hauptideal. Dieser Ring ist ein Körper, wie in \parencite{Niederreiter97} bewiesen wird, und aufgrund der endlichen Anzahl an Elementen \textbf{finit}. Die Elemente sind beschrieben durch 
+Ein klassisches Beispiel für einen auf diese Weise entstandenen Restklassenring ist $\mathbb{Z} / (p),\; p \in \mathbb{P}$, wobei $\mathbb{P}$ die Menge aller Primzahlen bezeichnet. Hier ist $(p)$ ein durch $p$ generiertes Hauptideal. Dieser Ring ist ein Körper, wie in \parencite{Niederreiter97} bewiesen wird, und aufgrund der endlichen Anzahl an Elementen \textbf{finit}. Die Elemente sind beschrieben durch 
 \[\lbrace [0] = 0 + (n), [1] = 1 + (n), ... \rbrace\] 
 Der Restklassenring $\mathbb{Z} / (3)$ enthält die Elemente $[0], [1] \text{ und } [2]$.
 \end{example} 

@@ -1,10 +1,10 @@
 % !TEX root =  master.tex
 \chapter{Kryptographische Verfahren auf Basis fehlerkorrigierender Codes}
-Dass fehlerkorrigierende Codes wie $GRS_k$-Codes für kryptographische Zwecke genutzt werden können, ergibt sich durch die Definition \textit{Code-basierter Kryptographie} von \textsc{\citeauthor{Sendrier2011}} wie folgt:
+Dass fehlerkorrigierende Codes wie $GRS_k$-Codes für kryptographische Zwecke genutzt werden können, ergibt sich durch die Definition \textit{code-basierter Kryptographie} von \textsc{\citeauthor{Sendrier2011}} wie folgt:
 \begin{displayquote}
-{\glqq}Code-based cryptography includes all cryptosystems, symetric or asymetric, whose security relies, partially or totally, on the hardness of decoding in a linear error correcting code, possibly chosen with some particular structure or in a specific family (for instance, quasi-cyclic codes, or Goppa codes).{\grqq} \parencite{Sendrier2011}
+{\glqq}Code-based cryptography includes all cryptosystems, symetric or asymetric, whose security relies, partially or totally, on the hardness of decoding in a linear error correcting code, possibly chosen with some particular structure or in a specific family (for instance, quasi-cyclic codes, or Goppa codes).{\grqq} \parencite[][S. 215]{Sendrier2011}
 \end{displayquote}
-Die Sicherheit dieser Verfahren liegt folglich darin begründet, dass es unter bestimmten Bedingungen bzw. bei der Wahl entsprechender Parameter, hinreichend schwierig ist, das Dekodierproblem linearer fehlerkorrigierender Codes zu lösen. \\\\
+Die Sicherheit dieser Verfahren liegt folglich darin begründet, dass es unter bestimmten Bedingungen bzw. bei der Wahl entsprechender Parameter hinreichend schwierig ist, das Dekodierproblem linearer fehlerkorrigierender Codes zu lösen. \\\\
 In diesem Kapitel werden die Ansätze dieser Verfahren zunächst allgemein dargestellt, bevor die Arbeit von \textsc{Niederreiter} genutzt wird, um ein Kryptosystem auf Basis von $GRS_k$-Codes zu konstruieren.
 \section{Grundlagen und Hintergründe}
 \begin{figure}[h!]
@@ -16,18 +16,18 @@ In diesem Kapitel werden die Ansätze dieser Verfahren zunächst allgemein darge
 \chronoevent[markdepth=42pt, colorbox=white, ifcolorbox]{2003}{\textsc{\citeauthor{Kobara2003}} \parencite{Kobara2003}}
 \chronoevent[colorbox=white, ifcolorbox]{2001}{\textsc{\citeauthor{Sendrier2001}} \parencite{Sendrier2001}}
 \stopchronology
-\caption{Einordnung ausgewählter Beiträge der code-basierten Kryptographie}
+\caption{Chronologische Einordnung ausgewählter Beiträge der code-basierten Kryptographie}
 \label{Timeline}
 \end{figure}
-In Abbildung \ref{Timeline} sind einige für den Kontext dieser Arbeit relevante Publikationen zu code-basierten Kryptosystemen in zeitlicher Abfolge dargestellt. Die Auswahl orientiert sich einerseits an der Themeneingrenzung dieser Arbeit und andererseits am thematischen Überblick in \parencite{Overbeck2009}. Ebenda wird das durch \textsc{\citeauthor{McEliece1978}} vorgeschlagene Kryptosystem \parencite{McEliece1978} als das erste code-basierte Kryptosystem bezeichnet \parencite[vgl. ][S. 96]{Overbeck2009}. Dieses Verfahren basiert nicht wie zuvor publizierte Verfahren primär auf dem \textit{Rucksackproblem}, sondern auf algebraischen Codes \parencite[vgl. ][S. 114]{McEliece1978} und deren Dekodierproblem \parencite[vgl. ][S. 98]{Overbeck2009}.
+In Abbildung \ref{Timeline} sind einige für den Kontext dieser Arbeit relevante Publikationen zu code-basierten Kryptosystemen in zeitlicher Abfolge, basierend auf dem Publikationsjahr, dargestellt. Die Auswahl orientiert sich einerseits an der Themeneingrenzung dieser Arbeit und andererseits am thematischen Überblick in \parencite{Overbeck2009}. Ebenda wird das durch \textsc{\citeauthor{McEliece1978}} vorgeschlagene Kryptosystem \parencite{McEliece1978} als das erste code-basierte Kryptosystem bezeichnet \parencite[vgl. ][S. 96]{Overbeck2009}. Dieses Verfahren basiert nicht wie zuvor publizierte Verfahren primär auf dem \textit{Rucksackproblem}, sondern auf algebraischen Codes \parencite[vgl. ][S. 114]{McEliece1978} und deren Dekodierproblem \parencite[vgl. ][S. 98]{Overbeck2009}.
 
-\subsection{\acl{PKC}}
-Grundlage aller im Folgenden betrachteten Verfahren sind \textit{Public-Key-Cryptosystems}, wie sie von \textsc{\citeauthor{DiffieHellman1976}} vorgestellt wurden:
+\subsection{\ac{PKC}}
+Grundlage aller im Folgenden betrachteten Verfahren sind \textit{Public-Key-Cryptosystems}, wie sie von \textsc{Diffie} und \textsc{Hellman} vorgestellt wurden:
 \begin{definition}
 Sei $M$ eine endliche Menge an Nachrichten, $C$ eine endliche Menge dazugehöriger Chiffrate und $K$ die Bildmenge eines Schlüsselpaarerzeugungsalgorithmus. Dann ist ein \textbf{Public-Key-Kryptosystem} ein Paar zweier invertierbarer Algorithmen
 \begin{align*}
 E_k\colon M \to C \\
-D_k\colon C \to M 
+D_k\colon C \to M\text{,}
 \end{align*}
 für das die folgenden Bedingungen gelten muss:
 \begin{itemize}
@@ -37,7 +37,7 @@ für das die folgenden Bedingungen gelten muss:
 \item Für ein gegebenes $k \in K$ muss es möglich sein, das inverse Paar $E_k$ und $D_k$ zu bestimmen.
 \end{itemize} \parencite[vgl. ][S. 647f.]{DiffieHellman1976}
 \end{definition}
-Im Vergleich zu \textbf{symmetrischen Verfahren}, bei denen zur Ver- und Entschlüsselung jeweils derselbe Schlüssel verwendet werden muss, liegt der große Vorteil von \ac{PKC}s darin, dass der Verschlüsselungsschlüssel $E_k$ veröffentlicht werden kann, ohne die Sicherheit des Kryptosystems zu gefährden. Zu beachten ist jedoch, dass die Integrität öffentlicher Schlüssel gewährleistet werden muss \parencite[vgl. ][S. 648]{DiffieHellman1976}.
+Im Vergleich zu \textbf{symmetrischen Verfahren}, bei denen zur Ver- und Entschlüsselung jeweils derselbe Schlüssel verwendet werden muss, liegt der große Vorteil von \textit{\ac{PKC}s} darin, dass der Verschlüsselungsschlüssel $E_k$ veröffentlicht werden kann, ohne die Sicherheit des Kryptosystems zu gefährden. Zu beachten ist jedoch, dass die Integrität öffentlicher Schlüssel gewährleistet werden muss \parencite[vgl. ][S. 648]{DiffieHellman1976}.
 
 \begin{figure}[h!]
 \centering
@@ -56,12 +56,12 @@ Im Vergleich zu \textbf{symmetrischen Verfahren}, bei denen zur Ver- und Entschl
 \draw[<-, dashed] (N) -- node[midway, left] {$c$} (K);
 \end{tikzpicture}
 
-\caption{Schematische Darstellung eines \ac{PKC} (nach \parencite[][S. 647]{DiffieHellman1976})}
+\caption{Schematische Darstellung eines \textit{\ac{PKC}} (nach \parencite[][S. 647]{DiffieHellman1976})}
 \end{figure}
-\textit{Public-Key-Cryptosystems} lassen sich nach ihrem zugrundeliegenden Problem klassifizieren, wobei \textsc{\citeauthor{Rivest1988}} in \parencite{Rivest1988} folgende Klassen unterscheiden:
+\textit{Public-Key-Cryptosystems} lassen sich nach ihrem zugrundeliegenden Problem klassifizieren, wobei \textsc{Chor} und \textsc{Rivest} in \parencite{Rivest1988} folgende Klassen unterscheiden:
 \begin{itemize}
-\item \ac{PKC}s auf Basis schwerer zahlentheoretischer Probleme (beispielsweise das RSA-Verfahren, das auf der Primfaktorzerlegung basiert)
-\item \ac{PKC}s, deren Sicherheit auf dem \textit{Rucksackproblem} basiert
+\item \textit{\ac{PKC}s} auf Basis schwerer zahlentheoretischer Probleme (beispielsweise das RSA-Verfahren, das auf der Primfaktorzerlegung basiert)
+\item \textit{\ac{PKC}s}, deren Sicherheit auf dem \textit{Rucksackproblem} basiert
 \end{itemize}
 Das \textsc{McEliece}-Kryptosystem lässt sich keiner der beiden Kategorien zuordnen, da es auf dem Dekodierproblem fehlerkorrigierender Codes basiert \parencite[vgl. ][S. 901]{Rivest1988}.
 
@@ -73,9 +73,9 @@ Sei $A = \lbrace a_0, a_1, \ldots, a_{n-1} \rbrace$ eine Menge mit $\forall j \i
 Das \textbf{0-1-Rucksackproblem} bezeichnet die Frage, ob eine ganzzahlige Lösung der Form \[\sum\limits_{i = 0}^{n-1} x_i a_i = S \quad\quad (x_i \in \lbrace 0, 1 \rbrace)\] existiert \parencite[vgl. ][S. 902]{Rivest1988}. \\\\
 Eine verallgemeinerte Variante dieses Problems ergibt sich, wenn anstelle der Restriktion $x_i \in \lbrace 0, 1 \rbrace$ ein \textbf{Gewicht} $h$ definiert wird, sodass $\sum x_i \leq h$ gelten muss, damit das Problem als gelöst gilt \parencite[vgl. ][S. 902]{Rivest1988}.
 \end{definition}
-\textsc{\citeauthor{Rivest1988}} konstruieren ein kryptographisches Verfahren darauf nun wie in Algorithmus \ref{crypt}.
+\textsc{Chor} und \textsc{Rivest} konstruieren darauf nun ein kryptographisches Verfahren, wie in Algorithmus \ref{crypt}.
 \begin{algorithm}[h!]
-\caption{Verschlüsselungsalgorithmus eines Rucksack-Typ-\ac{PKC}s (nach \parencite[][S. 902]{Rivest1988})}
+\caption{Verschlüsselungsalgorithmus eines Rucksack-Typ-\textit{\ac{PKC}s} (nach \parencite[][S. 902]{Rivest1988})}
 \label{crypt}
 \begin{algorithmic}
 \Require $a = \langle a_0, a_1, \ldots, a_{n-1}\rangle, \; h, \;m = \langle m_0, m_1, \ldots, m_{n-1}\rangle$ mit $\sum\limits_{i = 0}^{n-1} m_i \leq h$
@@ -87,16 +87,16 @@ Eine verallgemeinerte Variante dieses Problems ergibt sich, wenn anstelle der Re
 \end{algorithmic}
 \end{algorithm}
 Die Komponenten $a_i$ werden je nach Kryptosystem so ausgewählt, dass in Kenntnis gewisser geheimer Zusatzinformationen (auch genannt \textit{Hintertür} bzw. \textit{trapdoor}) die Gleichung leicht gelöst, respektive das Codewort $c$ dekodiert, werden kann \parencite[vgl. ][S. 902]{Rivest1988}. \\\\
-Die Arbeit von \textsc{\citeauthor{Rivest1988}} bildet die Grundlage für das \textsc{\citeauthor{Niederreiter1986}}-Schema\footnote{Dies ist möglich, da die Arbeit \parencite{Rivest1988} bereits vier Jahre zuvor im Rahmen der \textit{CRYPTO '84} präsentiert wurde. \textsc{\citeauthor{Niederreiter1986}} referenziert in \parencite{Niederreiter1986} eine Preprint-Fassung.} \parencite[vgl. ][S. 159]{Niederreiter1986}. Das von ihnen vorgeschlagene Kryptosystem ist definiert über einem endlichen Erweiterungskörper $\mathbb{F}_{p^h}$, in dem Berechnungen zum \textbf{diskreten Logarithmus} möglich sind \parencite[vgl. ][S. 903]{Rivest1988}.
+Die Arbeit von \textsc{Chor} und \textsc{Rivest} bildet die Grundlage für das \textsc{\citeauthor{Niederreiter1986}}-Schema\footnote{Dies ist möglich, da die Arbeit \parencite{Rivest1988} bereits vier Jahre vor ihrem Erscheinen im Jahr 1988 im Rahmen der \textit{CRYPTO '84} präsentiert wurde. \textsc{\citeauthor{Niederreiter1986}} referenziert 1986 in \parencite{Niederreiter1986} eine Preprint-Fassung.} \parencite[vgl. ][S. 159]{Niederreiter1986}. Das von ihnen vorgeschlagene Kryptosystem ist definiert über einem endlichen Erweiterungskörper $\mathbb{F}_{p^h}$, in dem Berechnungen zum \textbf{diskreten Logarithmus} möglich sind \parencite[vgl. ][S. 903]{Rivest1988}.
 \begin{note}
-Sei $p \in \mathbb{P}$ und $h \in \mathbb{N}$ so, dass $\mathbb{F}_{p^h}$ einen endlichen Körper der Charakteristik $p$ bezeichne. Ferner sei $\alpha$ ein primitives Element dieses Körpers. Dann sind die Funktionen
+Sei $p \in \mathbb{P}$ und $h \in \mathbb{N}$ dergestalt, dass $\mathbb{F}_{p^h}$ einen endlichen Körper der Charakteristik $p$ bezeichne. Ferner sei $\alpha$ ein primitives Element dieses Körpers. Dann sind die Funktionen
 \begin{align}
 y &= \alpha^{x} \\
 x &= \log_{\alpha}(y)
 \end{align}
-in $\mathbb{F}{p^h}$ invers zueinander. (4.1) bezeichnet die Exponentialfunktion und (4.2) die Logarithmusfunktion zur Basis $\alpha$. Während für die Exponentiation maximal $2 \cdot \lceil \log_2 p\rceil$ Multiplikationen\footnote{Die Aussage in \parencite{Pohlig1978} bezieht sich auf einen Körper $\mathbb{F}_{p}$, wobei für Erweiterungskörper $\mathbb{F}_{p^h}$ von einer ähnlichen Komplexitätsklasse ausgegangen werden kann \parencite[vgl. ][]{Gao2000}.} erforderlich sind \parencite[vgl. ][S. 106]{Pohlig1978}, sind es für das Logarithmieren wesentlich mehr, wodurch sich das \textbf{diskrete Logarithmusproblem} über endlichen Körpern ergibt, das die Schwierigkeit beschreibt, Logarithmen in endlichen Körpern großer Charakteristik zu lösen \parencite[vgl. ][S. 106f.]{Pohlig1978}.
+in $\mathbb{F}{p^h}$ invers zueinander. (4.1) bezeichnet die Exponentialfunktion und (4.2) die Logarithmusfunktion zur Basis $\alpha$. Während für die Exponentiation maximal $2 \cdot \lceil \log_2 p\rceil$ Multiplikationen erforderlich sind \parencite[vgl. ][S. 106]{Pohlig1978}\footnote{Die Aussage in \parencite{Pohlig1978} bezieht sich auf einen Körper $\mathbb{F}_{p}$, wobei für Erweiterungskörper $\mathbb{F}_{p^h}$ von einer ähnlichen Komplexitätsklasse ausgegangen werden kann \parencite[vgl. ][]{Gao2000}.}, sind es für das Logarithmieren wesentlich mehr. Dadurch ergibt sich das \textbf{diskrete Logarithmusproblem} über endlichen Körpern, das die Schwierigkeit beschreibt, Logarithmen in endlichen Körpern großer Charakteristik zu lösen \parencite[vgl. ][S. 106f.]{Pohlig1978}.
 \end{note}
-Dieses Problem wird in vielen kryptographischen Verfahren wie dem \textit{Diffie-Hellman-Schlüssel{\-}austausch} oder dem \textit{RSA-Kryptosystem} ausgenutzt, da es nach wie vor keine effizienten Algorithmen für dieses Problem in Körpern großer Charakteristik bekannt sind \parencite[vgl. ][S. 904]{Rivest1988}. Solange die Parameter der Kryptosysteme an die gegenwärtig zur Verfügung stehende Rechenleistung angepasst wird, ist die Sicherheit der Verfahren gewährleistet \parencite[vgl. ][]{Gura2004}.
+Dieses Problem wird in vielen kryptographischen Verfahren wie dem \textit{Diffie-Hellman-Schlüssel{\-}austausch} oder dem \textit{RSA-Kryptosystem} ausgenutzt, da nach wie vor keine effizienten Algorithmen für dieses Problem in Körpern großer Charakteristik implementierbar sind \parencite[vgl. ][S. 904]{Rivest1988}. Solange die Parameter der Kryptosysteme an die gegenwärtig zur Verfügung stehende Rechenleistung angepasst werden, ist die Sicherheit der Verfahren gewährleistet \parencite[vgl. ][]{Gura2004}.
 \section{McEliece-Kryptosystem}
 Grundlage des \textsc{\citeauthor{McEliece1978}}-Kryptosystems sind \textit{Goppa}-Codes, benannt nach \textsc{Valery Denisovich Goppa}.
 \begin{definition}
@@ -128,7 +128,7 @@ Der Verschlüsselungsalgorithmus folgt damit nun unmittelbar:
 \Require $G'$, Eingabedaten $m$ mit $l$ Komponenten aus $\mathbb{F}_{2^m}$
 \State Teile $m$ in Blöcke der Länge $k$ (ggf. mit Nullen auffüllen)
 \For{$u$ in $m[]$}
-	\State Wähle zufälligen Störvektor $z$ mit Länge $n$ und Gewicht $t$.
+	\State Wähle zufälligen Störvektor $z$ mit Länge $n$ und Gewicht $t$
 	\State $x_u \gets u \cdot G' + z$
 \EndFor \\
 \Return $x$
@@ -138,43 +138,43 @@ Für ein übertragenes Wort $x$ erfolgt die Dechiffrierung nun wie folgt:
 \begin{algorithm}[h!]
 \caption{Entschlüsselungsalgorithmus des \textsc{McEliece}-Kryptosystems (nach \parencite{McEliece1978})}
 \begin{algorithmic}[1]
-\Require Übertragenes Wort $x$, Goppa-Code-Parameter, $P$, $S$
+\Require Übertragenes Wort $x$, \textit{Goppa}-Code-Parameter, $P$, $S$
 \State ($x' \gets x \cdot P^{-1}$) $\Rightarrow x' \in C$
 \State $u' \gets $ Ergebnis des Dekodieralgorithmus von \textsc{Patterson} auf $x'$
 \State $u = u' \cdot S^{-1}$ \\
 \Return $u$
 \end{algorithmic}
 \end{algorithm} \\
-Die Sicherheit dieses Verfahrens basiert nun einerseits auf der Schwierigkeit, aus dem öffentlichen Schlüssel die Generatormatrix $G$ des Goppacodes abzuleiten, da die Anzahl der Möglichkeiten bei entsprechend geeigneten Werten für $n$ und $k$ nicht zuletzt durch die Anzahl möglicher $P$ und $S$ schnell zu groß wird, um die korrekte Matrix unter realistischem Ressourceneinsatz enumerativ abzuleiten \parencite[vgl. ][S. 115]{McEliece1978}. Ein weiterer Angriff, den \textsc{\citeauthor{McEliece1978}} selbst beschreibt, läge darin, ohne Kenntnis von $G$ zu versuchen, $u$ aus $x$ abzuleiten. Dieser Ansatz lässt sich auf folgendes Problem zuückführen:
+Die Sicherheit dieses Verfahrens basiert nun einerseits auf der Schwierigkeit, aus dem öffentlichen Schlüssel die Generatormatrix $G$ des \textit{Goppa}-Codes abzuleiten, da die Anzahl der Möglichkeiten bei entsprechend geeigneten Werten für $n$ und $k$ nicht zuletzt durch die Anzahl möglicher $P$ und $S$ schnell zu groß wird, um die korrekte Matrix unter realistischem Ressourceneinsatz enumerativ abzuleiten \parencite[vgl. ][S. 115]{McEliece1978}. Ein weiterer Angriff, den \textsc{\citeauthor{McEliece1978}} selbst beschreibt, läge darin, ohne Kenntnis von $G$ zu versuchen, $u$ aus $x$ abzuleiten. Dieser Ansatz lässt sich auf folgendes Problem zurückführen:
 \begin{note}\label{NPHart}
-Sei $x$ ein empfangenes Wort mit $\epsilon \leq t$ fehlerbehafteten Stellen und $H$ die $n \times (n-k)$-Paritätsprüfmatrix des zugrundeliegenden Codes. Dann ist $s = y H$ das Syndrom von $y$ zu $C$ mit $H$. Da $y$ bekanntlich fehlerhaft sein kann, wird das Codewort $x$ mit der geringsten Hamming-Distanz zu $y$ gesucht, dass das Syndrom $s$ bildet, um anschließend das Differenztupel $z_0$ abziehen zu können \parencite[vgl. ][S. 384]{Berlekamp1978}. Folglich soll gelten: \[s = x H = (y - z_0) H\] 
-Das Problem, genau dieses $z_0$ zu finden, wird als \textbf{generelles Dekodierproblem} bezeichnet. \textsc{\citeauthor{Berlekamp1978}} weisen in \parencite{Berlekamp1978} nach, dass dieses Problem auf $\mathcal{NP}$-harte Probleme zurückführbar ist und damit ebenfalls $\mathcal{NP}$-hart sein muss. Die Klasse der $\mathcal{NP}$-harten Probleme beschreibt Probleme, die über Backtracking-Algorithmen gelöst werden können, deren Suchtiefe durch ein durch die Eingabelänge parametrisiertes Polynom begrenzt ist \parencite[vgl. ][S. 384]{Berlekamp1978}.
+Sei $x$ ein empfangenes Wort mit $\epsilon \leq t$ fehlerbehafteten Stellen und $H$ die $n \times (n-k)$-Paritätsprüfmatrix des zugrundeliegenden Codes. Dann ist $s = y H$ das Syndrom von $y$ zu $C$ mit $H$. Da $y$ bekanntlich fehlerhaft sein kann, wird das Codewort $x$ mit der geringsten \textit{Hamming}-Distanz zu $y$ gesucht, das das Syndrom $s$ bildet, um anschließend das Differenztupel $z_0$ abziehen zu können \parencite[vgl. ][S. 384]{Berlekamp1978}. Folglich soll gelten: \[s = x H = (y - z_0) H\] 
+Das Problem, genau dieses $z_0$ zu finden, wird als \textbf{generelles Dekodierproblem} bezeichnet. \textsc{Berlekamp}, \textsc{McEliece} und \textsc{Tilborg} weisen in \parencite{Berlekamp1978} nach, dass dieses Problem auf $\mathcal{NP}$-harte Probleme zurückführbar ist und damit ebenfalls $\mathcal{NP}$-hart sein muss. Die Klasse der $\mathcal{NP}$-harten Probleme beschreibt Probleme, die über Backtracking-Algorithmen gelöst werden können, deren Suchtiefe durch ein durch die Eingabelänge parametrisiertes Polynom begrenzt ist \parencite[vgl. ][S. 384]{Berlekamp1978}.
 \end{note}
-Daraus folgt, dass das auch dieser zweite Ansatz bei geeigneten Parametern unausführbar ist \parencite[vgl. ][S. 115]{McEliece1978}. In Kapitel \ref{PQC} dieser Arbeit wird die daraus begründete aktuelle Relevanz des dargestellten Kryptosystems -- insbesondere hinsichtlich der \textit{Post-Quanten-Kryptographie} -- diskutiert.
+Daraus folgt, dass auch dieser zweite Ansatz bei geeigneten Parametern unausführbar ist \parencite[vgl. ][S. 115]{McEliece1978}. In Kapitel \ref{PQC} dieser Arbeit wird die daraus begründete aktuelle Relevanz des dargestellten Kryptosystems -- insbesondere hinsichtlich der \textit{Post-Quanten-Kryptographie} -- diskutiert.
 \subsection{Implementierung}
-Anhang \ref{McElieceLst} zeigt eine beispielhafte Implementierung des Schlüsselerzeugungsalgorithmus und der Verschlüsselung des \textsc{McEliece}-Kryptosystems nach \parencite{McEliece1978}. Auf eine Implementierung des Dechiffrieralgorithmus wurde aus verzichtet. \\\\
-Jeweils für das -- in der Originalversion \parencite{McEliece1978} irreduzible -- Goppapolynom $g$, die Störmatrix $S$ und die Permutationsmatrix $P$ kann sowohl eine eigene Wahl angegeben werden als auch eine zufällige Wahl des Programms genutzt werden. Für das Generatorpolynom wird hierfür die Methode \texttt{irreducible{\_}element()} einer Instanz der Klasse \texttt{PolynomialRing} verwendet. Ein irreduzibles Polynom hat in den hier betrachteten Körpern keine Wurzeln \parencite[vgl. ][S. 3]{Thuraya2015}, weshalb die nachfolgend implementierte Mengenbildung der Nicht-Wurzelelemente $L$ obsolet ist, jedoch vorentlastend für den Fall anderer reduzibler Polynome dennoch ausgeführt wird. \\\\
-Für die Störmatrix $S$ wird, sofern keine Eingabe erfolgt, mittels \texttt{random{\_}matrix()}eine zufällige Matrix aus Elementen von $\mathbb{F}_{q}$ bestimmt. Die Parameterwahl \texttt{density=1.0} bewirkt, dass keine der Matrixkomponenten gleich null ist. Diese Wahl ist hier nicht erforderlich, es würde ein Wert zwischen $0,5$ und $1,0$ genügen, um die erforderte Dichte der Matrix zu erreichen. Inwiefern eine Randomisierung dieses Wertes der Sicherheit des Verfahrens zuträglich ist, kann an dieser Stelle nicht beantwortet werden. \\\\
-Auch für die zufällige Wahl der Permutationsmatrix $P$ kann eine \textit{SageMath}-Klasse gewählt werden: \texttt{Permutations(n)} bildet die Menge aller möglichen Permutationen der Werte $\lbrace 1, \ldots, n \rbrace$ \parencite[vgl. ][{\glqq}Permutations{\grqq}]{SageMath}, aus der anschließend ein zufälliges Element ausgewählt werden kann. Dieses Vorgehen wird für die Wahl des Störvektors $z$ bei der Verschlüsselung wiederholt: Zunächst wird ein Vektor bestehend aus $t$ Einsen und $n-t$ Nullen gebildet, der anschließend randomisiert permutiert wird, um die Störung nicht-deterministisch werden zu lassen. Auch die Frage, inwiefern die Zufälligkeit der \textit{SageMath}-Methoden aktuellen Anforderungen entspricht, kann hier nicht erläutert werden. Für eine Implementierung fernab von Bildungszwecken ist idealerweise eine Sprache mit formaler Verifizierbarkeit der Implementierungen zu wählen. \\\\
-Die Speicherung des öffentlichen und privaten Schlüssels im \ac{JSON}-Dateiformat entspricht nicht dem üblicherweise gewählten \ac{PEM}-Dateiformat, erscheint im Kontext dieser Arbeit jedoch probat, um die Verständlichkeit der Dateien zu gewährleisten. Da sich \textit{SageMath}-Matrizen nicht nativ als \ac{JSON}-Objekte serialisieren lassen, musste hier eine Stringrepräsentation der Liste der Matrixzeilen gewählt werden. Diese Lösung hat jedoch zur Folge, dass, um die Matrizen wieder zu deserialisieren, die Python-Funktion \texttt{eval()} aufgerufen werden muss. Die Verwendung dieser Funktion ist aus Codesicherheits-Erwägungen bedenklich, da sie die Ausführung beliebiger eingegebener Befehle ermöglicht. An den meisten Stellen der Implementierung wird daher vor dem Funktionsaufruf eine Validierung der Eingabe durchgeführt, die sicherstellt, dass die Eingabe nur zugelassene Zeichen enthält.
+Anhang \ref{McElieceLst} zeigt eine beispielhafte Implementierung des Schlüsselerzeugungsalgorithmus und der Verschlüsselung des \textsc{McEliece}-Kryptosystems nach \parencite{McEliece1978}. Auf eine Implementierung des Dechiffrieralgorithmus wurde verzichtet. \\\\
+Jeweils für das -- in der Originalversion \parencite{McEliece1978} irreduzible -- \textit{Goppa}-Polynom $g$, die Störmatrix $S$ und die Permutationsmatrix $P$ kann sowohl eine eigene Wahl angegeben werden als auch eine zufällige Wahl des Programms genutzt werden. Für das Generatorpolynom wird hierfür die Methode \texttt{irreducible{\_}element()} einer Instanz der Klasse \texttt{PolynomialRing} verwendet. Ein irreduzibles Polynom hat in den hier betrachteten Körpern keine Wurzeln \parencite[vgl. ][S. 3]{Thuraya2015}, weshalb die nachfolgend implementierte Mengenbildung der Nicht-Wurzelelemente $L$ obsolet ist, jedoch vorentlastend für den Fall anderer reduzibler Polynome dennoch ausgeführt wird. \\\\
+Für die Störmatrix $S$ wird, sofern keine Eingabe erfolgt, mittels \texttt{random{\_}matrix()}eine zufällige Matrix aus Elementen von $\mathbb{F}_{q}$ bestimmt. Die Parameterwahl \texttt{density=1.0} bewirkt, dass keine der Matrixkomponenten gleich null ist. Diese Wahl ist hier nicht erforderlich, es würde ein Wert zwischen $0,5$ und $1,0$ genügen, um die erforderte Dichte der Matrix zu erreichen. Inwiefern eine Randomisierung dieses Wertes der Sicherheit des Verfahrens zuträglich ist, kann an dieser Stelle nicht beantwortet werden, wobei davon auszugehen ist, dass der Grad der Dichte dieser Matrix mit dem Grad der Verwürfelung der Generatormatrix korreliert. \\\\
+Auch für die zufällige Wahl der Permutationsmatrix $P$ kann eine \textit{SageMath}-Klasse gewählt werden: \texttt{Permutations(n)} bildet die Menge aller möglichen Permutationen der Werte $\lbrace 1, \ldots, n \rbrace$ \parencite[vgl. ][{\glqq}Permutations{\grqq}]{SageMath}, aus der anschließend ein zufälliges Element ausgewählt werden kann. Dieses Vorgehen wird für die Wahl des Störvektors $z$ bei der Verschlüsselung wiederholt: Zunächst wird ein Vektor bestehend aus $t$ Einsen und $n-t$ Nullen gebildet, der anschließend randomisiert permutiert wird, um die Störung nicht-deterministisch werden zu lassen. Auch die Frage, inwiefern die Zufälligkeit der \textit{SageMath}-Methoden aktuellen Anforderungen an Zufallszahlengeneratoren, beispielsweise in Hinblick auf Entropie, entspricht, wird als offene Frage belassen. Für eine Implementierung fernab von Bildungszwecken ist idealerweise eine Sprache mit formaler Verifizierbarkeit der Implementierungen zu wählen. \\\\
+Die Speicherung des öffentlichen und privaten Schlüssels im \ac{JSON}-Dateiformat entspricht nicht dem üblicherweise gewählten \ac{PEM}-Dateiformat, erscheint im Kontext dieser Arbeit jedoch probat, um die Verständlichkeit der Dateien zu gewährleisten. Da sich \textit{SageMath}-Matrizen nicht nativ als \ac{JSON}-Objekte serialisieren lassen, musste hier eine Stringrepräsentation der Liste der Matrixzeilen gewählt werden. Diese Lösung hat jedoch zur Folge, dass, um die Matrizen wieder zu deserialisieren, die Python-Funktion \texttt{eval()} aufgerufen werden muss. Die Verwendung dieser Funktion ist aus Codesicherheits-Erwägungen bedenklich, da sie die Ausführung beliebiger eingegebener Befehle ermöglicht. An den gefährdetsten Stellen der Implementierung wird daher vor dem Funktionsaufruf eine Validierung der Eingabe durchgeführt, die sicherstellt, dass die Eingabe nur zugelassene Zeichen enthält.
 \section{Niederreiter-Schema}
 Während \textsc{\citeauthor{McEliece1978}} sein Kryptosystem verbindlich auf \textit{Goppa}-Codes definiert, ist das Kryptosystem von \textsc{\citeauthor{Niederreiter1986}} abstrakter, indem für dieses System geeignete Codes diskutiert werden \parencite[vgl. ][S. 161f.]{Niederreiter1986}. \\\\
 Die zentrale Aussage, die für dieses Kryptosystem benötigt wird, ist Folgende:
 \begin{theorem}
-Sei $C$ ein linearer $[n, k, d]$-Code mit Fehlerkorrekturkapazität $t$ über einem endlichen Körper $\mathbb{F}_{q}$. Dann bezeichne $H$ eine $(n-k) \times n$-Paritätsprüfmatrix dieses Codes. Dann ist die Menge $C$ beschrieben durch alle Vektoren $c \in \mathbb{F}_{q}^{n}$ mit $H \cdot c^{T} = 0$. \\\\Ferner bezeichne \textbf{das Gewicht} $w(x)$ die Anzahl der Komponenten eines Vektors, die ungleich null sind. Für die \textit{Hamming}-Distanz gilt dann $d(x, y) = w(x - y)$. Für zwei Vektoren $y, z \in \mathbb{F}_{q}^{n}$ mit $w(y) \leq t$ und $w(z) \leq t$ gilt nun \parencite[vgl. ][S. 160f.]{Niederreiter1986}:
+Sei $C$ ein linearer $[n, k, d]$-Code mit Fehlerkorrekturkapazität $t$ über einem endlichen Körper $\mathbb{F}_{q}$. Dann bezeichne $H$ eine $(n-k) \times n$-Paritätsprüfmatrix dieses Codes. So ist die Menge $C$ beschrieben durch alle Vektoren $c \in \mathbb{F}_{q}^{n}$ mit $H \cdot c^{T} = 0$. \\\\Ferner bezeichne das \textbf{Gewicht} $w(x)$ die Anzahl der Komponenten eines Vektors, die ungleich null sind. Für die \textit{Hamming}-Distanz gilt dann $d(x, y) = w(x - y)$. Für zwei Vektoren $y, z \in \mathbb{F}_{q}^{n}$ mit $w(y) \leq t$ und $w(z) \leq t$ gilt nun \parencite[vgl. ][S. 160f.]{Niederreiter1986}:
 \[(H \cdot y^{T} \; = \; H \cdot z^{T}) \; \Rightarrow \; y = z\]
 \end{theorem}
 \begin{proof}
 Sei $c \in C$. Dann ist $H \cdot c^{T} = 0$. Da $H \cdot y^{T} - H \cdot z^{T} = 0$, gilt \[H \cdot y^{T} - H \cdot z^{T} = H \cdot c^{T} \, \Leftrightarrow \, y - z = c\]
-Die Dekodierbarkeit eines linearen Codes wird dadurch sichergestellt, das zu jedem Vektor $x \in \mathbb{F}_{q}^{n}$ maximal ein gültiges Codewort $c$ existiert, sodass $d(x, c) \leq t$. Würde diese Aussage nicht gelten, könnte ein fehlerhaftes Codewort nicht mehr eindeutig dekodiert werden. Da $d(y, \langle 0, 0, \ldots, 0\rangle) = w(y) \leq t$ und $d(y, c) = w(y-c) = w(z) \leq t$, folgt, dass $c = \langle 0, 0, \ldots, 0\rangle$ und $y = z$ gelten müssen, da andernfalls die Dekodierbarkeit des Codes nicht gegeben wäre \parencite[vgl. ][S. 161]{Niederreiter1986}.
+Die Dekodierbarkeit eines linearen Codes wird dadurch sichergestellt, dass zu jedem Vektor $x \in \mathbb{F}_{q}^{n}$ maximal ein gültiges Codewort $c$ existiert, sodass $d(x, c) \leq t$. Würde diese Aussage nicht gelten, könnte ein fehlerhaftes Codewort nicht mehr eindeutig dekodiert werden. Da $d(y, \langle 0, 0, \ldots, 0\rangle) = w(y) \leq t$ und $d(y, c) = w(y-c) = w(z) \leq t$, folgt, dass $c = \langle 0, 0, \ldots, 0\rangle$ und $y = z$ gelten müssen, da andernfalls die Dekodierbarkeit des Codes nicht gegeben wäre \parencite[vgl. ][S. 161]{Niederreiter1986}.
 \end{proof}
-Dieses Theorem ist die Grundlage dafür, ein kryptographisches System auf linearen Codes aufzubauen: Zu einem Klartext $m \in \mathbb{F}_{q}^{n}$ und wie in obigem Theorem erzeugter Paritätsprüfmatrix $H$ kann der Geheimtext $y = H \cdot m^{T}$ gebildet und versendet werden. Aufgrund des Rucksackproblems können -- bei ausreichender Parameterwahl und unter Annahme realistischer Ressourcen -- lediglich Empfänger die Nachricht dechiffrieren, die sich in Kenntnis der gewählten Paritätsprüfmatrix $H$ befinden. Dieses skizzierte Kryptosystem ist kein \ac{PKC}, da die Matrix $H$ der gemeinsame Schlüssel zum Ver- und Entschlüsseln ist. \\\\
-Um nun ein \ac{PKC} auf diesem Verfahren aufzubauen, werden ähnlich zum in \parencite{McEliece1978} dargestellten Vorgehen zusätzliche Störparameter in die Matrix $H$ eingebracht, die das Veröffentlichen eines öffentlichen Schlüssels nun ermöglichen. Die Schlüsselerzeugung verläuft wie folgt \parencite[vgl. ][S. 161]{Niederreiter1986}:
-\begin{itemize}
+Dieses Theorem ist die Grundlage dafür, ein kryptographisches System auf linearen Codes aufzubauen: Zu einem Klartext $m \in \mathbb{F}_{q}^{n}$ und zu einer wie in obigem Theorem erzeugten Paritätsprüfmatrix $H$ kann der Geheimtext $y = H \cdot m^{T}$ gebildet und versendet werden. Aufgrund des Rucksackproblems können -- bei ausreichender Parameterwahl und unter Annahme realistischer Ressourcen -- lediglich jene Empfänger die Nachricht dechiffrieren, die sich in Kenntnis der gewählten Paritätsprüfmatrix $H$ befinden. Dieses skizzierte Kryptosystem ist kein \textit{\ac{PKC}}, da die Matrix $H$ der gemeinsame Schlüssel zum Ver- und Entschlüsseln ist. \\\\
+Um nun ein \textit{\ac{PKC}} auf diesem Verfahren aufzubauen, werden ähnlich zum in \parencite{McEliece1978} dargestellten Vorgehen zusätzliche Störparameter in die Matrix $H$ eingebracht, die das Publizieren eines öffentlichen Schlüssels ermöglichen. Die Schlüsselerzeugung verläuft wie folgt \parencite[vgl. ][S. 161]{Niederreiter1986}:
+\begin{enumerate}
 \item Wahl einer nicht-singulären $(n-k) \times (n-k)$-Matrix $S$
 \item Wahl einer $n \times n$-Matrix $P$, die aus der Permutation einer nicht-singulären Diagonalmatrix entsteht
 \item Der öffentliche Schlüssel ist nun $k_{pub} = S \cdot H \cdot P$
-\end{itemize}
+\end{enumerate}
 Wichtig zu bemerken ist, dass die hier gewählte Matrix $P$ im Gegensatz zur Matrix $P$ des \textsc{McEliece}-Verfahrens auch Komponenten $x_{ij} \notin \lbrace 0, 1 \rbrace$ enthalten kann, über die sich so eine Gewichtung einzelner Spalten ergeben kann. \\\\Die Ver- und Entschlüsselung folgt nun wie in den Algorithmen \ref{NREnc} und \ref{NRDec} dargestellt.
 \begin{algorithm}[h!]
 \caption{Verschlüsselungsalgorithmus des \textsc{Niederreiter}-Schemas (nach \parencite{Niederreiter1986})}
@@ -209,7 +209,7 @@ Nach \textsc{\citeauthor{Hill86}} erzeugen die folgenden Operationen auf einer G
 \item Multiplikation einer Zeile mit einem Skalar ungleich $0$
 \item Addition eines skalaren Vielfachen einer Zeile auf eine andere
 \item Vertauschung von Spalten
-\item Multiplikation einer Spalte mit einem Skalar ungleich $0$.
+\item Multiplikation einer Spalte mit einem Skalar ungleich $0$
 \end{itemize}
 Da die Matrix $P$ eine (gewichtete) Permutationsmatrix ist, besitzt sie pro Zeile und Spalte genau in einer Komponente einen Wert ungleich $0$. Da nach Definition \ref{ParCheck} die Zeilen einer Generatormatrix eine Basis des durch den Code beschriebenen Vektorraums bilden und die Zeilen einer Paritätsprüfmatrix eine Basis des Kerns der Generatormatrix \parencite[vgl. ][S. 29f.]{Roth06}, besteht hinsichtlich der Zeilenvertauschungen und der Multiplikation einer Zeile mit einem Skalar bereits Äquivalenz, da dies aus der Definition einer Basis unmittelbar folgt und die lineare Unabhängigkeit erhalten bleibt. Bei der Multiplikation der Matrix $H$ mit der Matrix $P$ werden aufgrund der obig beschriebenen Beschaffenheit der Matrix $P$ die Spalten der Matrix $H$ mit Skalaren multipliziert und vertauscht. Hierbei bleibt die lineare Unabhängigkeit nicht zwangsläufig erhalten, jedoch erzeugen diese Operationen \textbf{äquivalente Codes}, die sich zwar in der Anordnung der Symbole unterscheiden, aber den gleichen Vektorraum aufspannen \parencite[vgl. ][S. 24]{MacWilliams77C1} \parencite[vgl. ][S. 1193f.]{Sendrier2000}. 
 \begin{equation}
@@ -217,7 +217,7 @@ Da die Matrix $P$ eine (gewichtete) Permutationsmatrix ist, besitzt sie pro Zeil
 \end{equation}
 Daraus, dass permutierte Generatormatrizen zu permutierten Codeworten führen, folgt durch Assoziativität, dass auch eine Permutation des Codewortes Teil des betrachteten Codes ist.
 \end{proof}
-Für die Korrektheit des Verfahrens nun noch zu zeigen, dass ein durch die Verschlüsselungsoperation des \textsc{Niederreiter}-Verfahrens erzeugtes Chiffrat mittels des korrespondierenden Entschlüsselungsverfahrens dechiffriert werden kann.
+Für die Korrektheit des Verfahrens ist nun noch zu zeigen, dass ein durch die Verschlüsselungsoperation des \textsc{Niederreiter}-Verfahrens erzeugtes Chiffrat mittels des korrespondierenden Entschlüsselungsverfahrens dechiffriert werden kann.
 \begin{theorem}
 Sei $y$ ein Klartextvektor mit $w(y) \leq t$, $H$ eine Paritätsprüfmatrix eines linearen Codes, $S$ eine nicht-singuläre Matrix und $P$ eine Permutationsmatrix. Dann lässt sich das Produkt $y S H P$ mittels des Entschlüsselungsalgorithmus des \textsc{Niederreiter}-Verfahrens dechiffrieren. 
 \end{theorem}
@@ -225,7 +225,7 @@ Sei $y$ ein Klartextvektor mit $w(y) \leq t$, $H$ eine Paritätsprüfmatrix eine
 Das Chiffrat bzw. das Geheimwort ist entsprechend des \textsc{Niederreiter}-Verschlüsselungs{\-}algorithmus definiert durch
 \begin{align*}
 x &= y S H P \\
-&\Leftrightarrow S H \cdot (y^{T} P)
+&\Leftrightarrow S H \cdot (y^{T} P)\text{.}
 \end{align*}
 Für die Entschlüsselung wird nun zunächst die Störmatrix durch Multiplikation mit ihrem Inversen neutralisiert:
 \begin{align*}
@@ -242,18 +242,18 @@ x &= (G \cdot \mathbf{0} + y) \cdot S H P \\
 \subsection{Wahl geeigneter Codes}
 Die Sicherheit eines solchen Kryptosystems ist stark an die Wahl eines geeigneten Codes gebunden. \textsc{\citeauthor{Niederreiter1986}} formuliert daher folgende Anforderungen an Codes \parencite[vgl. ][S. 161f.]{Niederreiter1986}:
 \begin{itemize}
-\item Die Fehlerkorrekturkapazität des Codes sollte relativ hoch sein, sodass eine möglichst große Anzahl an Klartextvektoren verwendet werden kann
-\item Für $C$ sollte es einen effizienten Dekodieralgorithmus geben, damit die Entschlüsselung in kurzen Rechenzeiten ausgeführt werden kann
-\item Die Dimension $k$ sollte im Verhältnis zu $n$ weder zu klein noch zu groß gewählt werden, da ein zu kleiner Wert die Anzahl geeigneter Codes einschränkt und ein zu großer Wert die Größe der Codeworte (im Verhältnis zum Nachrichtenwort) minimiert, wodurch sich die Sicherheit des Kryptosystems verringert.
+\item Die Fehlerkorrekturkapazität des Codes sollte relativ hoch sein, sodass eine möglichst große Anzahl an Klartextvektoren verwendet werden kann.
+\item Für $C$ sollte es einen effizienten Dekodieralgorithmus geben, damit die Entschlüsselung in kurzen Rechenzeiten ausgeführt werden kann.
+\item Die Dimension $k$ sollte im Verhältnis zu $n$ weder zu klein noch zu groß gewählt werden, da ein zu kleiner Wert die Anzahl geeigneter Codes einschränkt und ein zu großer Wert die Größe der Codeworte (im Verhältnis zum Nachrichtenwort) minimiert. In beiden Fällen verringert sich die Sicherheit des Kryptosystems.
 \end{itemize}
 Als geeignete Codes werden \textit{Goppa}-Codes als Teil der \textit{Alterant Codes}, algebraisch-geometrische Codes und \textit{Reed-Solomon-Codes} vorgestellt, da sie die \textit{Gilbert-Varshamov-Schranke} einhalten \parencite[vgl. ][S. 162]{Niederreiter1986}: \\\\
 Aus Definition \ref{DistSphere} geht eine Interpretation der Minimaldistanz als Kugel hervor. Das Volumen dieser Kugel ist nun wie folgt definiert:
 \begin{definition}
 Sei $\mathbb{F}_q$ ein endlicher Körper und $\mathbb{F}_{q}^{n}$ ein $n$-dimensionaler Vektorraum über diesem Körper. Dann ist eine Kugel mit Radius $t$ definiert als die Menge aller Wörter mit \textit{Hamming-Distanz} kleiner gleich $t$. Das \textbf{Volumen} dieser Kugel ist definiert als die Anzahl der Elemente der Kugel und wird berechnet durch \parencite[vgl. ][S. 95]{Roth06}
 \begin{equation}
-V_q (n, t) = \sum\limits_{i=0}^{t} \binom{n}{i} (q-1)^{i}
+V_q (n, t) = \sum\limits_{i=0}^{t} \binom{n}{i} (q-1)^{i}\text{.}
 \end{equation}
-Ferner sei die \textbf{Maximalkardinalität} definiert als die größtmögliche Anzahl an Codeworten eines $[n, k, d]$-Codes über $\mathbb{F}_{q}$ und wird so formuliert \parencite[vgl. ][S. 11]{Hill86}:
+Ferner sei die \textbf{Maximalkardinalität} definiert als die größtmögliche Anzahl an Codeworten eines $[n, k, d]$-Codes über $\mathbb{F}_{q}$ \parencite[vgl. ][S. 11]{Hill86}:
 \begin{equation}
 \mathcal{A}_q (n, d) = \max\lbrace \lvert C \rvert \mid C \subseteq \mathbb{F}_{q}^{n} \; \land \; d(C) = d \rbrace 
 \end{equation}
@@ -262,7 +262,7 @@ Damit lässt sich die \textit{Gilbert-Varshamov-Schranke} wie folgt formulieren:
 \begin{theorem}
 Seien $\mathbb{F}_{q}$ ein endlicher Körper und $n, k, d \in \mathbb{N}$ so gewählt, dass gilt
 \begin{equation}
-V_q (n-1, d-2) < q^{n-k}
+V_q (n-1, d-2) < q^{n-k}\text{.}
 \end{equation}
 Dann existiert ein linearer $[n, k]$-Code mit einer Minimaldistanz von mindestens $d$ \parencite[vgl. ][S. 97]{Roth06}. \\\\
 Eine alternative Formulierung liefert \textsc{\citeauthor{vanLint1973}} \parencite[vgl. ][S. 66]{vanLint1973}:
@@ -270,7 +270,7 @@ Eine alternative Formulierung liefert \textsc{\citeauthor{vanLint1973}} \parenci
 \mathcal{A}_q (n, d) \geq \frac{q^n}{V_q (n, d - 1)}
 \end{equation}
 \end{theorem}
-Die \textit{Gilbert-Varshamov-Schranke} liefert folglich eine Untergrenze für die maximal mögliche Codewortanzahl eines Codes, der die Bedingung erfüllt. In Bezug zur Kryptographie sind solche Codes von besonderer Bedeutung, da es nicht möglich sein soll, ein Kryptosystem durch bloßes Erraten möglicher Code- oder Klartextworte zu brechen. Dass sowohl \textit{Goppa}-Codes als auch verallgemeinerte \textit{Reed-Solomon-Codes} diese Schranke ab $q \geq 49$ erfüllen, stellen \textsc{\citeauthor{vanLint87}} dar \parencite[vgl. ][]{vanLint87}.
+Die \textit{Gilbert-Varshamov-Schranke} liefert folglich eine Untergrenze für die maximal mögliche Codewortanzahl eines Codes, der die Bedingung erfüllt. In Bezug zur Kryptographie sind solche Codes von besonderer Bedeutung, da es nicht möglich sein soll, ein Kryptosystem durch bloßes Erraten möglicher Code- oder Klartextworte zu brechen. Dass sowohl \textit{Goppa}-Codes als auch verallgemeinerte \textit{Reed-Solomon-Codes} diese Schranke ab $q \geq 49$ erfüllen, stellen \textsc{van Lint} und \textsc{Springer} dar \parencite[vgl. ][]{vanLint87}.
 
 \section{Vergleich zum McEliece-Kryptosystem}
 Die Frage, inwieweit sich beide dargestellten Vorschläge von \textsc{\citeauthor{McEliece1978}} und \textsc{\citeauthor{Niederreiter1986}} und insbesondere auch ihre Sicherheit unterscheiden, ist Gegenstand dieses Abschnittes.
@@ -278,9 +278,9 @@ Die Frage, inwieweit sich beide dargestellten Vorschläge von \textsc{\citeautho
 Sei $C$ ein linearer $[n, k, 2t+1]$-Code (wobei $t$ die Fehlerkorrekturschranke bezeichne). Dann sind die Kryptosysteme von \textsc{\citeauthor{McEliece1978}} und \textsc{\citeauthor{Niederreiter1986}} bezüglich dieses Codes äquivalent zueinander und weisen dieselbe Sicherheit auf.
 \end{theorem}
 \begin{proof}
-Die Aussage wird durch einen direkten Beweis gezeigt. Sei $G'$ der öffentliche Schlüssel des \textsc{McEliece}-Kryptosystems, bestehend aus den Matrixprodukt $SGP$, wobei $G$ eine Generatormatrix des betrachteten Codes ist. Gemäß Abschnitt \ref{ParausGenMatrix} kann aus $G'$ eine Paritätsprüfmatrix $H'$ abgeleitet werden (hierbei ist unerheblich, dass es sich bei $G'$ nicht um eine Generatormatrix des betrachteten Codes handelt). Die Verschlüsselungsoperation des \textsc{McEliece}-Kryptosystems ist definiert durch
+Die Aussage wird durch einen direkten Beweis gezeigt. Sei $G'$ der öffentliche Schlüssel des \textsc{McEliece}-Kryptosystems, bestehend aus dem Matrixprodukt $SGP$, wobei $G$ eine Generatormatrix des betrachteten Codes ist. Gemäß Abschnitt \ref{ParausGenMatrix} kann aus $G'$ eine Paritätsprüfmatrix $H'$ abgeleitet werden (hierbei ist unerheblich, dass es sich bei $G'$ nicht um eine Generatormatrix des betrachteten Codes handelt). Die Verschlüsselungsoperation des \textsc{McEliece}-Kryptosystems ist definiert durch
 \begin{equation}
-x = u \cdot G' + z
+x = u \cdot G' + z\text{.}
 \end{equation}
 $u$ bezeichnet einen Klartextblock und $z$ einen Fehlervektor mit Länge $n$ und Gewicht $w(z) \leq t$. Wird diese Gleichung nun mit $H'^{T}$ multipliziert, ergibt sich durch $G' H'^{T} = 0$:
 \begin{equation}
@@ -291,9 +291,9 @@ Die Verschlüsselung im \textsc{Niederreiter}-Verfahren ist gegeben durch
 \begin{equation}\label{ab168}
 x = y \cdot H'^{T},
 \end{equation}
-wobei $H' = k_{pub} = SHP$. Da $z$ und $y$ strukturidentische Fehlervektoren der Länge $n$ mit Gewicht $w \leq t$, ist durch \ref{156a} auch die Verschlüsselung des \textsc{Niederreiter}-Kryptosystems beschrieben \parencite[vgl. ][S. 272]{LiDengWang}.
+wobei $H' = k_{pub} = SHP$. Da $z$ und $y$ strukturidentische Fehlervektoren der Länge $n$ mit Gewicht $w \leq t$ sind, ist durch \ref{156a} auch die Verschlüsselung des \textsc{Niederreiter}-Kryptosystems beschrieben \parencite[vgl. ][S. 272]{LiDengWang}.
 Sollte es einer angreifenden Person bei bekanntem $x$ und $H'$ aus Gleichung \ref{ab168} möglich sein, $y$ zu finden, gilt das \textsc{Niederreiter}-Verfahren als gebrochen. Gleiches trifft jedoch nach \ref{156a} auch auf das \textsc{McEliece}-Verfahren zu, da auch hier das Finden von $z$ bei bekanntem $u$ und $H'$ zum Bruch des Systems führt. \\\\
-Auch ausgehend von der \textsc{Niederreiter}-Verschlüsselungsgleichung \ref{ab168} kann die Äquivalenz zur \textsc{McEliece}-Verschlüsselungsoperation gezeigt werden. Sei $c$ ein $n$-dimensionaler Vektor mit Gewicht $w \geq t$\footnote{Bei einem Gewicht größer als $t$ ist $c$ nicht mehr durch das \textsc{Niederreiter}-Verfahren dechiffrierbar. Hier ist das jedoch auch gar nicht das Ziel.}, der die Gleichung $x = c H'^{T}$ erfüllt. Dann kann $c$ analog zum obigen Vorgehen aufgefasst werden als 
+Auch ausgehend von der \textsc{Niederreiter}-Verschlüsselungsgleichung \ref{ab168} kann die Äquivalenz zur \textsc{McEliece}-Verschlüsselungsoperation gezeigt werden. Sei $c$ ein $n$-dimensionaler Vektor mit Gewicht $w \geq t$\footnote{Bei einem Gewicht größer als $t$ ist $c$ nicht mehr durch das \textsc{Niederreiter}-Verfahren dechiffrierbar. Hier ist die Dechiffrierung jedoch gar nicht das Ziel.}, der die Gleichung $x = c H'^{T}$ erfüllt. Dann kann $c$ analog zum obigen Vorgehen aufgefasst werden als 
 \begin{equation}
 c = mG' + y
 \end{equation} für einen $k$-dimensionalen Vektor $m$ und $y$ mit Gewicht $y$, denn
