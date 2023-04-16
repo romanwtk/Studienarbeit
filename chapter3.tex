@@ -103,14 +103,14 @@ Grundlage des \textsc{\citeauthor{McEliece1978}}-Kryptosystems sind \textit{Gopp
 Sei $p \in \mathbb{P}$ und $m \in \mathbb{N}$ so, dass $\mathbb{F}_{p^m}$ einen endlichen Körper der Charakteristik $p$ bezeichne. Ferner sei $g(z)$ ein Polynom mit Koeffizienten aus $\mathbb{F}_{p^m}$ und $L$ eine (meist unechte) Teilmenge aller Elemente aus $\mathbb{F}_{p^m}$, die nicht Wurzel von $g(z)$ sind. Dann existiert ein \textbf{Goppa-Code} mit Eingabemenge $\mathbb{F}_{q}$, Wertemenge $\mathbb{F}_{q^m}$, Goppapolynom $g(z)$ und Länge $\lvert L \rvert$. Der Code ist nun definiert durch die Menge aller Vektoren $C$, deren Komponenten -- indiziert durch die Elemente der Menge $L$ -- folgende Bedingung erfüllen \parencite[vgl. ][S. 590]{Berlekamp1973}:
 \[\sum\limits_{\gamma \in L} \frac{C_{\gamma}}{z - \gamma} \equiv 0 \mod g(z)\]
 \end{definition}
-Verwendet werden im Folgenden binäre \textit{Goppa}-Codes mit Körper $\mathbb{F}_{2^m}$, $L = \lbrace \epsilon_1, \epsilon_2, \ldots, \epsilon_N \rbrace$, Länge $\lvert L \rvert = 2^m$ und über $\mathbb{F}_{2^m}$ irreduziblem Goppapolynom $g(z)$ mit Grad $t$, wobei $t$ die maximale Fehlerkorrekturkapazität angibt. Die Dimension des Codes ist definiert durch $k \geq n - t \cdot m$ \parencite[vgl. ][S. 114]{McEliece1978}. \\\\
+Verwendet werden im Folgenden binäre \textit{Goppa}-Codes mit Körper $\mathbb{F}_{2^m}$, $L = \lbrace \epsilon_0, \epsilon_1, \ldots, \epsilon_{N-1} \rbrace$, Länge $\lvert L \rvert = 2^m$ und über $\mathbb{F}_{2^m}$ irreduziblem Goppapolynom $g(z)$ mit Grad $t$, wobei $t$ die maximale Fehlerkorrekturkapazität angibt. Die Dimension des Codes ist definiert durch $k \geq n - t \cdot m$ \parencite[vgl. ][S. 114]{McEliece1978}. \\\\
 Wurden passende Parameter $n, t$ gewählt und ein irreduzibles Polynom gefunden -- die Wahrscheinlichkeit dafür, dass ein zufällig gewähltes Polynom irreduzibel ist, beträgt $\frac{1}{t}$ \parencite[vgl. ][S. 114]{McEliece1978} -- kann eine $k \times n$-Generatormatrix $G$ erzeugt werden. Hierfür wird zunächst eine Paritätsprüfmatrix
 \[
 H = \left[ 
 	\begin{array}{cccc}
-		\frac{1}{g(\epsilon_1)} & \frac{1}{g(\epsilon_2)} & \cdots & \frac{1}{g(\epsilon_N)} \\
-		\frac{\epsilon_1}{g(\epsilon_1)} & \frac{\epsilon_2}{g(\epsilon_2)} & \cdots & \frac{\epsilon_N}{g(\epsilon_N)}  \\
-		\frac{\epsilon_{1}^{t-1}}{g(\epsilon_1)} & \frac{\epsilon_{2}^{t-1}}{g(\epsilon_2)} & \cdots & \frac{\epsilon_{N}^{t-1}}{g(\epsilon_N)}  \\
+		\frac{1}{g(\epsilon_0)} & \frac{1}{g(\epsilon_1)} & \cdots & \frac{1}{g(\epsilon_{N-1})} \\
+		\frac{\epsilon_0}{g(\epsilon_0)} & \frac{\epsilon_1}{g(\epsilon_1)} & \cdots & \frac{\epsilon_{N-1}}{g(\epsilon_{N-1})}  \\
+		\frac{\epsilon_{0}^{t-1}}{g(\epsilon_0)} & \frac{\epsilon_{1}^{t-1}}{g(\epsilon_1)} & \cdots & \frac{\epsilon_{N-1}^{t-1}}{g(\epsilon_{N-1})}  \\
 	\end{array}
 \right]
 \]

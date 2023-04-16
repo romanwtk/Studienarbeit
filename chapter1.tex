@@ -7,7 +7,7 @@ Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das 
 Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Objekte der Anschauung.
 \begin{definition}\label{Alphabet}
 Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a_i \in \Sigma$, wobei $\Sigma$ eine endliche Menge von Zeichen (genannt \textbf{Alphabet}) bezeichnet.
-\[m = \langle a_1, a_2, ..., a_{n-1}, a_n \rangle \quad \forall i = 1, ..., n\colon \, a_i \in \Sigma\]
+\[m = \langle a_0, a_2, ..., a_{n-2}, a_{n-1} \rangle \quad \forall i = 0, ..., n-1\colon \, a_i \in \Sigma\]
 \end{definition}
 Ein typisches Alphabet sind die Zeichen der \textit{ASCII}-Kodierung, mit denen nahezu alle Worte und Sätze der natürlichen englischen Sprache gebildet werden können \parencite[vgl. ][]{rfc20}. Dieses Alphabet besteht nicht aus Zeichen der natürlichen Sprache, sondern aus $7$ Bit langen Zahlenwerten, was die Anwendung von Codes oder kryptographischen Verfahren ermöglicht. Im Rahmen dieser Arbeit wird angenommen, dass Zeichen stets in einem Zahlenformat repräsentiert werden. \\\\
 Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (eine natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
@@ -70,14 +70,14 @@ Um Codier- und Decodiervorgänge beschreiben zu können, ist eine Erweiterung un
 
 \begin{definition}
 Sei $A$ ein Alphabet und $n \in \mathbb{N}$. \\ 
-Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace \langle a_1, a_2, ..., a_n \rangle \mid a_i \in A \rbrace$. \\\\
+Dann sei $A^{n}$ die Menge aller $n$-Tupel der Form $A^{n} = \lbrace \langle a_0, a_1, ..., a_{n-1} \rangle \mid a_i \in A \rbrace$. \\\\
 Ein \textbf{Blockcode} $C$ der Länge $n$ über dem Alphabet $A$ ist definiert als $C \subseteq A^{n} \text{, wobei } \lvert C \rvert > 0$ gelten muss.\\\\
 Ist $o = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < o$ die Menge zu codierender Informationseinheiten über einem Alphabet $A'$, so ist jede injektive Abbildung $f\colon B \to C$ eine \textbf{Codierfunktion} \parencite[vgl. ][S. 10]{Manz2017}.
 \end{definition}
 Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise, sondern über Schieberegister in Abhängigkeit zueinander codiert, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergibt \parencite[vgl. ][S. 752]{Viterbi1971}. Diese Ansätze, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weisen Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Eigenschaften von Blockchiffren wie der höheren Diffusion und dem Lawineneffekt auf Blockcodes liegen. \\\\
 Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codeworten, bietet sich die \textbf{\textsc{Hamming}-Distanz} an.
 \begin{definition}
-Seien $a = \langle a_1, a_2, ..., a_n \rangle$, $b = \langle b_1, b_2, ..., b_n \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{\textsc{Hamming}-Distanz} $d$ eine Metrik auf $A^n$. Sie ist definiert als die Anzahl der abweichenden Stellen in zwei Codeworten $a$ und $b$:
+Seien $a = \langle a_0, a_2, ..., a_{n-1} \rangle$, $b = \langle b_0, b_2, ..., b_{n-1} \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{\textsc{Hamming}-Distanz} $d$ eine Metrik auf $A^n$. Sie ist definiert als die Anzahl der abweichenden Stellen in zwei Codeworten $a$ und $b$:
 \[d(a, b) = \lvert \lbrace i \mid 1 \leq i \leq n, a_i \neq b_i \rbrace \rvert\]
 Des Weiteren sei die \textbf{Minimaldistanz} eines Blockcodes $C$ mit $\lvert C \rvert > 1$ definiert als 
 \[d(C) = \min \lbrace d(x, y) \mid x, y \in C, x \neq y \rbrace\] \parencite[vgl. ][S. 11]{Manz2017} \parencite[vgl. ][S. 105]{Roman1992} \parencite[vgl. ][S. 155]{Hamming1950}.
@@ -222,15 +222,15 @@ Abgeschlossenheit bezeichnet hier, dass das Ergebnis einer Operation mit zwei be
 \end{note}
 \begin{definition}
 Ferner ist $J$ ein \textbf{Ideal} von $R$, falls $J$ ein Unterring von $R$ ist und 
-\[\forall \, a \in J, r \in R: \quad \big( (ar \in J) \land (ra \in J) \big)\] gilt \parencite[vgl. ][S. 13]{Niederreiter97}. \\\\
+\[\forall \, a \in J,\, r \in R\colon \quad \big( (ar \in J) \land (ra \in J) \big)\] gilt \parencite[vgl. ][S. 13]{Niederreiter97}. \\\\
 Gilt $I = (a)$ für ein $a \in I$, so ist $I$ ein von $a$ erzeugtes \textbf{Hauptideal}.
 \end{definition}
 \begin{note}
 Ein Ideal ist nun nicht mehr nur bezüglich eigenen Elementen und beiden Operationen abgeschlossen, sondern in Bezug auf die Multiplikation auch bezüglich Elementen des übergeordneten Rings.
 \end{note}
 \begin{definition}
-Sei $R$ eine Restklasse, $a \in R$ und $J$ ein Ideal von $R$. Die \textbf{Restklasse} von $a \mod J$ sei definiert als Menge aller Elemente der Form $(a + c) \in R, \forall \, c \in J$ \parencite[vgl. ][S. 13]{Niederreiter97}\parencite[vgl. ][S. 10]{Howie06}:
-\[[a] = a + J = \lbrace (a + c) \in R; c \in J \rbrace\]
+Sei $R$ eine Restklasse, $a \in R$ und $J$ ein Ideal von $R$. Die \textbf{Restklasse} von $a \mod J$ sei definiert als Menge aller Elemente der Form $(a + c) \in R, \, \forall \, c \in J$ \parencite[vgl. ][S. 13]{Niederreiter97}\parencite[vgl. ][S. 10]{Howie06}:
+\[[a] = a + J = \lbrace (a + c) \in R;\, c \in J \rbrace\]
 \end{definition}
 \begin{note}
 Zwei Elemente $a, b \in R$ sind \textit{kongruent} modulo $J$, wenn sie Elemente der gleichen Restklasse bezüglich $J$ sind, geschrieben $a \equiv b \mod J$. 
