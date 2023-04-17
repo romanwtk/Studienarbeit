@@ -7,7 +7,7 @@ Da im Rahmen dieser Arbeit ein kryptographisches Verfahren entwickelt wird, das 
 Sowohl in der Kryptographie, als auch in der Codierungstheorie fungieren \textbf{Nachrichten}, die über mit bestimmten Eigenschaften behaftete \textbf{Kanäle} übertragen werden, als die Objekte der Anschauung.
 \begin{definition}\label{Alphabet}
 Eine \textbf{Nachricht} $m$ sei definiert als eine endliche Folge von Zeichen $a_i \in \Sigma$, wobei $\Sigma$ eine endliche Menge von Zeichen (genannt \textbf{Alphabet}) bezeichnet.
-\[m = \langle a_0, a_2, ..., a_{n-2}, a_{n-1} \rangle \quad \forall i = 0, ..., n-1\colon \, a_i \in \Sigma\]
+\[m = \langle a_0, a_1, ..., a_{n-2}, a_{n-1} \rangle \quad \forall i = 0, ..., n-1\colon \, a_i \in \Sigma\]
 \end{definition}
 Ein typisches Alphabet sind die Zeichen der \textit{ASCII}-Kodierung, mit denen nahezu alle Worte und Sätze der natürlichen englischen Sprache gebildet werden können \parencite[vgl. ][]{rfc20}. Dieses Alphabet besteht nicht aus Zeichen der natürlichen Sprache, sondern aus $7$ Bit langen Zahlenwerten, was die Anwendung von Codes oder kryptographischen Verfahren ermöglicht. Im Rahmen dieser Arbeit wird angenommen, dass Zeichen stets in einem Zahlenformat repräsentiert werden. \\\\
 Die Definition einer informationstheoretischen Nachricht impliziert eine Autorenschaft, folglich muss jeder Nachricht eine Partei (eine natürliche Person, ein System oder ein Dienst) zugeordnet werden können, die im Folgenden als \textbf{Sender}\footnote{Da sich die Anwendung der modernen Kryptographie sehr überwiegend mit dem Austausch von verschlüsselten Nachrichten zwischen Systemen und nicht unmittelbar zwischen natürlichen Personen befasst, wird hier die männliche Form verwendet (Sender = Dienst/System).} der Nachricht bezeichnet wird. \\
@@ -77,7 +77,7 @@ Ist $o = \lvert C \rvert$ und $B$ mit $\lvert B \rvert < o$ die Menge zu codiere
 Neben Blockcodes können auch sogenannte \textbf{Faltungscodes} zur Fehlerkorrektur verwendet werden. Hierbei werden die Informationen nicht unabhängig voneinander blockweise, sondern über Schieberegister in Abhängigkeit zueinander codiert, wodurch sich eine bessere Performanz im Gegensatz zu Blockcodes ergibt \parencite[vgl. ][S. 752]{Viterbi1971}. Diese Ansätze, Daten blockweise oder als Datenstrom über Schieberegister zu codieren, weisen Parallelen zur kryptographischen Unterscheidung zwischen Block- und Stromchiffren auf. Der Fokus dieser Arbeit wird aufgrund der kryptographischen Eigenschaften von Blockchiffren wie der höheren Diffusion und dem Lawineneffekt auf Blockcodes liegen. \\\\
 Als Maß der Qualität einer Übertragung beziehungsweise der Verfälschung einer Nachricht durch Rauschen, aber auch für die Unterscheidbarkeit von Codeworten, bietet sich die \textbf{\textsc{Hamming}-Distanz} an.
 \begin{definition}
-Seien $a = \langle a_0, a_2, ..., a_{n-1} \rangle$, $b = \langle b_0, b_2, ..., b_{n-1} \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{\textsc{Hamming}-Distanz} $d$ eine Metrik auf $A^n$. Sie ist definiert als die Anzahl der abweichenden Stellen in zwei Codeworten $a$ und $b$:
+Seien $a = \langle a_0, a_1, ..., a_{n-1} \rangle$, $b = \langle b_0, b_1, ..., b_{n-1} \rangle \in A^n$ und $A$ ein Alphabet, so ist die \textbf{\textsc{Hamming}-Distanz} $d$ eine Metrik auf $A^n$. Sie ist definiert als die Anzahl der abweichenden Stellen in zwei Codeworten $a$ und $b$:
 \[d(a, b) = \lvert \lbrace i \mid 1 \leq i \leq n, a_i \neq b_i \rbrace \rvert\]
 Des Weiteren sei die \textbf{Minimaldistanz} eines Blockcodes $C$ mit $\lvert C \rvert > 1$ definiert als 
 \[d(C) = \min \lbrace d(x, y) \mid x, y \in C, x \neq y \rbrace\] \parencite[vgl. ][S. 11]{Manz2017} \parencite[vgl. ][S. 105]{Roman1992} \parencite[vgl. ][S. 155]{Hamming1950}.
@@ -192,7 +192,7 @@ $\forall\, a, b \in \mathbb{Z}\colon \quad a + b \Leftrightarrow b + a$
 \end{example}
 \begin{definition}
 Eine multiplikative Gruppe ist \textbf{zyklisch}, sofern
-\[\exists \, a \in G, \forall \, b \in G, \exists \, j \in \mathbb{Z}: \quad b = a^j\] gilt. Dann ist $a$ ein \textbf{Generator} der multiplikativen Gruppe\footnote{Wird zu einer Gruppe keine binäre Relation angegeben, handelt es sich implizit um eine multiplikative Verknüpfung.} $G$ \parencite[vgl. ][S. 3f.]{Niederreiter97}. Die Gruppe ist durch $G = \langle a \rangle$ hinreichend beschrieben.
+\[\exists \, a \in G, \forall \, b \in G, \exists \, j \in \mathbb{Z}: \quad b = a^j\] gilt. Dann ist $a$ ein \textbf{Generator} der multiplikativen Gruppe\footnote{Wird zu einer Gruppe keine binäre Relation angegeben, handelt es sich implizit um eine multiplikative Verknüpfung.} $G$ \parencite[vgl. ][S. 3f.]{Niederreiter97}. Die Gruppe ist durch diesen Generator $a$ hinreichend beschrieben.
 \end{definition}
 \paragraph{Kryptographische Bedeutung} In Bezug auf Gruppen existieren einige mathematische Probleme, die sich für die Konstruktion kryptographischer Verfahren nutzen lassen. \textsc{Myasnikov}, \textsc{Ushakov} und \textsc{Shpilrain} stellen in \parencite{Myasnikov08} kryptographische Protokolle dar, die beispielsweise auf dem \textit{Konjugationssuchproblem} nicht-kommutativer Gruppen basieren: \\
 Für zwei Elemente $u, v \in G$ einer Gruppe $G$ soll mindestens ein $x \in G$ gefunden werden, sodass $u^{x} = v$ gilt. Ist kein anderer Algorithmus für dieses Problem für die  Gruppe $G$ bekannt, so lässt sich $x \to u^x$ als Einwegfunktion auffassen und so ein kryptographisches Protokoll konstruieren \parencite[vgl. ][S. 37f.]{Myasnikov08}. 
@@ -270,7 +270,7 @@ Durch die Verkettung der beiden Operationen eines Körpers $\mathbb{K}$ lassen s
 \[\mathbb{K}[x] = \lbrace p(x) = a_{n}x^{n} + ... + a_{1}x + a_0 \mid a_i \in \mathbb{K} \rbrace\]
 \parencite[vgl. ][S. 118f.]{Teschl}
 und bildet einen kommutativen Ring, aufgrund der fehlenden Abgeschlossenheit der Division jedoch keinen Körper. Wird ein Polynom durch ein anderes dividiert, so kann dabei ein Rest entstehen, was die Anwendung des Kongruenzbegriffs nahelegt. Die Polynomdivision aller Polynome aus einem Körper $\mathbb{K}$ mit einem Polynom $m(x)$ erzeugt einen \textbf{Restklassenring} $\mathbb{K}[x]/({m(x)})$ mit der bekannten Addition und Multiplikation auf Polynomen. \\\\
-Die Frage, ob jener Ring auch ein (endlicher) Körper ist, ergibt sich daraus, ob zu jedem Polynom ein multiplikatives Inverses Teil des Rings ist. Für diese Bedingung hinreichend ist folgende Eigenschaft eines Polynoms:
+Die Antwort auf die Frage, ob jener Ring auch ein (endlicher) Körper ist, ergibt sich daraus, ob zu jedem Polynom ein multiplikatives Inverses Teil des Rings ist. Für diese Bedingung hinreichend ist folgende Eigenschaft eines Polynoms:
 \begin{definition}
 Ein Polynom $p(x) \in \mathbb{K}$ vom Grad (also dem höchsten Exponenten des Polynoms) $\deg (p) > 1$ wird als \textbf{irreduzibel} bezeichnet, falls es kein Polynom $q(x) \in \mathbb{K}$ mit $0 < \deg (q) <  \deg (p)$ gibt, das $p(x)$ teilt \parencite[vgl. ][S. 129]{Teschl}.
 \end{definition}
@@ -284,6 +284,6 @@ Ein \textsc{Galois}-Körper $\mathbb{F}_p$ kann auf diese Weise zu einem Körper
 Typische Beispiele für endliche Körper sind:
 \begin{itemize}
 \item Über dem Körper $\mathbb{F}_{2}$ ist $x^2 + x + 1$ ein irreduzibles Polynom, das zur Körpererweiterung genutzt werden kann und nun den endlichen Körper $\mathbb{F}_{2^2} = \lbrace [0], [1], [x], [x+1]\rbrace$ erzeugt.
-\item Für das AES-Kryptosystem und eine Vielzahl weiterer kryptographischer und codierungstheoretischer Anwendungen wird der Körper $\mathbb{F}_{2^8}$ mit dem definierenden Polynom $x^8 + x^4 + x^3 + x + 1$ verwendet. Er enthält 256 Elemente \parencite[vgl. ][S. 131]{Teschl}.
+\item Für das \ac{AES}-Kryptosystem und eine Vielzahl weiterer kryptographischer und codierungstheoretischer Anwendungen wird der Körper $\mathbb{F}_{2^8}$ mit dem definierenden Polynom $x^8 + x^4 + x^3 + x + 1$ verwendet. Er enthält 256 Elemente \parencite[vgl. ][S. 131]{Teschl}.
 \end{itemize}
 \end{example}
