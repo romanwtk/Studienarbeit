@@ -87,7 +87,7 @@ Eine verallgemeinerte Variante dieses Problems ergibt sich, wenn anstelle der Re
 \end{algorithmic}
 \end{algorithm}
 Die Komponenten $a_i$ werden je nach Kryptosystem so ausgewählt, dass in Kenntnis gewisser geheimer Zusatzinformationen (auch genannt \textit{Hintertür} bzw. \textit{trapdoor}) die Gleichung leicht gelöst, respektive das Codewort $c$ dekodiert, werden kann \parencite[vgl. ][S. 902]{Rivest1988}. \\\\
-Die Arbeit von \textsc{Chor} und \textsc{Rivest} bildet die Grundlage für das \textsc{\citeauthor{Niederreiter1986}}-Schema\footnote{Dies ist möglich, da die Arbeit \parencite{Rivest1988} bereits vier Jahre vor ihrem Erscheinen im Jahr 1988 im Rahmen der \textit{CRYPTO '84} präsentiert wurde. \textsc{\citeauthor{Niederreiter1986}} referenziert 1986 in \parencite{Niederreiter1986} eine Preprint-Fassung.} \parencite[vgl. ][S. 159]{Niederreiter1986}. Das von ihnen vorgeschlagene Kryptosystem ist definiert über einem endlichen Erweiterungskörper $\mathbb{F}_{p^h}$, in dem Berechnungen zum \textbf{diskreten Logarithmus} möglich sind \parencite[vgl. ][S. 903]{Rivest1988}.
+Die Arbeit von \textsc{Chor} und \textsc{Rivest} bildet die Grundlage für das \textsc{\citeauthor{Niederreiter1986}}-Schema\footnote{Dies ist möglich, da die Arbeit \parencite{Rivest1988} bereits vier Jahre vor ihrem Erscheinen im Jahr 1988 im Rahmen der \textit{CRYPTO '84} präsentiert wurde. \textsc{\citeauthor{Niederreiter1986}} referenziert 1986 in \parencite{Niederreiter1986} eine Preprint-Fassung.} \parencite[vgl. ][S. 159]{Niederreiter1986}. Das von ihnen vorgeschlagene Kryptosystem ist definiert über einem endlichen Erweiterungskörper $\mathbb{F}_{p^f}$, in dem Berechnungen zum \textbf{diskreten Logarithmus} möglich sind \parencite[vgl. ][S. 903]{Rivest1988}.
 \begin{note}
 Sei $p \in \mathbb{P}$ und $f \in \mathbb{N}$ dergestalt, dass $\mathbb{F}_{p^f}$ einen endlichen Körper der Charakteristik $p$ bezeichne. Ferner sei $\alpha$ ein primitives Element dieses Körpers. Dann sind die Funktionen
 \begin{align}
@@ -159,7 +159,7 @@ Auch für die zufällige Wahl der Permutationsmatrix $P$ kann eine \textit{SageM
 Die Speicherung des öffentlichen und privaten Schlüssels im \ac{JSON}-Dateiformat entspricht nicht dem üblicherweise gewählten \ac{PEM}-Dateiformat, erscheint im Kontext dieser Arbeit jedoch probat, um die Verständlichkeit der Dateien zu gewährleisten. Da sich \textit{SageMath}-Matrizen nicht nativ als \ac{JSON}-Objekte serialisieren lassen, musste hier eine Stringrepräsentation der Liste der Matrixzeilen gewählt werden. Diese Lösung hat jedoch zur Folge, dass, um die Matrizen wieder zu deserialisieren, die Python-Funktion \texttt{eval()} aufgerufen werden muss. Die Verwendung dieser Funktion ist aus Codesicherheits-Erwägungen bedenklich, da sie die Ausführung beliebiger eingegebener Befehle ermöglicht. An den gefährdetsten Stellen der Implementierung wird daher vor dem Funktionsaufruf eine Validierung der Eingabe durchgeführt, die sicherstellt, dass die Eingabe nur zugelassene Zeichen enthält.
 \section{Niederreiter-Schema}
 Während \textsc{\citeauthor{McEliece1978}} sein Kryptosystem verbindlich auf \textit{Goppa}-Codes definiert, ist das Kryptosystem von \textsc{\citeauthor{Niederreiter1986}} abstrakter, indem für dieses System geeignete Codes diskutiert werden \parencite[vgl. ][S. 161f.]{Niederreiter1986}. \\\\
-Die zentrale Aussage, die für dieses Kryptosystem benötigt wird, ist Folgende:
+Die zentrale Aussage, die für dieses Kryptosystem benötigt wird, ist folgende:
 \begin{theorem}
 Sei $C$ ein linearer $[n, k, d]$-Code mit Fehlerkorrekturkapazität $t$ über einem endlichen Körper $\mathbb{F}_{q}$. Dann bezeichne $H$ eine $(n-k) \times n$-Paritätsprüfmatrix dieses Codes. So ist die Menge $C$ beschrieben durch alle Vektoren $c \in \mathbb{F}_{q}^{n}$ mit $H \cdot c^{T} = 0$. \\\\Ferner bezeichne das \textbf{Gewicht} $w(x)$ die Anzahl der Komponenten eines Vektors, die ungleich null sind. Für die \textit{Hamming}-Distanz gilt dann $d(x, y) = w(x - y)$. Für zwei Vektoren $y, z \in \mathbb{F}_{q}^{n}$ mit $w(y) \leq t$ und $w(z) \leq t$ gilt nun \parencite[vgl. ][S. 160f.]{Niederreiter1986}:
 \[(H \cdot y^{T} \; = \; H \cdot z^{T}) \; \Rightarrow \; y = z\]
@@ -222,12 +222,12 @@ Für die Korrektheit des Verfahrens ist nun noch zu zeigen, dass ein durch die V
 Sei $y$ ein Klartextvektor mit $w(y) \leq t$, $H$ eine Paritätsprüfmatrix eines linearen Codes, $S$ eine nicht-singuläre Matrix und $P$ eine Permutationsmatrix. Dann lässt sich das Produkt $y S H P$ mittels des Entschlüsselungsalgorithmus des \textsc{Niederreiter}-Verfahrens dechiffrieren. 
 \end{theorem}
 \begin{proof}
-Das Chiffrat bzw. das Geheimwort ist entsprechend des \textsc{Niederreiter}-Verschlüsselungs{\-}algorithmus definiert durch
+Das Chiffrat bzw. das Geheimwort ist entsprechend des \textsc{Niederreiter}-Verschlüs\-selungs{\-}algorithmus definiert durch
 \begin{align*}
 x &= y S H P \\
 &\Leftrightarrow S H \cdot (y^{T} P)\text{.}
 \end{align*}
-Für die Entschlüsselung wird nun zunächst die Störmatrix durch Multiplikation mit ihrem Inversen neutralisiert:
+Für die Entschlüsselung wird nun zunächst die Störmatrix durch Multiplikation mit ihrem Inversen {\glq}neutralisiert{\grq}:
 \begin{align*}
 s &= x \cdot S^{-1} \\
 &\Leftrightarrow S H y^{T} P S^{-1} \\

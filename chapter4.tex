@@ -56,14 +56,14 @@ Im Gegensatz zu \textit{BIKE} ist die Schlüssellänge und der daher benötigte 
 \subsubsection{HQC (Hamming Quasi-Cyclic)}
 Das Kryptosystem \textit{HQC} basiert wie \textit{BIKE} auf quasi-zyklischen \ac{MDPC}-Codes, deren Generatormatrizen jedoch in systematischer Form verwendet werden. Dafür ist die Definition zyklischer Matrizen erforderlich.
 \begin{definition}
-Sei $x = \langle x_1, \ldots, c_n\rangle \in \mathbb{F}_{q}^{n}$. Dann wird die aus $x$ abgeleitete Matrix
+Sei $x = \langle x_0, \ldots, x_{n-1}\rangle \in \mathbb{F}_{q}^{n}$. Dann wird die aus $x$ abgeleitete Matrix
 \begin{equation}
 \text{rot}(x) = \left( 
 \begin{array}{cccc}
-x_1 & x_n & \cdots & x_2 \\
-x_2 & x_1 & \cdots & x_3 \\
+x_0 & x_n & \cdots & x_1 \\
+x_1 & x_0 & \cdots & x_2 \\
 \vdots & \vdots & & \vdots \\
-x_n & x_{n-1} & \cdots & x_1
+x_{n-1} & x_{n-2} & \cdots & x_0
 \end{array}
 \right)
 \end{equation}
