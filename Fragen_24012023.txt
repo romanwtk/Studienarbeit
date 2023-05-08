@@ -1,7 +1,0 @@
-# Fragekatalog für den 24.01.2023 (R. Hübl)
-
-- In welcher Ausführlichkeit sollen die verschiedenen Dekodieralgorithmen dargestellt werden?
-- Welche Varianten von Reed-Solomon-Codes (verallgemeinert/dual/2^m) sind für den weiteren Verlauf der Arbeit besonders relevant? (Hier haben Sie mich berechtigterweise schon auf verallgemeinerte RS-Codes hingewiesen.)
-- Welche Form der Kodierung (systematisch / nicht systematisch) bietet sich an?
-- Ist eine Darstellung in Pseudocode-Algorithmen sinnvoll/erwünscht oder genügen Definition, Beispiel und SageMath-Implementierung?
-- Wie verfahren wir mit dem QR-Code-Beispiel?
